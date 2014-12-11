@@ -1,0 +1,133 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:fillViewport="true"
+    tools:context=".ProfileActivity" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_profile_name" />
+      <EditText 
+          android:id="@+id/v_profile_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right"
+          android:inputType="text" />
+      
+      <TextView 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_birth_date"/>
+      <TextView 
+          android:id="@+id/v_birth_date"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textIsSelectable="false"
+          android:text="@string/profile_select_birth_date"
+          android:gravity="right"
+          android:clickable="true"
+          android:onClick="onSelectBirthDate" />
+
+      <TextView 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_gender"/>
+      <Spinner
+          android:id="@+id/v_gender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="right" />
+      
+      <TextView 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_height"/>
+      <EditText 
+          android:id="@+id/v_height"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right"
+          android:inputType="number" />
+      
+      <TextView 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_activity_level"/>
+      <RadioGroup 
+          android:id="@+id/v_activity_level"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="right">
+          
+          <RadioButton
+              android:id="@+id/activity_1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="1"
+              android:checked="true" />
+          <RadioButton
+              android:id="@+id/activity_2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="2" />
+          <RadioButton
+              android:id="@+id/activity_3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="3" />
+          <RadioButton
+              android:id="@+id/activity_4"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="4" />
+          <RadioButton
+              android:id="@+id/activity_5"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="5" />
+          <RadioButton
+              android:id="@+id/activity_6"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="6" />
+      </RadioGroup>
+      
+      <TextView 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_lifetime_athlete"/>
+      <CheckBox
+          android:id="@+id/v_lifetime_athlete"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="right"
+          android:checked="false" />
+      
+      <Button 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="@string/profile_create_profile"
+          android:onClick="createProfile"/>
+      
+    </LinearLayout>
+    
+</ScrollView>

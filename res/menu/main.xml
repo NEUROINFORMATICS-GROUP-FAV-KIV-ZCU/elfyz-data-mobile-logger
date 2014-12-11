@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/action_device_list"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Zobrazit seznam zařízení" />
+    
+    <item
+        android:id="@+id/action_create_new_profile"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/create_new_profile" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings" />
+
+</menu>
