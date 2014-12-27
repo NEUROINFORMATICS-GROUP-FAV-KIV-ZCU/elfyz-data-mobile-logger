@@ -52,10 +52,6 @@
             android:name="cz.zcu.kiv.mobile.logger.devices.blood_pressure.BloodPressureListActivity"
             android:label="@string/title_activity_blood_pressure_list" >
         </activity>
-<!--         <activity -->
-<!--             android:name="cz.zcu.kiv.mobile.logger.devices.pedometer.PedometerActivity" -->
-<!--             android:label="@string/title_activity_pedometer" > -->
-<!--         </activity> -->
         <activity
             android:name="cz.zcu.kiv.mobile.logger.profiles.ProfileActivity"
             android:label="@string/title_activity_profile" >
@@ -64,15 +60,20 @@
             android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity"
             android:label="@string/title_activity_weight_scale" >
         </activity>
-
-        <service
-            android:name="cz.zcu.kiv.mobile.logger.services.AntBackgroundService"
-            android:exported="false" />
+<!--         <activity -->
+<!--             android:name="cz.zcu.kiv.mobile.logger.devices.pedometer.PedometerActivity" -->
+<!--             android:label="@string/title_activity_pedometer" > -->
+<!--         </activity> -->
 
         <activity
             android:name="cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity"
             android:label="@string/title_activity_bluetooth_picker" >
         </activity>
+        
+        <service
+            android:name="cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

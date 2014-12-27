@@ -88,6 +88,7 @@ public class WeightScaleActivity extends Activity {
       Toast.makeText(this, R.string.alert_activity_not_launched_correctly, Toast.LENGTH_LONG).show();
       Log.e(TAG, "User profile could not be retrieved from intent: extra name=" + DeviceListActivity.EXTRA_USER_PROFILE);
       finish();
+      return;
     }
     
     db = ((Application) getApplication()).getDatabase();
@@ -194,7 +195,7 @@ public class WeightScaleActivity extends Activity {
               setText(tvBoneMass, measurement.boneMass.intValue() != -1, measurement.boneMass.toString() + UNIT_KG);
               setText(tvActiveMetabolicRate, measurement.activeMetabolicRate.intValue() != -1, measurement.activeMetabolicRate.toString() + UNIT_KCAL);
               setText(tvBasalMetabolicRate, measurement.basalMetabolicRate.intValue() != -1, measurement.basalMetabolicRate.toString() + UNIT_KCAL);
-              setText(tvStatus, "Mìøení OK");
+              setText(tvStatus, "Mï¿½ï¿½enï¿½ OK");
               
               try {
                 db.addWeightScaleAdvancedMeasurement(userProfile.getId(),

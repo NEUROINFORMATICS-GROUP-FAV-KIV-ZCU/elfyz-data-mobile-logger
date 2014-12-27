@@ -4,49 +4,43 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.DataState;
-import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.ICalculatedRrIntervalReceiver;
-import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.IHeartRateDataReceiver;
-import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.IPage4AddtDataReceiver;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceState;
 import com.dsi.ant.plugins.antplus.pcc.defines.EventFlag;
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult;
-import com.dsi.ant.plugins.antplus.pccbase.AntPluginPcc.IDeviceStateChangeReceiver;
-import com.dsi.ant.plugins.antplus.pccbase.AntPluginPcc.IPluginAccessResultReceiver;
-import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.ICumulativeOperatingTimeReceiver;
-import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IManufacturerAndSerialReceiver;
-import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IVersionAndModelReceiver;
-import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
-import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
-import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
+import cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService;
+import cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService.DeviceCommunicatorBinder;
+import cz.zcu.kiv.mobile.logger.services.HeartRateCommunicator.HeartRateListener;
 
 
-public class HeartRateActivity extends Activity {
+public class HeartRateActivity extends Activity implements ServiceConnection, HeartRateListener {
   private static final String TAG = HeartRateActivity.class.getSimpleName();
 
-  protected PccReleaseHandle<AntPlusHeartRatePcc> releaseHandle;
-  protected AntPlusHeartRatePcc heartRateDevice;
-  
   protected TextView tvHeartRate;
   protected TextView tvDataStatus;
   protected TextView tvRateInterval;
   protected TextView tvBeatCount;
   protected TextView tvStatus;
 
-  private Database db;
   private Profile userProfile;
+  
+  private DeviceCommunicatorService.DeviceCommunicatorBinder communicator;
+  private boolean listening = false;
   
 
   @Override
@@ -66,164 +60,160 @@ public class HeartRateActivity extends Activity {
       Toast.makeText(this, R.string.alert_activity_not_launched_correctly, Toast.LENGTH_LONG).show();
       Log.e(TAG, "User profile could not be retrieved from intent: extra name=" + DeviceListActivity.EXTRA_USER_PROFILE);
       finish();
+      return;
     }
     
-    db = ((Application) getApplication()).getDatabase();
-
-    releaseHandle = AntPlusHeartRatePcc.requestAccess(this, this, pluginAccessResultReceiver, deviceStateChangeReceiver);
+    connectService();
   }
-
-
-  protected void setStatus(final String status) {
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        tvStatus.setText(status);
-      }
-    });
+  
+  @Override
+  protected void onPause() {
+    super.onPause();
+    unsubscribe();
   }
-
-  protected void setStatus(final int stringID) {
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        tvStatus.setText(getString(stringID));
-      }
-    });
-  }
-
-  protected void close(){
-    if(releaseHandle != null){
-      releaseHandle.close();
-    }
+  
+  @Override
+  protected void onResume() {
+    super.onResume();
+    subscribe();
   }
   
   @Override
   protected void onDestroy() {
-    close();
     super.onDestroy();
+    disconnectService();
   }
-
-
-  protected void subscribeToHrEvents() {  //TODO move to service and use local broadcast messages
-    heartRateDevice.subscribeHeartRateDataEvent(new IHeartRateDataReceiver() {
-      @Override
-      public void onNewHeartRateData(long estTimestamp, EnumSet<EventFlag> eventFlags, final int computedHeartRate,
-          final long heartBeatCount, BigDecimal heartBeatEventTime, final DataState dataState) {
-        
-        Log.i(TAG, String.format("rate: %3d, count: %3d, timestamp: %d, data state: %s",
-            computedHeartRate, heartBeatCount, heartBeatEventTime.longValue(), dataState.toString()));
-        
-        runOnUiThread(new Runnable() {
-          public void run() {
-            tvHeartRate.setText(
-                (dataState.equals(DataState.LIVE_DATA))
-                  ? String.valueOf(computedHeartRate)
-                  : getString(R.string.value_n_a)
-            );
-            tvDataStatus.setText(dataState.toString());
-            tvBeatCount.setText(String.valueOf(heartBeatCount));
-          }
-        });
-        
-        if(dataState.equals(DataState.LIVE_DATA)) {
-          try { //TODO async
-            db.addHeartRateMeasurement(userProfile.getId(), computedHeartRate, heartBeatCount, heartBeatEventTime.longValue());
-          }
-          catch (DatabaseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-        }
-      }
-    });
-    
-    heartRateDevice.subscribePage4AddtDataEvent(new IPage4AddtDataReceiver() {
-      @Override
-      public void onNewPage4AddtData(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte,
-          BigDecimal previousHeartBeatEventTime) {
-
-        Log.i(TAG, "Page4");
-      }
-    });
-
-    heartRateDevice.subscribeCumulativeOperatingTimeEvent(new ICumulativeOperatingTimeReceiver() {
-      @Override
-      public void onNewCumulativeOperatingTime(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime) {
-        Log.i(TAG, "operating time: " + cumulativeOperatingTime);
-      }
-    });
-
-    heartRateDevice.subscribeManufacturerAndSerialEvent(new IManufacturerAndSerialReceiver() {
-      @Override
-      public void onNewManufacturerAndSerial(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber) {
-        Log.i(TAG, String.format("manufacturer ID: %d, serial number: %d, timestamp: %d", manufacturerID, serialNumber, estTimestamp));
-      }
-    });
-
-    heartRateDevice.subscribeVersionAndModelEvent(new IVersionAndModelReceiver() {
-      @Override
-      public void onNewVersionAndModel(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion,
-          int softwareVersion, int modelNumber) {
-        
-        Log.i(TAG, String.format("HW version: %d, SW version: %d, model number: %d, timestamp: %d",
-            hardwareVersion, softwareVersion, modelNumber, estTimestamp));
-      }
-    });
-
-    heartRateDevice.subscribeCalculatedRrIntervalEvent(new ICalculatedRrIntervalReceiver() {
-      @Override
-      public void onNewCalculatedRrInterval(long estTimestamp, EnumSet<EventFlag> eventFlags, final BigDecimal calculatedRrInterval,
-          RrFlag rrFlag) {
-        
-        Log.i(TAG, String.format("RR interval: %d, flag: %s, timestamp: %d",
-            calculatedRrInterval.longValue(), rrFlag.toString(), estTimestamp));
-        
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            tvRateInterval.setText(calculatedRrInterval.toString());
-          }
-        });
-      }
-    });
-  }
-
-
-
-
-  protected IPluginAccessResultReceiver<AntPlusHeartRatePcc> pluginAccessResultReceiver = new IPluginAccessResultReceiver<AntPlusHeartRatePcc>() {
-    @Override
-    public void onResultReceived(AntPlusHeartRatePcc result, RequestAccessResult resultCode, DeviceState initialDeviceState) {
-      setStatus(R.string.searching_);
-      Log.i(TAG, "search result: " + resultCode.toString());
-
-      switch(resultCode){
-        case SUCCESS:
-          Log.i(TAG, "- device name: " + result.getDeviceName());
-          Log.i(TAG, "- ANT device number: " + result.getAntDeviceNumber());
-          Log.i(TAG, "- current device state: " + result.getCurrentDeviceState());
-          
-          setStatus(getString(R.string.watching_) + result.getDeviceName());
   
-          heartRateDevice = result;
-          subscribeToHrEvents();
-          break;
-          
-        default:
-          setStatus(getString(R.string.error_) + resultCode.toString());
-          break;
-      }
+  @Override
+  public void onServiceConnected(ComponentName name, IBinder service) {
+    communicator = (DeviceCommunicatorBinder) service;
+    subscribe();  //TODO this vs. subscribing in onPause
+  }
+  
+  @Override
+  public void onServiceDisconnected(ComponentName name) {
+    Log.i(TAG, "Service has been disconnected.");
+    setStatus("Služba odpojena.", false);
+    unsubscribe();
+  }
+  
+  private void connectService() {
+    if(communicator != null) {
+      Toast.makeText(this, "Služba je již připojena.", Toast.LENGTH_LONG).show();
+      return;
     }
-  };
+    
+    boolean bound = bindService(new Intent(this, DeviceCommunicatorService.class), this, Context.BIND_AUTO_CREATE);
+    
+    if(!bound) {
+      setStatus("Chyba služby.", false);
+      Toast.makeText(this, "Nepodařilo se připojit ke službě.", Toast.LENGTH_LONG).show();
+    }
+  }
+  
+  private void disconnectService() {
+    if(communicator != null) {
+      unsubscribe();
+      communicator = null;
+    }
+    unbindService(this);
+  }
+  
+  private void subscribe() {
+    if(!listening && communicator != null) {
+      communicator.startHeartRate(this, this);
+      listening = true;
+    }
+  }
+  
+  private void unsubscribe() {
+    if(listening && communicator != null) {
+      communicator.stopHeartRate(this);
+      listening = false;
+    }
+  }
+  
+  protected void setStatus(final String status, boolean ensureUiThread) {
+    if(ensureUiThread) {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          tvStatus.setText(status);
+        }
+      });
+    }
+    else {
+      tvStatus.setText(status);
+    }
+  }
 
-  //Receives state changes and shows it on the status display line
-  protected  IDeviceStateChangeReceiver deviceStateChangeReceiver = new IDeviceStateChangeReceiver() {
-    @Override
-    public void onDeviceStateChange(final DeviceState newDeviceState) {
-      Log.i(TAG, "Device state changed!");
-      Log.i(TAG, "- device name: " + heartRateDevice.getDeviceName());
-      Log.i(TAG, "- new device state: " + newDeviceState);
+  protected void setStatus(final int stringID, boolean ensureUiThread) {
+    if(ensureUiThread) {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          tvStatus.setText(stringID);
+        }
+      });
     }
-  };
+    else {
+      tvStatus.setText(stringID);
+    }
+  }
+
+  
+  @Override
+  public void onDeviceConnected(int antDeviceNumber, String deviceName) {
+    setStatus(getString(R.string.watching_) + deviceName, true);
+  }
+
+  @Override
+  public void onDeviceStateChange(DeviceState state) {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void onConnectionError(RequestAccessResult resultCode) {
+    setStatus("Connection failed: " + resultCode, true);
+  }
+
+  @Override
+  public void onHeartRateDataReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, final int computedHeartRate,
+      final long heartBeatCount, BigDecimal heartBeatEventTime, final DataState dataState) {
+
+    runOnUiThread(new Runnable() {
+      public void run() {
+        tvHeartRate.setText(
+            (dataState.equals(DataState.LIVE_DATA))
+            ? String.valueOf(computedHeartRate)
+                : getString(R.string.value_n_a)
+            );
+        tvDataStatus.setText(dataState.toString());
+        tvBeatCount.setText(String.valueOf(heartBeatCount));
+      }
+    });
+  }
+
+  @Override
+  public void onAdditionalDataReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte, BigDecimal previousHeartBeatEventTime) { }
+
+  @Override
+  public void onCumulativeOperatingTimeReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime) { }
+
+  @Override
+  public void onManufacturerAndSerialReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber) { }
+
+  @Override
+  public void onVersionAndModelReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion, int softwareVersion, int modelNumber) { }
+
+  @Override
+  public void onCalculatedRrIntervalReceived(long estTimestamp, EnumSet<EventFlag> eventFlags,
+      final BigDecimal calculatedRrInterval, RrFlag rrFlag) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        tvRateInterval.setText(calculatedRrInterval.toString());
+      }
+    });
+  }
 }

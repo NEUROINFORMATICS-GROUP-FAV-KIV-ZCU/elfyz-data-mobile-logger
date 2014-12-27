@@ -81,6 +81,7 @@ public class BloodPressureActivity extends Activity {
       Toast.makeText(this, R.string.alert_activity_not_launched_correctly, Toast.LENGTH_LONG).show();
       Log.e(TAG, "User profile could not be retrieved from intent: extra name=" + DeviceListActivity.EXTRA_USER_PROFILE);
       finish();
+      return;
     }
     
     timeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
