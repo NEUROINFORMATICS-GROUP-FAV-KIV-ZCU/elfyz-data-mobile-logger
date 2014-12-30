@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.services;
+package cz.zcu.kiv.mobile.logger.service;
 
 import java.io.Closeable;
 import java.math.BigDecimal;
@@ -50,7 +50,7 @@ public class HeartRateCommunicator implements Closeable {
   }
 
   
-  public void startListening(Activity caller, HeartRateListener listener) { //TODO handle passive not null -> no data for some time (till connection is made by ant plus)
+  public void startListening(Activity caller, HeartRateListener listener) {
     listeners.add(listener);
     
     if(heartRateReleaseHandle == null)
@@ -62,6 +62,12 @@ public class HeartRateCommunicator implements Closeable {
     
 //    if(listeners.isEmpty()) TODO 
 //      stopHeartRate();
+  }
+  
+  public String getConnectedDeviceName() {
+    return heartRateDevice != null
+        ? heartRateDevice.getDeviceName()
+        : null;
   }
   
 
@@ -82,7 +88,7 @@ public class HeartRateCommunicator implements Closeable {
                 Log.i(TAG, "- current device state: " + result.getCurrentDeviceState());
                 
                 for (HeartRateListener listener : listeners) {
-                  listener.onDeviceConnected(result.getAntDeviceNumber(), result.getDeviceName());
+                  listener.onDeviceConnected(result.getDeviceName());
                 }
                 
                 heartRateDevice = result;
@@ -150,7 +156,6 @@ public class HeartRateCommunicator implements Closeable {
           listener.onHeartRateDataReceived(estTimestamp, eventFlags, computedHeartRate,
           heartBeatCount, heartBeatEventTime, dataState);
         }
-
       }
     });
     
@@ -207,16 +212,41 @@ public class HeartRateCommunicator implements Closeable {
   
   public void close() {
     stopHeartRate();
+    
+    for (HeartRateListener listener : listeners) {
+      listener.onConnectionClosed();
+    }
+    
     listeners.clear();
-    //TODO send message to remaining listeners?
   }
   
 
 
+  /**
+   * Listener for heart rate sensor events.
+   */
   public static interface HeartRateListener {
-    void onDeviceConnected(int antDeviceNumber, String deviceName);
+    /**
+     * When HR device was requested and the connection is made after this listener has been registered.
+     * If Device has been already connected and new listener is registered afterwards, this method is not called.
+     * @param deviceName Name of connected device.
+     */
+    void onDeviceConnected(String deviceName);
+    /**
+     * When state of device connection is changed.
+     * @param state New state.
+     */
     void onDeviceStateChange(DeviceState state);
+    /**
+     * When HR device was requested and the connection couldn't be established.
+     * @param resultCode Result code explaining the failure.
+     */
     void onConnectionError(RequestAccessResult resultCode);
+    /**
+     * When connection termination was requested. No more calls to this listener are made after this call.
+     * Listener is automatically unregistered and can be used for another register.
+     */
+    void onConnectionClosed();
     
     void onHeartRateDataReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int computedHeartRate,
         long heartBeatCount, BigDecimal heartBeatEventTime, DataState dataState);

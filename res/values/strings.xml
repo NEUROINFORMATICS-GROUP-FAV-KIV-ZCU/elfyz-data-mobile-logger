@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
     <string name="app_name">Mobile Logger</string>
-
     <string name="time_format">dd.MM.yyyy HH:mm</string>
     <string name="action_settings">Settings</string>
     <string name="search_hr">Hledat HR</string>
@@ -40,7 +38,6 @@
     <string name="gender_male">Muž</string>
     <string name="gender_female">Žena</string>
     <string name="title_activity_bluetooth_picker">BluetoothPickerActivity</string>
-    
     <string name="weight_scale_basic_measurement">Základní</string>
     <string name="weight_scale_advanced_measurement">Pokročilé</string>
     <string name="weight_scale_hydration_percentage">Procento hydratace:</string>
@@ -51,7 +48,6 @@
     <string name="weight_scale_basal_metabolic_rate">Klidová spotřeba energie:</string>
     <string name="weight_scale_measuring_ok">Měření OK</string>
     <string name="weight_scale_measuring_failed">Měření selhalo</string>
-    
     <string name="profile_profile_name">Název profilu:</string>
     <string name="profile_birth_date">Datum narození:</string>
     <string name="profile_select_birth_date">stiskem vyberte datum</string>
@@ -64,16 +60,14 @@
     <string name="profile_specify_birth_date">Vyberte datum narození.</string>
     <string name="profile_specify_height">Zadejte svou výšku.</string>
     <string name="profile_duplicit_profile_name">Profil s tímto názvem již existuje</string>
-    
     <string name="alert_device_doesnt_support_bluetooth">Zařízení nepodporuje Bluetooth.</string>
     <string name="alert_activity_not_launched_correctly">Aktivita nebyla správně spuštěna.</string>
     <string name="alert_communication_not_possible">Komunikace není možná. Pro více informací restartujte tuto aktivitu.</string>
     <string name="alert_bluetooth_must_be_enabled">Pro komunikaci musí být zapnut Bluetooth.</string>
     <string name="alert_blood_pressure_device_not_selected">Tlakoměr nebyl vybrán.</string>
-    
     <string name="searching_">Vyhledávám...</string>
     <string name="watching_">Sleduji </string>
     <string name="error_">Chyba - </string>
     <string name="database_error">Naskytla se chyba při práci s databází.</string>
-    
+    <string name="title_activity_service_management">ServiceManagementActivity</string>
 </resources>

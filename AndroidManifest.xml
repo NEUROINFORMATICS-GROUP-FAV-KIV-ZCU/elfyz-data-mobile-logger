@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.zcu.kiv.mobile.logger"
     android:versionCode="1"
@@ -60,20 +59,24 @@
             android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity"
             android:label="@string/title_activity_weight_scale" >
         </activity>
-<!--         <activity -->
-<!--             android:name="cz.zcu.kiv.mobile.logger.devices.pedometer.PedometerActivity" -->
-<!--             android:label="@string/title_activity_pedometer" > -->
-<!--         </activity> -->
+        <!-- <activity -->
+        <!-- android:name="cz.zcu.kiv.mobile.logger.devices.pedometer.PedometerActivity" -->
+        <!-- android:label="@string/title_activity_pedometer" > -->
+        <!-- </activity> -->
 
         <activity
             android:name="cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity"
             android:label="@string/title_activity_bluetooth_picker" >
         </activity>
-        
+
         <service
-            android:name="cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService"
+            android:name="cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService"
             android:exported="false" />
 
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.service.ServiceManagementActivity"
+            android:label="@string/title_activity_service_management" >
+        </activity>
     </application>
 
 </manifest>

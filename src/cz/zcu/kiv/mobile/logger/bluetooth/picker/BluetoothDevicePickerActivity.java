@@ -60,10 +60,10 @@ public class BluetoothDevicePickerActivity extends Activity {
 
   
   private class BTDevicePickReceiver extends BroadcastReceiver {
-    private Activity owner;
+    private Activity picker;
     
-    public BTDevicePickReceiver(Activity owner) {
-      this.owner = owner;  
+    public BTDevicePickReceiver(Activity picker) {
+      this.picker = picker;  
     }
 
     @Override
@@ -75,8 +75,8 @@ public class BluetoothDevicePickerActivity extends Activity {
         Intent data = new Intent();
         data.putExtra(EXTRA_DEVICE, pickedDevice);
         
-        owner.setResult(RESULT_OK, data);
-        owner.finish();
+        picker.setResult(RESULT_OK, data);
+        picker.finish();
       }
     }
   }

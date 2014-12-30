@@ -23,9 +23,9 @@ import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
-import cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService;
-import cz.zcu.kiv.mobile.logger.services.DeviceCommunicatorService.DeviceCommunicatorBinder;
-import cz.zcu.kiv.mobile.logger.services.HeartRateCommunicator.HeartRateListener;
+import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService;
+import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService.DeviceCommunicatorBinder;
+import cz.zcu.kiv.mobile.logger.service.HeartRateCommunicator.HeartRateListener;
 
 
 public class HeartRateActivity extends Activity implements ServiceConnection, HeartRateListener {
@@ -163,7 +163,7 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
 
   
   @Override
-  public void onDeviceConnected(int antDeviceNumber, String deviceName) {
+  public void onDeviceConnected(String deviceName) {
     setStatus(getString(R.string.watching_) + deviceName, true);
   }
 
@@ -215,5 +215,10 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
         tvRateInterval.setText(calculatedRrInterval.toString());
       }
     });
+  }
+
+  @Override
+  public void onConnectionClosed() {
+    setStatus("Disconnected", true);
   }
 }
