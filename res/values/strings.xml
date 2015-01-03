@@ -70,4 +70,6 @@
     <string name="error_">Chyba - </string>
     <string name="database_error">Naskytla se chyba při práci s databází.</string>
     <string name="title_activity_service_management">ServiceManagementActivity</string>
+    <string name="title_activity_ant_device_picker">AntDevicePickerActivity</string>
+
 </resources>

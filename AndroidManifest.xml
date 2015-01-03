@@ -77,6 +77,14 @@
             android:name="cz.zcu.kiv.mobile.logger.service.ServiceManagementActivity"
             android:label="@string/title_activity_service_management" >
         </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.ant.picker.HeartRateDevicePickerActivity"
+            android:label="@string/title_activity_ant_device_picker" >
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.ant.picker.WeightScaleDevicePickerActivity"
+            android:label="@string/title_activity_ant_device_picker" >
+        </activity>
     </application>
 
 </manifest>
