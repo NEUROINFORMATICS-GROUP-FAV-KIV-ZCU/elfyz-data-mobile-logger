@@ -1,6 +1,5 @@
-package cz.zcu.kiv.mobile.logger.service;
+package cz.zcu.kiv.mobile.logger.service.communicators.heart_rate;
 
-import java.io.Closeable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -8,6 +7,7 @@ import java.util.HashSet;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -30,13 +30,12 @@ import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IManufacturerA
 import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IVersionAndModelReceiver;
 import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
+import cz.zcu.kiv.mobile.logger.service.communicators.ACommunicator;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
-public class HeartRateCommunicator implements Closeable {
+public class HeartRateCommunicator extends ACommunicator {
   private static final String TAG = HeartRateCommunicator.class.getSimpleName();
-  
-  protected DeviceCommunicatorService service;
   
   protected PccReleaseHandle<AntPlusHeartRatePcc> heartRateReleaseHandle;
   protected AntPlusHeartRatePcc heartRateDevice;
@@ -44,21 +43,23 @@ public class HeartRateCommunicator implements Closeable {
   protected Collection<HeartRateListener> listeners;
   
   
-  public HeartRateCommunicator(DeviceCommunicatorService service) {
-    this.service = service;
+  public HeartRateCommunicator(Context context) {
+    super(context);
     listeners = new HashSet<HeartRateCommunicator.HeartRateListener>();
   }
 
   
   public void startListening(Activity caller, HeartRateListener listener) {
-    listeners.add(listener);
+    if(listener != null)
+      listeners.add(listener);
     
     if(heartRateReleaseHandle == null)
       startHeartRate(caller);
   }
   
   public void stopListening(HeartRateListener listener) {
-    listeners.remove(listener);
+    if(listener != null)
+      listeners.remove(listener);
     
 //    if(listeners.isEmpty()) TODO 
 //      stopHeartRate();
@@ -71,10 +72,10 @@ public class HeartRateCommunicator implements Closeable {
   }
   
 
-  protected void startHeartRate(final Activity caller) {
+  protected void startHeartRate(Activity caller) {
     heartRateReleaseHandle = AntPlusHeartRatePcc.requestAccess(
         caller,
-        service,
+        context,
         new IPluginAccessResultReceiver<AntPlusHeartRatePcc>() {
           @Override
           public void onResultReceived(AntPlusHeartRatePcc result, RequestAccessResult resultCode, DeviceState initialDeviceState) {
@@ -97,9 +98,9 @@ public class HeartRateCommunicator implements Closeable {
                 
               //failures
               case DEPENDENCY_NOT_INSTALLED:
-                AlertDialog.Builder alert = new AlertDialog.Builder(service);
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("Missing Dependency");
-                alert.setMessage("The required service\n\"" + AntPlusHeartRatePcc.getMissingDependencyName() + "\"\n was not found. You need to install the ANT+ Plugins service or you may need to update your existing version if you already have it. Do you want to launch the Play Store to get it?");
+                alert.setMessage("The required context\n\"" + AntPlusHeartRatePcc.getMissingDependencyName() + "\"\n was not found. You need to install the ANT+ Plugins context or you may need to update your existing version if you already have it. Do you want to launch the Play Store to get it?");
                 alert.setCancelable(true);
                 alert.setPositiveButton("Go to Store", new OnClickListener() {
                   @Override
@@ -107,7 +108,7 @@ public class HeartRateCommunicator implements Closeable {
                     Intent startStore = new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=" + AntPlusHeartRatePcc.getMissingDependencyPackageName()));
                       startStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    service.startActivity(startStore);
+                    context.startActivity(startStore);
                   }
                 });
                 alert.setNegativeButton("Cancel", new OnClickListener() {
@@ -136,7 +137,8 @@ public class HeartRateCommunicator implements Closeable {
               listener.onDeviceStateChange(state);
             }
           }
-        });
+        }
+      );
   }
   
   protected void stopHeartRate() {

@@ -22,7 +22,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,38 +30,43 @@
             android:label="@string/title_activity_test" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- TODO parent activity - actionbar's up fails for not sending profile, will be resolved with real login -->
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.DeviceListActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.MainActivity"
             android:label="@string/title_device_list" >
         </activity>
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.DeviceListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search_hr" >
         </activity>
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.blood_pressure.BloodPressureActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.DeviceListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_blood_pressure" >
         </activity>
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.blood_pressure.BloodPressureListActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.blood_pressure.BloodPressureActivity"
             android:label="@string/title_activity_blood_pressure_list" >
         </activity>
         <activity
             android:name="cz.zcu.kiv.mobile.logger.profiles.ProfileActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.MainActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.DeviceListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_weight_scale" >
         </activity>
-        <!-- <activity -->
-        <!-- android:name="cz.zcu.kiv.mobile.logger.devices.pedometer.PedometerActivity" -->
-        <!-- android:label="@string/title_activity_pedometer" > -->
-        <!-- </activity> -->
 
         <activity
             android:name="cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity"
@@ -76,14 +80,6 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.service.ServiceManagementActivity"
             android:label="@string/title_activity_service_management" >
-        </activity>
-        <activity
-            android:name="cz.zcu.kiv.mobile.logger.ant.picker.HeartRateDevicePickerActivity"
-            android:label="@string/title_activity_ant_device_picker" >
-        </activity>
-        <activity
-            android:name="cz.zcu.kiv.mobile.logger.ant.picker.WeightScaleDevicePickerActivity"
-            android:label="@string/title_activity_ant_device_picker" >
         </activity>
     </application>
 

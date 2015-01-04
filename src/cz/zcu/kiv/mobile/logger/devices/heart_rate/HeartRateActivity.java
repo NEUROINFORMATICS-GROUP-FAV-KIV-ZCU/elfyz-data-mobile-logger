@@ -25,7 +25,7 @@ import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
 import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService;
 import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService.DeviceCommunicatorBinder;
-import cz.zcu.kiv.mobile.logger.service.HeartRateCommunicator.HeartRateListener;
+import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator.HeartRateListener;
 
 
 public class HeartRateActivity extends Activity implements ServiceConnection, HeartRateListener {
@@ -39,7 +39,7 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
 
   private Profile userProfile;
   
-  private DeviceCommunicatorService.DeviceCommunicatorBinder communicator;
+  private DeviceCommunicatorBinder service;
   private boolean listening = false;
   
 
@@ -85,8 +85,8 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   }
   
   @Override
-  public void onServiceConnected(ComponentName name, IBinder service) {
-    communicator = (DeviceCommunicatorBinder) service;
+  public void onServiceConnected(ComponentName name, IBinder binder) {
+    service = (DeviceCommunicatorBinder) binder;
     subscribe();  //TODO this vs. subscribing in onPause
   }
   
@@ -98,7 +98,7 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   }
   
   private void connectService() {
-    if(communicator != null) {
+    if(service != null) {
       Toast.makeText(this, "Služba je již připojena.", Toast.LENGTH_LONG).show();
       return;
     }
@@ -112,23 +112,23 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   }
   
   private void disconnectService() {
-    if(communicator != null) {
+    if(service != null) {
       unsubscribe();
-      communicator = null;
+      service = null;
     }
     unbindService(this);
   }
   
   private void subscribe() {
-    if(!listening && communicator != null) {
-      communicator.startHeartRate(this, this);
+    if(!listening && service != null) {
+      service.startHeartRate(this, this);
       listening = true;
     }
   }
   
   private void unsubscribe() {
-    if(listening && communicator != null) {
-      communicator.stopHeartRate(this);
+    if(listening && service != null) {
+      service.stopHeartRate(this);
       listening = false;
     }
   }

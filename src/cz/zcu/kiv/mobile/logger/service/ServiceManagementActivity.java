@@ -1,9 +1,12 @@
 package cz.zcu.kiv.mobile.logger.service;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import cz.zcu.kiv.mobile.logger.R;
+
 
 public class ServiceManagementActivity extends Activity {
 
@@ -19,5 +22,17 @@ public class ServiceManagementActivity extends Activity {
     getMenuInflater().inflate(R.menu.service_management, menu);
     return true;
   }
-
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_close:
+        stopService(new Intent(this, DeviceCommunicatorService.class)); //TODO finishes only if none is bound to it, stop anyway?
+        break;
+  
+      default:
+        break;
+    }
+    return super.onOptionsItemSelected(item);
+  }
 }

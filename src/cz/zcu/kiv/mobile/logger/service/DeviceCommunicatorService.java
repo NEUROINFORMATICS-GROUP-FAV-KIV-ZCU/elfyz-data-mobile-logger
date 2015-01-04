@@ -9,7 +9,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.service.HeartRateCommunicator.HeartRateListener;
+import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator;
+import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator.HeartRateListener;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
 public class DeviceCommunicatorService extends Service {
@@ -34,8 +36,7 @@ public class DeviceCommunicatorService extends Service {
     running = true;
     
     Notification notification = createNotification();
-    
-    startForeground(NOTIFICATION_ID, notification); //TODO
+    startForeground(NOTIFICATION_ID, notification);
     
     return START_STICKY;
   }
@@ -43,7 +44,10 @@ public class DeviceCommunicatorService extends Service {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    heartRateCommunicator.close();
+    CloseUtil.close(
+        heartRateCommunicator
+      );
+    stopForeground(true);
     running = false;
   }
   
@@ -74,7 +78,6 @@ public class DeviceCommunicatorService extends Service {
     
     return notice;
   }
-  
   
   
   public class DeviceCommunicatorBinder extends Binder {
