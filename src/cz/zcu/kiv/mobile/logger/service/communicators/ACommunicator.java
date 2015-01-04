@@ -5,7 +5,7 @@ import java.io.Closeable;
 import android.content.Context;
 
 
-public abstract class ACommunicator implements Closeable{
+public abstract class ACommunicator implements Closeable {
   protected Context context;
   
   
