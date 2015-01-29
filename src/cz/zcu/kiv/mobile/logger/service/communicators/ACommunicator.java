@@ -12,4 +12,10 @@ public abstract class ACommunicator implements Closeable {
   public ACommunicator(Context context) {
     this.context = context;
   }
+  
+  
+  @Override
+  public void close() {
+    context = null;
+  }
 }

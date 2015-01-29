@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.data.database.tables;
+package cz.zcu.kiv.mobile.logger.data.database;
 
 import java.util.Calendar;
 
@@ -6,16 +6,16 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
-public class ProfileTable extends ATable {
+public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
   private static final String TAG = ProfileTable.class.getSimpleName();
 
   public static final String TABLE_NAME = "profiles";
@@ -32,9 +32,14 @@ public class ProfileTable extends ATable {
     
   private static final String ORDER_PROFILES_ALL_ASC = COLUMN_PROFILE_NAME + " ASC";
 
+
+  public ProfileTable(SQLiteOpenHelper openHelper) {
+    super(openHelper);
+  }
   
+
   @Override
-  public void onCreate(SQLiteDatabase db) {
+  void onCreate(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
         + COLUMN_ID + " INTEGER PRIMARY KEY,"
         + COLUMN_PROFILE_NAME + " TEXT NOT NULL UNIQUE,"
@@ -47,7 +52,7 @@ public class ProfileTable extends ATable {
   }
   
   @Override
-  public void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
+  void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
     int upgradeVersion = oldVersion;
 
     if(upgradeVersion != currentVersion){
@@ -60,17 +65,25 @@ public class ProfileTable extends ATable {
   }
   
   
-  public long createProfile(SQLiteDatabase db, String profileName, Calendar birthDate, Gender gender, int height, int activityLevel, boolean lifetimeAthlete) throws DatabaseException {
+  public long createProfile(String profileName, Calendar birthDate, Gender gender, int height, int activityLevel, boolean lifetimeAthlete) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
     ContentValues values = new ContentValues(1);
-    values.put(COLUMN_PROFILE_NAME, profileName);
-    values.put(COLUMN_BIRTH_DATE, birthDate.getTimeInMillis());
-    values.put(COLUMN_GENDER, gender.getLetter());
-    values.put(COLUMN_HEIGHT, height);
-    values.put(COLUMN_ACTIVITY_LEVEL, activityLevel);
-    values.put(COLUMN_LIFETIME_ATHLETE, lifetimeAthlete ? VALUE_TRUE : VALUE_FALSE);
+      values.put(COLUMN_PROFILE_NAME, profileName);
+      values.put(COLUMN_BIRTH_DATE, birthDate.getTimeInMillis());
+      values.put(COLUMN_GENDER, gender.getLetter());
+      values.put(COLUMN_HEIGHT, height);
+      values.put(COLUMN_ACTIVITY_LEVEL, activityLevel);
+      values.put(COLUMN_LIFETIME_ATHLETE, lifetimeAthlete ? VALUE_TRUE : VALUE_FALSE);
     
     try{
-      return db.insertOrThrow(TABLE_NAME, null, values);
+      long id = db.insertOrThrow(TABLE_NAME, null, values);
+      
+      for (ProfileDataObserver o : observers) {
+        o.onProfileAdded(id);
+      }
+      
+      return id;
     }
     catch(Exception e){
       if(e instanceof SQLiteConstraintException && e.getMessage().equals("column name is not unique (code 19)"))
@@ -79,18 +92,26 @@ public class ProfileTable extends ATable {
     }
   }
 
-  public void deleteProfile(SQLiteDatabase db, long profileID) throws DatabaseException {
+  public void deleteProfile(long profileID) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
     String[] idArg = new String[]{String.valueOf(profileID)};
     
     try{
       db.delete(TABLE_NAME, WHERE_ID, idArg);
+      
+      for (ProfileDataObserver o : observers) {
+        o.onProfileDeleted(profileID);
+      }
     }
     catch(Exception e){
       throw new DatabaseException(e);
     }
   }
 
-  public Cursor getProfileNames(SQLiteDatabase db) throws DatabaseException {
+  public Cursor getProfileNames() throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
     try{
       return db.query(TABLE_NAME, COLUMNS_PROFILE_NAMES, null, null, null, null, ORDER_PROFILES_ALL_ASC);
     }
@@ -99,7 +120,9 @@ public class ProfileTable extends ATable {
     }
   }
   
-  public Profile getProfile(SQLiteDatabase db, long profileID) throws DatabaseException {
+  public Profile getProfile(long profileID) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
     Cursor c = null;
     try{
       c = db.query(TABLE_NAME, COLUMNS_PROFILES_ALL, WHERE_ID, new String[]{String.valueOf(profileID)}, null, null, null);
@@ -125,8 +148,12 @@ public class ProfileTable extends ATable {
         throw (DatabaseException) e;
       throw new DatabaseException(e);
     }
-    finally{
-      CloseUtil.close(c);
-    }
+  }
+  
+  
+  
+  public interface ProfileDataObserver {
+    void onProfileAdded(long id);
+    void onProfileDeleted(long profileID);
   }
 }

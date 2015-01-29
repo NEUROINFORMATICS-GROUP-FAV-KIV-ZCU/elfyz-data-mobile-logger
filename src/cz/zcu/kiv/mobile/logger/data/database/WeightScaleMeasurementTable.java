@@ -1,17 +1,18 @@
-package cz.zcu.kiv.mobile.logger.data.database.tables;
-
-import java.util.Date;
+package cz.zcu.kiv.mobile.logger.data.database;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleAdvancedMeasurement;
+import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleBasicMeasurement;
 
 
-public class WeightScaleMeasurementTable extends ATable {
+public class WeightScaleMeasurementTable extends ATable<WeightScaleMeasurementTable.WSDataObserver> {
   private static final String TAG = WeightScaleMeasurementTable.class.getSimpleName();
 
-  private static final String TABLE_NAME = "weight_scale_measurement";
+  private static final String TABLE_NAME = "ws_measurement";
 
   public static final String COLUMN_USER_ID = "user_id";
   public static final String COLUMN_BASIC = "basic";
@@ -28,8 +29,14 @@ public class WeightScaleMeasurementTable extends ATable {
 //    
 //  private static final String ORDER_MEASUREMENTS_ALL_DESC = COLUMN_TIME + " DESC";
   
+  
+  public WeightScaleMeasurementTable(SQLiteOpenHelper openHelper) {
+    super(openHelper);
+  }
+
+  
   @Override
-  public void onCreate(SQLiteDatabase db) {
+  void onCreate(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
         + COLUMN_ID + " INTEGER PRIMARY KEY,"
         + COLUMN_USER_ID + " INTEGER NOT NULL,"
@@ -47,7 +54,7 @@ public class WeightScaleMeasurementTable extends ATable {
   }
   
   @Override
-  public void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
+  void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
     int upgradeVersion = oldVersion;
 
     if(upgradeVersion != currentVersion){
@@ -60,28 +67,52 @@ public class WeightScaleMeasurementTable extends ATable {
   }
   
   
-  public long addMeasurement(SQLiteDatabase db, long userID,
-      boolean basic, Date time, double weight, Double hydrationPercentage,
+  public long addMeasurement(long userID,
+      boolean basic, long estTimestamp, double weight, Double hydrationPercentage,
       Double fatPercentage, Double muscleMass, Double boneMass,
       Double activeMetabolicRate, Double basalMetabolicRate) throws DatabaseException {
     
+    SQLiteDatabase db = getDatabase();
+    
     ContentValues values = new ContentValues(10);
-    values.put(COLUMN_USER_ID, userID);
-    values.put(COLUMN_BASIC, basic ? VALUE_TRUE : VALUE_FALSE);
-    values.put(COLUMN_TIME, time.getTime());
-    values.put(COLUMN_WEIGHT, weight);
-    values.put(COLUMN_HYDRATION_PERCENTAGE, hydrationPercentage);
-    values.put(COLUMN_FAT_PERCENTAGE, fatPercentage);
-    values.put(COLUMN_MUSCLE_MASS, muscleMass);
-    values.put(COLUMN_BONE_MASS, boneMass);
-    values.put(COLUMN_ACTIVE_METABOLIC_RATE, activeMetabolicRate);
-    values.put(COLUMN_BASAL_METABOLIC_RATE, basalMetabolicRate);
+      values.put(COLUMN_USER_ID, userID);
+      values.put(COLUMN_BASIC, basic ? VALUE_TRUE : VALUE_FALSE);
+      values.put(COLUMN_TIME, estTimestamp);
+      values.put(COLUMN_WEIGHT, weight);
+      values.put(COLUMN_HYDRATION_PERCENTAGE, hydrationPercentage);
+      values.put(COLUMN_FAT_PERCENTAGE, fatPercentage);
+      values.put(COLUMN_MUSCLE_MASS, muscleMass);
+      values.put(COLUMN_BONE_MASS, boneMass);
+      values.put(COLUMN_ACTIVE_METABOLIC_RATE, activeMetabolicRate);
+      values.put(COLUMN_BASAL_METABOLIC_RATE, basalMetabolicRate);
     
     try{
-      return db.insertOrThrow(TABLE_NAME, null, values);
+      long id = db.insertOrThrow(TABLE_NAME, null, values);
+      
+      for (WSDataObserver o : observers) {
+        o.onWSMeasurementAdded(id);
+      }
+      
+      return id;
     }
     catch(Exception e){
       throw new DatabaseException(e);
     }
+  }
+  
+  public long addBasicMeasurement(long userID, WeightScaleBasicMeasurement data) throws DatabaseException {
+    return addMeasurement(userID, true, data.getEstTimestamp(), data.getBodyWeight().doubleValue(), null, null, null, null, null, null);
+  }
+  
+  public long addAdvancedMeasurement(long userID, WeightScaleAdvancedMeasurement data) throws DatabaseException {
+    return addMeasurement(userID, false, data.getEstTimestamp(), data.getBodyWeight().doubleValue(), data.getHydrationPercentage().doubleValue(),
+        data.getBodyFatPercentage().doubleValue(), data.getMuscleMass().doubleValue(), data.getBoneMass().doubleValue(),
+        data.getActiveMetabolicRate().doubleValue(), data.getBasalMetabolicRate().doubleValue());
+  }
+  
+  
+
+  public interface WSDataObserver {
+    void onWSMeasurementAdded(long id);
   }
 }

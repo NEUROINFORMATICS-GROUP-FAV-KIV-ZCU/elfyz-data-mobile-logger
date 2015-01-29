@@ -30,11 +30,30 @@ import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IManufacturerA
 import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IVersionAndModelReceiver;
 import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
+import cz.zcu.kiv.mobile.logger.Application;
+import cz.zcu.kiv.mobile.logger.R;
+import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateCalculatedRrIntervalCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateCumulativeOperatingTimeCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateManufacturerAndSerialCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRatePage4Command;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateVersionAndModelCommand;
+import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCalculatedRrInterval;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCumulativeOperatingTime;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateManufacturerAndSerial;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateMeasurement;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRatePage4;
+import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateVersionAndModel;
 import cz.zcu.kiv.mobile.logger.service.communicators.ACommunicator;
+import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
-public class HeartRateCommunicator extends ACommunicator {
+public class HeartRateCommunicator extends ACommunicator implements InsertCommandListener {
   private static final String TAG = HeartRateCommunicator.class.getSimpleName();
   
   protected PccReleaseHandle<AntPlusHeartRatePcc> heartRateReleaseHandle;
@@ -42,10 +61,13 @@ public class HeartRateCommunicator extends ACommunicator {
 
   protected Collection<HeartRateListener> listeners;
   
+  protected Profile userProfile;
+  
   
   public HeartRateCommunicator(Context context) {
     super(context);
     listeners = new HashSet<HeartRateCommunicator.HeartRateListener>();
+    userProfile = Application.getInstance().getUserProfile();
   }
 
   
@@ -60,9 +82,6 @@ public class HeartRateCommunicator extends ACommunicator {
   public void stopListening(HeartRateListener listener) {
     if(listener != null)
       listeners.remove(listener);
-    
-//    if(listeners.isEmpty()) TODO 
-//      stopHeartRate();
   }
   
   public String getConnectedDeviceName() {
@@ -99,10 +118,10 @@ public class HeartRateCommunicator extends ACommunicator {
               //failures
               case DEPENDENCY_NOT_INSTALLED:
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("Missing Dependency");
-                alert.setMessage("The required context\n\"" + AntPlusHeartRatePcc.getMissingDependencyName() + "\"\n was not found. You need to install the ANT+ Plugins context or you may need to update your existing version if you already have it. Do you want to launch the Play Store to get it?");
+                alert.setTitle(R.string.missing_dependency);
+                alert.setMessage(context.getString(R.string.required_app_) + "\n\"" + AntPlusHeartRatePcc.getMissingDependencyName() + "\n\n" + context.getString(R.string.ant_plus_needed_go_to_store));
                 alert.setCancelable(true);
-                alert.setPositiveButton("Go to Store", new OnClickListener() {
+                alert.setPositiveButton(context.getString(R.string.go_to_play_store), new OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
                     Intent startStore = new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=" + AntPlusHeartRatePcc.getMissingDependencyPackageName()));
@@ -111,7 +130,7 @@ public class HeartRateCommunicator extends ACommunicator {
                     context.startActivity(startStore);
                   }
                 });
-                alert.setNegativeButton("Cancel", new OnClickListener() {
+                alert.setNegativeButton(context.getString(R.string.dialog_cancel_button), new OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -119,7 +138,8 @@ public class HeartRateCommunicator extends ACommunicator {
                 });
 
                 alert.create().show();
-                //no brake to notice the listeners
+                //no break to notice the listeners
+                
               default:
                 for (HeartRateListener listener : listeners) {
                   listener.onConnectionError(resultCode);
@@ -147,17 +167,20 @@ public class HeartRateCommunicator extends ACommunicator {
     heartRateReleaseHandle = null;
   }
   
-//TODO async db všude
   protected void subscribeToHrEvents() {
     heartRateDevice.subscribeHeartRateDataEvent(new IHeartRateDataReceiver() {
       @Override
       public void onNewHeartRateData(long estTimestamp, EnumSet<EventFlag> eventFlags, final int computedHeartRate,
           final long heartBeatCount, BigDecimal heartBeatEventTime, final DataState dataState) {
         
+        HeartRateMeasurement measurement = new HeartRateMeasurement(estTimestamp, eventFlags, computedHeartRate,
+            heartBeatCount, heartBeatEventTime, dataState);
+
         for (HeartRateListener listener : listeners) {
-          listener.onHeartRateDataReceived(estTimestamp, eventFlags, computedHeartRate,
-          heartBeatCount, heartBeatEventTime, dataState);
+          listener.onHeartRateDataReceived(measurement);
         }
+        
+        new InsertHeartRateMeasurementCommand(userProfile.getId(), measurement, HeartRateCommunicator.this).execute();
       }
     });
     
@@ -166,27 +189,39 @@ public class HeartRateCommunicator extends ACommunicator {
       public void onNewPage4AddtData(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte,
           BigDecimal previousHeartBeatEventTime) {
 
+        HeartRatePage4 data = new HeartRatePage4(estTimestamp, eventFlags, manufacturerSpecificByte, previousHeartBeatEventTime);
+        
         for (HeartRateListener listener : listeners) {
-          listener.onAdditionalDataReceived(estTimestamp, eventFlags, manufacturerSpecificByte, previousHeartBeatEventTime);
+          listener.onAdditionalDataReceived(data);
         }
+        
+        new InsertHeartRatePage4Command(userProfile.getId(), data, HeartRateCommunicator.this).execute();
       }
     });
 
     heartRateDevice.subscribeCumulativeOperatingTimeEvent(new ICumulativeOperatingTimeReceiver() {
       @Override
       public void onNewCumulativeOperatingTime(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime) {
+        HeartRateCumulativeOperatingTime data = new HeartRateCumulativeOperatingTime(estTimestamp, eventFlags, cumulativeOperatingTime);
+        
         for (HeartRateListener listener : listeners) {
-          listener.onCumulativeOperatingTimeReceived(estTimestamp, eventFlags, cumulativeOperatingTime);
+          listener.onCumulativeOperatingTimeReceived(data);
         }
+        
+        new InsertHeartRateCumulativeOperatingTimeCommand(userProfile.getId(), data, HeartRateCommunicator.this).execute();
       }
     });
 
     heartRateDevice.subscribeManufacturerAndSerialEvent(new IManufacturerAndSerialReceiver() {
       @Override
       public void onNewManufacturerAndSerial(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber) {
+        HeartRateManufacturerAndSerial data = new HeartRateManufacturerAndSerial(estTimestamp, eventFlags, manufacturerID, serialNumber);
+        
         for (HeartRateListener listener : listeners) {
-          listener.onManufacturerAndSerialReceived(estTimestamp, eventFlags, manufacturerID, serialNumber);
+          listener.onManufacturerAndSerialReceived(data);
         }
+        
+        new InsertHeartRateManufacturerAndSerialCommand(userProfile.getId(), data, HeartRateCommunicator.this).execute();
       }
     });
 
@@ -194,9 +229,13 @@ public class HeartRateCommunicator extends ACommunicator {
       @Override
       public void onNewVersionAndModel(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion,
           int softwareVersion, int modelNumber) {
+        HeartRateVersionAndModel data = new HeartRateVersionAndModel(estTimestamp, eventFlags, hardwareVersion, softwareVersion, modelNumber);
+        
         for (HeartRateListener listener : listeners) {
-          listener.onVersionAndModelReceived(estTimestamp, eventFlags, hardwareVersion, softwareVersion, modelNumber);
+          listener.onVersionAndModelReceived(data);
         }
+        
+        new InsertHeartRateVersionAndModelCommand(userProfile.getId(), data, HeartRateCommunicator.this).execute();
       }
     });
 
@@ -204,11 +243,24 @@ public class HeartRateCommunicator extends ACommunicator {
       @Override
       public void onNewCalculatedRrInterval(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final BigDecimal calculatedRrInterval, RrFlag rrFlag) {
+        HeartRateCalculatedRrInterval data = new HeartRateCalculatedRrInterval(estTimestamp, eventFlags, calculatedRrInterval, rrFlag);
+        
         for (HeartRateListener listener : listeners) {
-          listener.onCalculatedRrIntervalReceived(estTimestamp, eventFlags, calculatedRrInterval, rrFlag);
+          listener.onCalculatedRrIntervalReceived(data);
         }
+        
+        new InsertHeartRateCalculatedRrIntervalCommand(userProfile.getId(), data, HeartRateCommunicator.this).execute();
       }
     });
+  }
+  
+  
+  @Override
+  public void onInsertCommandFinished(AInsertMeasurementCommand<?> command, AsyncTaskResult<Long> result) {
+    if(result.getError() != null) {
+      Log.e(TAG, "Failed to insert record to DB.", result.getError());
+      AndroidUtils.toast(context, R.string.fail_db_insert); //TODO jak se to ukáže ze služby?
+    }
   }
   
   
@@ -220,6 +272,7 @@ public class HeartRateCommunicator extends ACommunicator {
     }
     
     listeners.clear();
+    super.close();
   }
   
 
@@ -250,15 +303,11 @@ public class HeartRateCommunicator extends ACommunicator {
      */
     void onConnectionClosed();
     
-    void onHeartRateDataReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int computedHeartRate,
-        long heartBeatCount, BigDecimal heartBeatEventTime, DataState dataState);
-    void onAdditionalDataReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte,
-        BigDecimal previousHeartBeatEventTime);
-    void onCumulativeOperatingTimeReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime);
-    void onManufacturerAndSerialReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber);
-    void onVersionAndModelReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion,
-        int softwareVersion, int modelNumber);
-    void onCalculatedRrIntervalReceived(long estTimestamp, EnumSet<EventFlag> eventFlags, BigDecimal calculatedRrInterval,
-        RrFlag rrFlag);
+    void onHeartRateDataReceived(HeartRateMeasurement measurement);
+    void onAdditionalDataReceived(HeartRatePage4 data);
+    void onCumulativeOperatingTimeReceived(HeartRateCumulativeOperatingTime data);
+    void onManufacturerAndSerialReceived(HeartRateManufacturerAndSerial data);
+    void onVersionAndModelReceived(HeartRateVersionAndModel data);
+    void onCalculatedRrIntervalReceived(HeartRateCalculatedRrInterval data);
   }
 }

@@ -1,17 +1,14 @@
 package cz.zcu.kiv.mobile.logger.devices.weight_scale;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.AdvancedMeasurement;
@@ -35,14 +32,22 @@ import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
-import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.WeightScaleMeasurementTable;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleAdvancedMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleBasicMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleBatteryStatusCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleManufacturerIdentificationCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleManufacturerSpecificDataCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleProductInformationTableCommand;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
+import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class WeightScaleActivity extends Activity {
+public class WeightScaleActivity extends Activity implements InsertCommandListener {
   private static final String TAG = WeightScaleActivity.class.getSimpleName();
   
   private static final String UNIT_KG = " kg";
@@ -64,7 +69,7 @@ public class WeightScaleActivity extends Activity {
   protected UserProfile userProfileANT;
   protected Profile userProfile;
   
-  protected Database db;
+  protected WeightScaleMeasurementTable dbWSM;
 
   
   @Override
@@ -82,23 +87,18 @@ public class WeightScaleActivity extends Activity {
     tvActiveMetabolicRate = (TextView) findViewById(R.id.tv_active_metabolic_rate);
     tvBasalMetabolicRate = (TextView) findViewById(R.id.tv_basal_metabolic_rate);
     
-    userProfile = getIntent().getParcelableExtra(DeviceListActivity.EXTRA_USER_PROFILE);
+    userProfile = Application.getInstance().getUserProfileOrLogIn();
     
     if(userProfile == null){
-      Toast.makeText(this, R.string.alert_activity_not_launched_correctly, Toast.LENGTH_LONG).show();
-      Log.e(TAG, "User profile could not be retrieved from intent: extra name=" + DeviceListActivity.EXTRA_USER_PROFILE);
+      AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
+      Log.e(TAG, "User must be logged in.");
       finish();
       return;
     }
     
-    db = ((Application) getApplication()).getDatabase();
+    dbWSM = Application.getInstance().getDatabase().getWeightScaleMeasurementTable();
     
-    userProfileANT = new UserProfile();
-    userProfileANT.age = userProfile.calculateAge();
-    userProfileANT.gender = userProfile.getGender() == Gender.MALE ? AntPlusWeightScalePcc.Gender.MALE : AntPlusWeightScalePcc.Gender.FEMALE;
-    userProfileANT.height = userProfile.getHeight();
-    userProfileANT.activityLevel = userProfile.getActivityLevel();
-    userProfileANT.lifetimeAthlete = userProfile.isLifetimeAthlete();
+    userProfileANT = getAntProfile(userProfile);
     
     releaseHandle = AntPlusWeightScalePcc.requestAccess(this, this, pluginAccessResultReceiver, deviceStateChangeReceiver);
   }
@@ -110,42 +110,13 @@ public class WeightScaleActivity extends Activity {
     return true;
   }
   
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-//          // TODO fit file?
-//    case R.id.action_load_all:
-//      boolean success = weightScaleDevice.requestDownloadAllHistory(new IDownloadAllHistoryFinishedReceiver() {
-//        @Override
-//        public void onDownloadAllHistoryFinished(AntFsRequestStatus status) {
-//          System.err.println(status.toString());
-//        }
-//      },
-//      new IFitFileDownloadedReceiver() {
-//        @Override
-//        public void onNewFitFileDownloaded(FitFile downloadedFitFile) {
-//          
-//        }
-//      },
-//      new IAntFsProgressUpdateReceiver() {
-//        @Override
-//        public void onNewAntFsProgressUpdate(AntFsState state, long transferredBytes, long totalBytes) {
-//          
-//        }
-//      });
-//      return true;
-
-    default:
-      return super.onOptionsItemSelected(item);
-    }
-  }
-  
-  public void doBasicMeasurement(View view){
+  public void doBasicMeasurement(View view){//TODO disable if device not available
     boolean success = weightScaleDevice.requestBasicMeasurement(new IBasicMeasurementFinishedReceiver() {
       @Override
       public void onBasicMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final WeightScaleRequestStatus status, final BigDecimal bodyWeight) {
-
+        WeightScaleBasicMeasurement data = new WeightScaleBasicMeasurement(estTimestamp, eventFlags, status, bodyWeight);
+        
         runOnUiThread(new Runnable() {
           @Override
           public void run() {
@@ -154,20 +125,14 @@ public class WeightScaleActivity extends Activity {
             if(status == WeightScaleRequestStatus.SUCCESS){
               setText(tvBodyWeight, status == WeightScaleRequestStatus.SUCCESS, bodyWeight.toString() + UNIT_KG);
               setText(tvStatus, R.string.weight_scale_measuring_ok);
-              
-              try {
-                db.addWeightScaleBasicMeasurement(userProfile.getId(), bodyWeight.doubleValue());
-              }
-              catch (DatabaseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
             }
             else {
               setText(tvStatus, R.string.weight_scale_measuring_failed);
             }
           }
         });
+
+        new InsertWeightScaleBasicMeasurementCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
     
@@ -180,7 +145,10 @@ public class WeightScaleActivity extends Activity {
     boolean success = weightScaleDevice.requestAdvancedMeasurement(new IAdvancedMeasurementFinishedReceiver() {
       @Override
       public void onAdvancedMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
-          final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) {
+          final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) { //TODO vlastní enumy s mapováním...
+        WeightScaleAdvancedMeasurement data = new WeightScaleAdvancedMeasurement(estTimestamp, eventFlags, status,
+            measurement.activeMetabolicRate, measurement.basalMetabolicRate, measurement.bodyFatPercentage, measurement.bodyWeight,
+            measurement.boneMass, measurement.hydrationPercentage, measurement.muscleMass);
         
         runOnUiThread(new Runnable() {
           @Override
@@ -196,27 +164,14 @@ public class WeightScaleActivity extends Activity {
               setText(tvActiveMetabolicRate, measurement.activeMetabolicRate.intValue() != -1, measurement.activeMetabolicRate.toString() + UNIT_KCAL);
               setText(tvBasalMetabolicRate, measurement.basalMetabolicRate.intValue() != -1, measurement.basalMetabolicRate.toString() + UNIT_KCAL);
               setText(tvStatus, "M��en� OK");
-              
-              try {
-                db.addWeightScaleAdvancedMeasurement(userProfile.getId(),
-                    measurement.bodyWeight.doubleValue(),
-                    measurement.hydrationPercentage.doubleValue(),
-                    measurement.bodyFatPercentage.doubleValue(),
-                    measurement.muscleMass.doubleValue(),
-                    measurement.boneMass.doubleValue(),
-                    measurement.activeMetabolicRate.doubleValue(),
-                    measurement.basalMetabolicRate.doubleValue());
-              }
-              catch (DatabaseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
             }
             else {
               setText(tvStatus, R.string.weight_scale_measuring_failed);
             }
           }
         });
+        
+        new InsertWeightScaleAdvancedMeasurementCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     },
     userProfileANT);
@@ -236,16 +191,9 @@ public class WeightScaleActivity extends Activity {
           BigDecimal batteryVoltage, BatteryStatus batteryStatus, int cumulativeOperatingTimeResolution,
           int numberOfBatteries, int batteryIdentifier) {
         
-        System.err.println("-- BATTERY STATUS -------------------");
-        System.out.println("est. timestamp:                       " + estTimestamp);
-        System.out.println("event flags:                          " + eventFlags);
-        System.out.println("cumulative operating time:            " + cumulativeOperatingTime);
-        System.out.println("battery voltage:                      " + batteryVoltage);
-        System.out.println("battery status:                       " + batteryStatus);
-        System.out.println("cumulative operating time resolution: " + cumulativeOperatingTimeResolution);
-        System.out.println("number of batteries:                  " + numberOfBatteries);
-        System.out.println("battery identifier:                   " + batteryIdentifier);
-        System.err.println("-------------------------------------");
+        WeightScaleBatteryStatus data = new WeightScaleBatteryStatus(estTimestamp, eventFlags, cumulativeOperatingTime,
+            batteryVoltage, batteryStatus, cumulativeOperatingTimeResolution, numberOfBatteries, batteryIdentifier);
+        new InsertWeightScaleBatteryStatusCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
     
@@ -254,25 +202,17 @@ public class WeightScaleActivity extends Activity {
       public void onNewManufacturerIdentification(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareRevision,
           int manufacturerID, int modelNumber) {
 
-        System.err.println("-- MANUFACTURER ID ------------------");
-        System.out.println("est. timestamp:    " + estTimestamp);
-        System.out.println("event flags:       " + eventFlags);
-        System.out.println("hardware revision: " + hardwareRevision);
-        System.out.println("manufacturer ID:   " + manufacturerID);
-        System.out.println("model number:      " + modelNumber);
-        System.err.println("-------------------------------------");
+        WeightScaleManufacturerIdentification data = new WeightScaleManufacturerIdentification(estTimestamp, eventFlags,
+            hardwareRevision, manufacturerID, modelNumber);
+        new InsertWeightScaleManufacturerIdentificationCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
     
     weightScaleDevice.subscribeManufacturerSpecificDataEvent(new IManufacturerSpecificDataReceiver() {
       @Override
       public void onNewManufacturerSpecificData(long estTimestamp, EnumSet<EventFlag> eventFlags, byte[] rawDataBytes) {
-
-        System.err.println("-- MANUFACTURER SPECIFIC DATA -------");
-        System.out.println("est. timestamp: " + estTimestamp);
-        System.out.println("event flags:    " + eventFlags);
-        System.out.println("raw data bytes: " + Arrays.toString(rawDataBytes));
-        System.err.println("-------------------------------------");
+        WeightScaleManufacturerSpecificData data = new WeightScaleManufacturerSpecificData(estTimestamp, eventFlags, rawDataBytes);
+        new InsertWeightScaleManufacturerSpecificDataCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
     
@@ -280,14 +220,9 @@ public class WeightScaleActivity extends Activity {
       @Override
       public void onNewProductInformation(long estTimestamp, EnumSet<EventFlag> eventFlags, int mainSoftwareRevision,
           int supplementalSoftwareRevision, long serialNumber) {
-
-        System.err.println("-- PRODUCT INFORMATION --------------");
-        System.out.println("est. timestamp:                 " + estTimestamp);
-        System.out.println("event flags:                    " + eventFlags);
-        System.out.println("main software revision:         " + mainSoftwareRevision);
-        System.out.println("supplemental software revision: " + supplementalSoftwareRevision);
-        System.out.println("serial number:                  " + serialNumber);
-        System.err.println("-------------------------------------");
+        WeightScaleProductInformation data = new WeightScaleProductInformation(estTimestamp, eventFlags,
+            mainSoftwareRevision, supplementalSoftwareRevision, serialNumber);
+        new InsertWeightScaleProductInformationTableCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
     
@@ -301,7 +236,7 @@ public class WeightScaleActivity extends Activity {
           public void run() {
             tvBodyWeight.setText(
               (bodyWeightStatus == BodyWeightStatus.VALID)
-                ? bodyWeight.toString() + " kg"
+                ? bodyWeight.toString() + " kg" //TODO do textu?
                 : getString(R.string.value_n_a)
             );
             tvDataStatus.setText(bodyWeightStatus.toString());
@@ -345,6 +280,16 @@ public class WeightScaleActivity extends Activity {
       Log.i(TAG, "- new device state: " + newDeviceState);
     }
   };
+
+  private UserProfile getAntProfile(Profile userProfile) {
+    UserProfile profile = new UserProfile();
+    profile.age = userProfile.calculateAge();
+    profile.gender = userProfile.getGender() == Gender.MALE ? AntPlusWeightScalePcc.Gender.MALE : AntPlusWeightScalePcc.Gender.FEMALE;
+    profile.height = userProfile.getHeight();
+    profile.activityLevel = userProfile.getActivityLevel();
+    profile.lifetimeAthlete = userProfile.isLifetimeAthlete();
+    return profile;
+  }
 
   
   protected void setStatus(final String status) {
@@ -399,5 +344,13 @@ public class WeightScaleActivity extends Activity {
   protected void onDestroy() {
     close();
     super.onDestroy();
+  }
+
+  @Override
+  public void onInsertCommandFinished(AInsertMeasurementCommand<?> command, AsyncTaskResult<Long> result) {
+    if(result.getError() != null) {
+      Log.e(TAG, "Failed to insert record to DB.", result.getError());
+      AndroidUtils.toast(this, R.string.fail_db_insert);
+    }
   }
 }

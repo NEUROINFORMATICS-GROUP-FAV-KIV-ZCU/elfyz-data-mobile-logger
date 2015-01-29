@@ -88,14 +88,14 @@ public abstract class AntDevicePickerActivity<T extends AntPluginPcc> extends Li
   public void onSearchStopped(RequestAccessResult result) {
     bSearch.setVisibility(View.VISIBLE);
     vProgress.setVisibility(View.GONE);
-    vEmpty.setText("Nebyla nalezena žádná zařízení.");
+    vEmpty.setText(R.string.no_devices_found);
     controller = null;
   }
   
   protected void onSearchStarted() {
     bSearch.setVisibility(View.GONE);
     vProgress.setVisibility(View.VISIBLE);
-    vEmpty.setText("Hledají se zařízení...");
+    vEmpty.setText(R.string.searching_for_devices__);
   }
 
   public void startSearch(View view) {

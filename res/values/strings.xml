@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mobile Logger</string>
-    <string name="time_format">dd.MM.yyyy HH:mm</string>
     <string name="action_settings">Settings</string>
     <string name="action_turn_on">Turn on</string>
     <string name="action_turn_off">Turn off</string>
@@ -28,7 +27,7 @@
     <string name="title_activity_weight_scale">Weight scale</string>
     <string name="delete">Delete</string>
     <string name="dialog_delete_positive_button">Delete</string>
-    <string name="dialog_delete_cancel_button">Cancel</string>
+    <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_delete_profile_title">Delete profile</string>
     <string name="dialog_delete_profile_message">Are you sure to delete selected profile?</string>
     <string name="title_activity_test">TestActivity</string>
@@ -56,17 +55,42 @@
     <string name="profile_specify_profile_name">Specify profile name.</string>
     <string name="profile_specify_birth_date">Specify date of birth.</string>
     <string name="profile_specify_height">Specify your height.</string>
-    <string name="profile_duplicit_profile_name">Profile with this name already exists</string>
+    <string name="profile_duplicit_profile_name">Profile with this name already exists.</string>
+    <string name="profile_load_fail">Failed to load selected profile.</string>
+    <string name="profile_delete_fail">Failed to delete profile.</string>
     <string name="alert_device_doesnt_support_bluetooth">This device does not support Bluetooth.</string>
-    <string name="alert_activity_not_launched_correctly">Activity not launched correctly.</string>
+    <string name="alert_must_be_logged_in">You must be logged in.</string>
     <string name="alert_communication_not_possible">Communication is not possible. For more information restart this activity.</string>
     <string name="alert_bluetooth_must_be_enabled">Bluetooth must be enabled to perform communication.</string>
     <string name="alert_blood_pressure_device_not_selected">Blood pressure device has not been selected.</string>
-    <string name="searching_">Searching...</string>
+    <string name="alert_service_already_connected">Service has been already connected.</string>
+    <string name="searching_">Searching&#8230;</string>
     <string name="watching_">Watching </string>
     <string name="error_">Error - </string>
     <string name="database_error">An error occurred while manipulating database.</string>
     <string name="title_activity_service_management">Service management</string>
     <string name="title_activity_ant_device_picker">Ant device picker</string>
+    <string name="missing_dependency">Missing Dependency</string>
+    <string name="required_app_">To use this functionality is required application</string>
+    <string name="ant_plus_needed_go_to_store">You need to install or update ANT+ Plugins. Go to Play Store?</string>
+    <string name="go_to_play_store">Go to Store</string>
+    <string name="no_devices_found">No devices found.</string>
+    <string name="searching_for_devices__">Searching for devices&#8230;</string>
+    <string name="fail_load_profiles">Failed to load profiles.</string>
+    <string name="fail_load_measurements">Failed to load measurements.</string>
+    <string name="fail_db_insert">Failed to save record to database.</string>
+    <string name="fail_read_blood_pressure">Failed to read blood pressure.</string>
+    <string name="blood_pressure_short_systolic_">SYS </string>
+    <string name="blood_pressure_short_diastolic_">DIA </string>
+    <string name="blood_pressure_short_mean_">Ø </string>
+    <string name="blood_pressure_short_heart_beat_">♥ </string>
+    <string name="fail_connect_service">Failed to connect service.</string>
+    <string name="service_disconnected">Service disconnected.</string>
+    <string name="service_error">Service error.</string>
+    <string name="fail_connection_">Connection failed: </string>
+    <string name="disconnected">Disconnected</string>
+    <string name="device_list_heart_rate">Heart Rate (ANT+)</string>
+    <string name="device_list_blood_pressure">Blood Pressure (BT)</string>
+    <string name="device_list_weight_scale">Weight Scale (ANT+)</string>
 
 </resources>

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity;
 
 //XXX just for developer testing
@@ -21,16 +20,16 @@ public class TestActivity extends Activity {
     
     Intent testIntent = new Intent(this, HeartRateActivity.class);
     try {
-      testIntent.putExtra(DeviceListActivity.EXTRA_USER_PROFILE, db.getProfile(1L));
+      Application.getInstance().setUserProfile(db.getProfileTable().getProfile(1L));
+    
+      System.out.println("\nSTARTING TEST ACTIVITY\n");
+      startActivity(testIntent);
+  
+      finish();
     }
     catch (DatabaseException e) {
       e.printStackTrace();
     }
-    
-    System.out.println("\nSTARTING TEST ACTIVITY\n");
-    startActivity(testIntent);
-
-    finish();
   }
 
   @Override

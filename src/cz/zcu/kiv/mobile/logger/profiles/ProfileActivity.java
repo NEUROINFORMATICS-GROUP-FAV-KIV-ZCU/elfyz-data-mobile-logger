@@ -1,12 +1,13 @@
 package cz.zcu.kiv.mobile.logger.profiles;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -21,14 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 
 
-public class ProfileActivity extends FragmentActivity implements OnDateSetListener {
+public class ProfileActivity extends Activity implements OnDateSetListener {
   private static final String TAG = ProfileActivity.class.getSimpleName();
   
   private static final String SAVED_SELECTED_DATE = "save.selected.date";
@@ -40,9 +41,9 @@ public class ProfileActivity extends FragmentActivity implements OnDateSetListen
   private RadioGroup vActivityLevel;
   private CheckBox vLifetimeAthlete;
 
-  private SimpleDateFormat dateFormat;
+  private DateFormat dateFormat;
   
-  private Database db;
+  private ProfileTable dbProfile;
   private Calendar selectedDate;
   
 
@@ -60,9 +61,9 @@ public class ProfileActivity extends FragmentActivity implements OnDateSetListen
     
     vGender.setAdapter(new ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_dropdown_item, Gender.values()));
     
-    dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    dateFormat = SimpleDateFormat.getDateInstance();
     
-    db = ((Application) getApplication()).getDatabase();
+    dbProfile = Application.getInstance().getDatabase().getProfileTable();
     
     if(state != null && state.containsKey(SAVED_SELECTED_DATE)){
       selectedDate = Calendar.getInstance();
@@ -109,8 +110,8 @@ public class ProfileActivity extends FragmentActivity implements OnDateSetListen
       return;
     }
     
-    try{
-      db.createProfile(profileName, selectedDate, gender, height, activityLevel, lifetimeAthlete);
+    try {
+      dbProfile.createProfile(profileName, selectedDate, gender, height, activityLevel, lifetimeAthlete);
     }
     catch(DuplicateEntryException e){
       Toast.makeText(this, R.string.profile_duplicit_profile_name, Toast.LENGTH_LONG).show();
@@ -127,14 +128,14 @@ public class ProfileActivity extends FragmentActivity implements OnDateSetListen
     finish();
   }
   
-  public void onSelectBirthDate(View view){
+  public void onSelectBirthDate(View view) {
     DialogFragment dialog = new DatePickerFragment();
     if(selectedDate != null) {
       Bundle args = new Bundle(1);
       args.putLong(DatePickerFragment.ARG_INITIAL_DATE, selectedDate.getTimeInMillis());
       dialog.setArguments(args);
     }
-    dialog.show(getSupportFragmentManager(), "datePicker");
+    dialog.show(getFragmentManager(), "datePicker");
   }
 
   @Override

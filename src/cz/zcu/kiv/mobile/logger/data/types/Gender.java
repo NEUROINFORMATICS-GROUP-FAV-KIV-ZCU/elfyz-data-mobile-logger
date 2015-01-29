@@ -8,8 +8,8 @@ public enum Gender {
   MALE(Gender.LETTER_MALE, R.string.gender_male),
   FEMALE(Gender.LETTER_FEMALE, R.string.gender_female);
   
-  private static final String LETTER_MALE = "M";
-  private static final String LETTER_FEMALE = "F";
+  public static final String LETTER_MALE = "M";
+  public static final String LETTER_FEMALE = "F";
   
   private String letter;
   private int textId;
@@ -41,6 +41,6 @@ public enum Gender {
   
   @Override
   public String toString() {
-    return Application.getStringResource(textId); //TODO
+    return Application.getStringResource(textId);
   }
 }

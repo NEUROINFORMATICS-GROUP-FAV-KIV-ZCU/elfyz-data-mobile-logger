@@ -2,9 +2,11 @@ package cz.zcu.kiv.mobile.logger;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -16,22 +18,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.Toast;
-import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.data.database.tables.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileActivity;
+import cz.zcu.kiv.mobile.logger.profiles.ProfileLoader;
+import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncTaskResult<Cursor>>{
   private static final String TAG = MainActivity.class.getSimpleName();
+
+  private static final int LOADER_PROFILES = 1;
   
-  private static final int REQUEST_CREATE_PROFILE = 1;
-  
-  private Database db;
+  private ProfileTable dbProfileTable;
   private SimpleCursorAdapter profileAdapter;
 
   
@@ -40,22 +42,17 @@ public class MainActivity extends ListActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     
-    db = ((Application) getApplication()).getDatabase();
+    dbProfileTable = Application.getInstance().getDatabase().getProfileTable();
     
     profileAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null,
         new String[]{ProfileTable.COLUMN_PROFILE_NAME}, new int[]{android.R.id.text1}, 0);
     setListAdapter(profileAdapter);
     
     registerForContextMenu(getListView());
+    
+    getLoaderManager().initLoader(LOADER_PROFILES, null, this);
   }
   
-  @Override
-  protected void onStart() {
-    super.onStart();
-    
-    refreshProfileList();
-  }
-
   @Override
   protected void onListItemClick(ListView l, View v, int position, long id) {
     Log.d(TAG, "Profile selected: " + position);
@@ -63,17 +60,17 @@ public class MainActivity extends ListActivity {
     
     Profile userProfile;
     try {
-      userProfile = db.getProfile(id);
+      userProfile = dbProfileTable.getProfile(id);
     }
     catch (DatabaseException e) {
-      Toast.makeText(this, "Nepodaøilo se naèíst vybraný profil.", Toast.LENGTH_LONG).show();
+      AndroidUtils.toast(this, R.string.profile_load_fail);
       Log.e(TAG, "failed to retrieve profile: ID=" + id);
       return;
     }
     
-    Intent intent = new Intent(this, DeviceListActivity.class);
-    intent.putExtra(DeviceListActivity.EXTRA_USER_PROFILE, userProfile);
-    startActivity(intent);
+    Application.getInstance().setUserProfile(userProfile);
+    
+    startActivity(new Intent(this, DeviceListActivity.class));
   }
   
   @Override
@@ -96,7 +93,7 @@ public class MainActivity extends ListActivity {
       case R.id.action_create_new_profile:
         createNewProfile(null);
         return true;
-        
+        //TODO edit profile
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -115,17 +112,16 @@ public class MainActivity extends ListActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               try {
-                db.deleteProfile(profileID);
+                dbProfileTable.deleteProfile(profileID);
               }
               catch (DatabaseException e) {
                 Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
-                Toast.makeText(MainActivity.this, "Nepodaøilo se smazat profil. Naskytla se chyba pøi práci s databází.", Toast.LENGTH_LONG).show();
+                AndroidUtils.toast(MainActivity.this, R.string.profile_delete_fail);
               }
               dialog.dismiss();
-              refreshProfileList();
             }
           })
-        .setNegativeButton(R.string.dialog_delete_cancel_button, new OnClickListener() {
+        .setNegativeButton(R.string.dialog_cancel_button, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
@@ -142,37 +138,30 @@ public class MainActivity extends ListActivity {
   
   public void createNewProfile(View view){
     Log.d(TAG, "New profile creation requested.");
-    startActivityForResult(new Intent(this, ProfileActivity.class), REQUEST_CREATE_PROFILE);
+    startActivity(new Intent(this, ProfileActivity.class));
   }
   
-  private void refreshProfileList() {
-    Cursor profileCursor = null;
-    try{
-      profileCursor = db.getProfileNames();
-    }
-    catch(DatabaseException e){
-      Log.e(TAG, "Failed to load profiles.", e);
-      Toast.makeText(this, "Nepodaøilo se naèíst profily. Naskytla se chyba pøi práci s databází.", Toast.LENGTH_LONG).show();
-      return;
-    }
-    
-//    startManagingCursor(profileCursor); //TODO use LoaderManager and CursorLoader (and content providers?)
-    profileAdapter.changeCursor(profileCursor);
-  }
   
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    
-    if(requestCode == REQUEST_CREATE_PROFILE && resultCode == RESULT_OK){
-      refreshProfileList();
-    }
+  public Loader<AsyncTaskResult<Cursor>> onCreateLoader(int id, Bundle args) {
+    return new ProfileLoader(this);
   }
-  
-  @Override
-  protected void onDestroy() {
-    db.close();
 
-    super.onDestroy();
+  @Override
+  public void onLoadFinished(Loader<AsyncTaskResult<Cursor>> loader, AsyncTaskResult<Cursor> data) {
+    if(loader.getId() == LOADER_PROFILES) {
+      if(data.getError() != null) {
+        AndroidUtils.toast(this, R.string.fail_load_profiles);
+        Log.e(TAG, "Failed to load profiles.", data.getError());
+      }
+      else {
+        profileAdapter.swapCursor(data.getResult());
+      }
+    }
+  }
+
+  @Override
+  public void onLoaderReset(Loader<AsyncTaskResult<Cursor>> data) {
+    profileAdapter.swapCursor(null); 
   }
 }

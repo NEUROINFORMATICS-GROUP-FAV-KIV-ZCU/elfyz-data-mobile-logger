@@ -24,21 +24,16 @@ import android.bluetooth.BluetoothDevice;
  * @hide
  */
 public interface IBluetoothDevicePicker {
-  public static final String EXTRA_NEED_AUTH =
-      "android.bluetooth.devicepicker.extra.NEED_AUTH";
-  public static final String EXTRA_FILTER_TYPE =
-      "android.bluetooth.devicepicker.extra.FILTER_TYPE";
-  public static final String EXTRA_LAUNCH_PACKAGE =
-      "android.bluetooth.devicepicker.extra.LAUNCH_PACKAGE";
-  public static final String EXTRA_LAUNCH_CLASS =
-      "android.bluetooth.devicepicker.extra.DEVICE_PICKER_LAUNCH_CLASS";
+  public static final String EXTRA_NEED_AUTH = "android.bluetooth.devicepicker.extra.NEED_AUTH";
+  public static final String EXTRA_FILTER_TYPE = "android.bluetooth.devicepicker.extra.FILTER_TYPE";
+  public static final String EXTRA_LAUNCH_PACKAGE = "android.bluetooth.devicepicker.extra.LAUNCH_PACKAGE";
+  public static final String EXTRA_LAUNCH_CLASS = "android.bluetooth.devicepicker.extra.DEVICE_PICKER_LAUNCH_CLASS";
   /**
    * Broadcast when one BT device is selected from BT device picker screen.
    * Selected {@link BluetoothDevice} is returned in extra data named
    * {@link BluetoothDevice#EXTRA_DEVICE}.
    */
-  public static final String ACTION_DEVICE_SELECTED =
-      "android.bluetooth.devicepicker.action.DEVICE_SELECTED";
+  public static final String ACTION_DEVICE_SELECTED = "android.bluetooth.devicepicker.action.DEVICE_SELECTED";
   /**
    * Broadcast when someone want to select one BT device from devices list.
    * This intent contains below extra data:
