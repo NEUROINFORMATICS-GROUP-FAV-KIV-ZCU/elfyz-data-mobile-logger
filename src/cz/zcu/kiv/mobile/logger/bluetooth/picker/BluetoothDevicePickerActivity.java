@@ -17,6 +17,7 @@ public class BluetoothDevicePickerActivity extends Activity {
 
   private BluetoothAdapter bt;
   private BTDevicePickReceiver pickerReceiver;
+  private boolean registered = false;
 
 
   @Override
@@ -31,7 +32,7 @@ public class BluetoothDevicePickerActivity extends Activity {
 
     pickerReceiver = new BTDevicePickReceiver(this);
     
-    registerReceiver(pickerReceiver, new IntentFilter(IBluetoothDevicePicker.ACTION_DEVICE_SELECTED));
+    registerReceiver();
     
     startActivityForResult(
         new Intent(IBluetoothDevicePicker.ACTION_LAUNCH)
@@ -44,7 +45,7 @@ public class BluetoothDevicePickerActivity extends Activity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == REQUEST_PICK_DEVICE){
-      unregisterReceiver(pickerReceiver);
+      unregisterReceiver();
     }
     else{
       super.onActivityResult(requestCode, resultCode, data);
@@ -53,8 +54,22 @@ public class BluetoothDevicePickerActivity extends Activity {
   
   @Override
   protected void onDestroy() {
-    unregisterReceiver(pickerReceiver);
+    unregisterReceiver();
     super.onDestroy();
+  }
+
+  private void registerReceiver() {
+    if(!registered) {
+      registerReceiver(pickerReceiver, new IntentFilter(IBluetoothDevicePicker.ACTION_DEVICE_SELECTED));
+      registered = true;
+    }
+  }
+
+  private void unregisterReceiver() {
+    if(registered) {
+      unregisterReceiver(pickerReceiver);
+      registered = false;
+    }
   }
   
 
@@ -69,7 +84,7 @@ public class BluetoothDevicePickerActivity extends Activity {
     @Override
     public void onReceive(Context context, Intent intent)  {
       if(IBluetoothDevicePicker.ACTION_DEVICE_SELECTED.equals(intent.getAction())) {
-        context.unregisterReceiver(this); //Immediately unregister
+        unregisterReceiver(); //Immediately unregister
         BluetoothDevice pickedDevice = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         
         Intent data = new Intent();
