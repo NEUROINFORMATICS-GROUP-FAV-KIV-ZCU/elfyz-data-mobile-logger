@@ -30,14 +30,14 @@
         android:orientation="vertical" >
         
         <TextView
-            android:id="@+id/tv_systolic"
+            android:id="@+id/tv_glucose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/value_n_a" />
         
         <TextView
-            android:id="@+id/tv_diastolic"
+            android:id="@+id/tv_temperature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -51,14 +51,14 @@
         android:orientation="vertical" >
         
         <TextView
-            android:id="@+id/tv_mean_pressure"
+            android:id="@+id/tv_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/value_n_a" />
         
         <TextView
-            android:id="@+id/tv_heart_rate"
+            android:id="@+id/tv_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

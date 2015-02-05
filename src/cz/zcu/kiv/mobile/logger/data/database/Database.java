@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database {
   private static final String DATABASE_NAME = "elfyz-data-mobile-logger.db";
-  private static final int DATABASE_VERSION = 1;
+  private static final int DATABASE_VERSION = 2;
 
   private SQLiteOpenHelper openHelper;
   
@@ -24,6 +24,7 @@ public class Database {
   private WeightScaleManufacturerIdentificationTable wsMiTable;
   private WeightScaleManufacturerSpecificDataTable wsMsTable;
   private WeightScaleProductInformationTable wsPiTable;
+  private GlucoseMeasurementTable gTable;
 
 
   public Database(Context context){
@@ -42,6 +43,7 @@ public class Database {
     wsMiTable = new WeightScaleManufacturerIdentificationTable(openHelper);
     wsMsTable = new WeightScaleManufacturerSpecificDataTable(openHelper);
     wsPiTable = new WeightScaleProductInformationTable(openHelper);
+    gTable = new GlucoseMeasurementTable(openHelper);
   }
   
   
@@ -97,6 +99,10 @@ public class Database {
     return wsPiTable;
   }
   
+  public GlucoseMeasurementTable getGlucoseMeasurementTable() {
+    return gTable;
+  }
+  
 
   public void close(){
     openHelper.close();
@@ -125,6 +131,7 @@ public class Database {
       wsMiTable.onCreate(db);
       wsMsTable.onCreate(db);
       wsPiTable.onCreate(db);
+      gTable.onCreate(db);
     }
 
     @Override
@@ -142,6 +149,7 @@ public class Database {
       wsMiTable.onUpgrade(db, oldVersion, currentVersion);
       wsMsTable.onUpgrade(db, oldVersion, currentVersion);
       wsPiTable.onUpgrade(db, oldVersion, currentVersion);
+      gTable.onUpgrade(db, oldVersion, currentVersion);
     }
   }
 }

@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.blood_pressure;
+package cz.zcu.kiv.mobile.logger.devices.fora;
 
 
 public class CommunicationException extends Exception {

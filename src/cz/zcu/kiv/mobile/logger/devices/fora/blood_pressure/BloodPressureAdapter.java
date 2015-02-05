@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.blood_pressure;
+package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

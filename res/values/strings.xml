@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Mobile Logger</string>
     <string name="action_settings">Settings</string>
     <string name="action_turn_on">Turn on</string>
@@ -13,7 +14,7 @@
     <string name="status_default">App running</string>
     <string name="empty_list_main">This app version offers communication with no device.</string>
     <string name="title_activity_blood_pressure">Blood pressure</string>
-    <string name="load_from_blood_pressure_device">Read</string>
+    <string name="load_from_device">Read</string>
     <string name="show_all_records">Show all</string>
     <string name="title_activity_blood_pressure_list">Blood pressure - record list</string>
     <string name="empty_list_measurements">No records available</string>
@@ -79,7 +80,7 @@
     <string name="fail_load_profiles">Failed to load profiles.</string>
     <string name="fail_load_measurements">Failed to load measurements.</string>
     <string name="fail_db_insert">Failed to save record to database.</string>
-    <string name="fail_read_blood_pressure">Failed to read blood pressure.</string>
+    <string name="fail_read_device_data">Failed to read data from device.</string>
     <string name="blood_pressure_short_systolic_">SYS </string>
     <string name="blood_pressure_short_diastolic_">DIA </string>
     <string name="blood_pressure_short_mean_">Ø </string>
@@ -92,5 +93,12 @@
     <string name="device_list_heart_rate">Heart Rate (ANT+)</string>
     <string name="device_list_blood_pressure">Blood Pressure (BT)</string>
     <string name="device_list_weight_scale">Weight Scale (ANT+)</string>
+    <string name="title_activity_glucose_meter">Glucose Meter</string>
+    <string name="device_list_glucose_meter">Glucose Meter (BT)</string>
+    <string name="label_blood_sample_temperature">Sample temperature (°C):</string>
+    <string name="label_code">Code:</string>
+    <string name="label_type">Type:</string>
+    <string name="title_activity_glucose_list">GlucoseListActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

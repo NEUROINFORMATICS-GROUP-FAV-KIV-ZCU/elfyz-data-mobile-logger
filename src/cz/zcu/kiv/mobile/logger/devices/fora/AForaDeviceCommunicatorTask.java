@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.blood_pressure;
+package cz.zcu.kiv.mobile.logger.devices.fora;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +14,12 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
-public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer, List<BloodPressureMeasurement>> {
-  protected final String TAG = BloodPressureDeviceCommunicatorTask.class.getSimpleName();
+public abstract class AForaDeviceCommunicatorTask<T_Data, T_Listener> extends AsyncTask<Void, Integer, List<T_Data>> {
+  private static final String TAG = AForaDeviceCommunicatorTask.class.getSimpleName();
   
   protected final UUID UUID_SPP = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
   
@@ -29,25 +30,25 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
   protected static final byte MSG_ERROR = 84;
 
   protected BluetoothDevice device;
-  protected BloodPressureDeviceListener listener;
+  protected T_Listener listener;
   protected boolean justLatest;
   protected boolean turnOffWhenDone;
   
-  private BluetoothSocket socket;
-  private Exception error;
+  protected BluetoothSocket socket;
+  protected Exception error;
   
-  private List<BloodPressureMeasurement> measurements;
+  protected List<T_Data> measurements;
   
   
-  public BloodPressureDeviceCommunicatorTask(BluetoothDevice device, BloodPressureDeviceListener listener) {
+  public AForaDeviceCommunicatorTask(BluetoothDevice device, T_Listener listener) {
     this(device, listener, true);
   }
   
-  public BloodPressureDeviceCommunicatorTask(BluetoothDevice device, BloodPressureDeviceListener listener, boolean justLatest) {
+  public AForaDeviceCommunicatorTask(BluetoothDevice device, T_Listener listener, boolean justLatest) {
     this(device, listener, justLatest, true);
   }
   
-  public BloodPressureDeviceCommunicatorTask(BluetoothDevice device, BloodPressureDeviceListener listener, boolean justLatest, boolean turnOffWhenDone) {
+  public AForaDeviceCommunicatorTask(BluetoothDevice device, T_Listener listener, boolean justLatest, boolean turnOffWhenDone) {
     if(device == null) throw new NullPointerException("Argument device is null.");
     if(listener == null) throw new NullPointerException("Argument listener is null.");
     
@@ -55,20 +56,18 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     this.listener = listener;
     this.justLatest = justLatest;
     this.turnOffWhenDone = turnOffWhenDone;
-    measurements = new ArrayList<BloodPressureMeasurement>();
+    measurements = new ArrayList<T_Data>();
   }
 
   
   @Override
-  protected List<BloodPressureMeasurement> doInBackground(Void... params) {
+  protected List<T_Data> doInBackground(Void... params) {
     if(isCancelled())
       return measurements;
     
     InputStream in = null;
     OutputStream out = null;
     try {
-      byte[] message;
-      
       //connect
       socket = device.createInsecureRfcommSocketToServiceRecord(UUID_SPP);
       socket.connect();
@@ -79,40 +78,7 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
       if(isCancelled())
         return measurements;
       
-      //start communication
-      sendMessage(out, new byte[] {81, MSG_START, 0, 0, 0, 0, -93, 0});
-      
-      message = readMessage(in, MSG_START);
-
-      int recordCount = getRecordCount(message);
-
-      //read measurements
-      byte[] msg1 = new byte[]{81, MSG_A, 0, 0, 0, 1, -93, 0};
-      byte[] msg2 = new byte[]{81, MSG_B, 0, 0, 0, 1, -93, 0};
-      
-      for (int record = 0; record < recordCount; record++) {
-        if(isCancelled())
-          break;
-        
-        BloodPressureMeasurement measurement = new BloodPressureMeasurement();
-        
-        msg1[2] = msg2[2] = ((byte) record);
-        msg1[3] = msg2[3] = ((byte)(record >> 8));
-        
-        sendMessage(out, msg1);
-        message = readMessage(in, MSG_A);
-        getTime(message, measurement);
-
-        sendMessage(out, msg2);
-        message = readMessage(in, MSG_B);
-        getMeasurement(message, measurement);
-        
-        msg1[5] = 0;
-        measurements.add(measurement);
-        
-        if(justLatest)
-          break; //quit after first measurement if just latest required
-      }
+      communicate(in, out);
       
       if(isCancelled())
         return measurements;
@@ -136,25 +102,18 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     return measurements;
   }
   
-  @Override
-  protected void onPostExecute(List<BloodPressureMeasurement> result) {
-    if(error != null) {
-      listener.onBPDReadError(error, result);
-    }
-    else {
-      listener.onBPDReadSuccess(result);
-    }
-    
-    super.onPostExecute(result);
-  }
   
-  @Override
-  protected void onCancelled(List<BloodPressureMeasurement> result) {
-    listener.onBPDReadCancelled(result);
-  }
-  
+  /**
+   * Should just populate <code>measurements</code>. Periodically check isCancelled method and return if true.
+   * @param in
+   * @param out
+   * @throws IOException
+   * @throws CommunicationException
+   */
+  protected abstract void communicate(InputStream in, OutputStream out) throws IOException, CommunicationException;
 
-  private byte[] readMessage(InputStream in, byte expectedType) throws CommunicationException, IOException {
+  
+  protected byte[] readMessage(InputStream in, byte expectedType) throws CommunicationException, IOException {
     byte[] data = readMessage(in);
     
     if(data[1] != expectedType)
@@ -163,7 +122,7 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     return data;
   }
 
-  private byte[] readMessage(InputStream in) throws CommunicationException, IOException {
+  protected byte[] readMessage(InputStream in) throws CommunicationException, IOException {
     byte[] data = new byte[8];
     int read = in.read(data);
     
@@ -175,24 +134,24 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     return data;
   }
 
-  private void sendMessage(OutputStream out, byte[] message) throws IOException {
+  protected void sendMessage(OutputStream out, byte[] message) throws IOException {
     byte[] prepared = prepareMessage(message);
     out.write(prepared);
   }
   
-  private boolean validateMessage(byte[] message) {
+  protected boolean validateMessage(byte[] message) {
     int expectedSum = sumMessage(message);
     return ((byte) expectedSum) != message[message.length - 1];
   }
 
-  private byte[] prepareMessage(byte[] message) {
+  protected byte[] prepareMessage(byte[] message) {
     if(message.length > 1){
       message[message.length - 1] = (byte) sumMessage(message);
     }
     return message;
   }
   
-  private int sumMessage(byte[] message){
+  protected int sumMessage(byte[] message){
     int sum = 0;
     for (int i = 0; i < message.length - 1; i++) {
       sum += message[i];
@@ -200,11 +159,11 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     return sum;
   }
   
-  private int getRecordCount(byte[] message) {
+  protected int getRecordCount(byte[] message) {
     return 0xFF & message[2];
   }
 
-  private void getTime(byte[] message, BloodPressureMeasurement measure) {
+  protected Calendar getTime(byte[] message) {
     int day = 0xFF & 0x1F & message[2];
     int month = (0xFF & 0x07 & message[2] >> 5) + ((0xFF & 0x01 & message[3]) << 3);
     int year = 2000 + (0xFF & 0x3F & message[3] >> 1);
@@ -221,19 +180,12 @@ public class BloodPressureDeviceCommunicatorTask extends AsyncTask<Void, Integer
     time.set(Calendar.SECOND, 0);
     time.set(Calendar.MILLISECOND, 0);
 
-    measure.setTime(time);
+    return time;
   }
 
-  private void getMeasurement(byte[] message, BloodPressureMeasurement measurement) {
-    measurement.setSystolicPressure(0xFF & message[2]);
-    measurement.setDiastolicPressure(0xFF & message[4]);
-    measurement.setMeanPressure(0xFF & message[3]);
-    measurement.setHeartRate(0xFF & message[5]);
-  }
   
   
-  
-  public interface BloodPressureDeviceListener {
+  public interface ForaDeviceListener {
     void onBPDReadError(Exception error, List<BloodPressureMeasurement> readTillError);
     void onBPDReadSuccess(List<BloodPressureMeasurement> result);
     void onBPDReadCancelled(List<BloodPressureMeasurement> readTillCancel);

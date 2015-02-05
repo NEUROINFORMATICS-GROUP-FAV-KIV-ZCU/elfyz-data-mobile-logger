@@ -12,7 +12,8 @@ import android.widget.Toast;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.devices.blood_pressure.BloodPressureActivity;
+import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity;
+import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity;
 
@@ -63,12 +64,14 @@ public class DeviceListActivity extends ListActivity {
     deviceNames = new String[] {
 	      getString(R.string.device_list_blood_pressure),
 	      getString(R.string.device_list_heart_rate),
-	      getString(R.string.device_list_weight_scale)
+	      getString(R.string.device_list_weight_scale),
+	      getString(R.string.device_list_glucose_meter)
 	  };
     deviceActivities = (Class<? extends Activity>[]) new Class[] {
         BloodPressureActivity.class,
         HeartRateActivity.class,
-        WeightScaleActivity.class
+        WeightScaleActivity.class,
+        GlucoseMeterActivity.class
     };
 	}
 }

@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.blood_pressure;
+package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
 
 import android.app.ListActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -22,6 +22,7 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
   private CursorAdapter dataAdapter;
   private Profile userProfile;
   
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
     
     userProfile = Application.getInstance().getUserProfileOrLogIn();
     
-    if(userProfile == null){
+    if(userProfile == null){  //TODO oddědit...
       AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
       Log.e(TAG, "User must be logged in.");
       finish();

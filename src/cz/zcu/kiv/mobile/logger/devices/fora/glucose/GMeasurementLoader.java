@@ -1,28 +1,28 @@
-package cz.zcu.kiv.mobile.logger.devices.blood_pressure;
+package cz.zcu.kiv.mobile.logger.devices.fora.glucose;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
-import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable.BPDataObserver;
+import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable;
+import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable.GDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 
-public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> {
-  protected BloodPressureMeasurementTable dbBPM;
+public class GMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> {
+  protected GlucoseMeasurementTable dbGM;
   protected long profileID;
   
   protected AsyncTaskResult<Cursor> data;
-  protected BPDataObserver observer;
+  protected GDataObserver observer;
   
-
-  public BPMeasurementLoader(Context context, long profileID) {
+  
+  public GMeasurementLoader(Context context, long profileID) {
     super(context);
     this.profileID = profileID;
-    dbBPM = Application.getInstance().getDatabase().getBloodPressureMeasurementTable();
+    dbGM = Application.getInstance().getDatabase().getGlucoseMeasurementTable();
   }
 
   
@@ -31,7 +31,7 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
     AsyncTaskResult<Cursor> result = new AsyncTaskResult<Cursor>();
     
     try {
-      Cursor cursor = dbBPM.getMeasurements(profileID);
+      Cursor cursor = dbGM.getMeasurements(profileID);
       result.setResult(cursor);
     }
     catch (DatabaseException e) {
@@ -68,13 +68,14 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
     }
     
     if(observer == null) {
-      observer = new BPDataObserver() {
+      observer = new GDataObserver() {
+        
         @Override
-        public void onBPMeasurementAdded(long id) {
+        public void onGlucoseMeasurementAdded(long id) {
           onContentChanged();
         }
       };
-      dbBPM.addObserver(observer);
+      dbGM.addObserver(observer);
     }
     
     if(takeContentChanged() || data == null) {
@@ -96,7 +97,7 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
     }
     
     if(observer != null) {
-      dbBPM.removeObserver(observer);
+      dbGM.removeObserver(observer);
       observer = null;
     }
   }
