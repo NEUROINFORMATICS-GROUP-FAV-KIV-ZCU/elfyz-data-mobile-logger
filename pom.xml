@@ -1,0 +1,130 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cz.zcu.kiv</groupId>
+  <artifactId>mobile-logger</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>apk</packaging>
+  <name>Mobile Logger</name>
+
+  <properties>
+    <version.com.google.android.android>4.1.1.4</version.com.google.android.android>
+    <version.org.springframework.android.spring-android-rest-template>1.0.1.RELEASE</version.org.springframework.android.spring-android-rest-template>
+    <version.org.simpleframework.simple-xml>2.7.1</version.org.simpleframework.simple-xml>
+    <version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>3.9.0-rc.1</version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>
+	<version.org.apache.maven.plugins.maven-compiler-plugin>3.2</version.org.apache.maven.plugins.maven-compiler-plugin>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+    <java-version>1.6</java-version>
+    <android-platform>16</android-platform>
+  </properties>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <artifactId>android-maven-plugin</artifactId>
+        <version>${version.com.jayway.maven.plugins.android.generation2.android-maven-plugin}</version>
+        <configuration>
+          <sdk>
+            <platform>${android-platform}</platform>
+          </sdk>
+          <undeployBeforeDeploy>true</undeployBeforeDeploy>
+        </configuration>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.org.apache.maven.plugins.maven-compiler-plugin}</version>
+        <configuration>
+          <source>${java-version}</source>
+          <target>${java-version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+	<!-- Local dependencies -->
+    <dependency>
+      <groupId>com.thisisant</groupId>
+      <artifactId>antlib</artifactId>
+      <version>4.7.0</version>
+      <scope>system</scope>
+	  <systemPath>${basedir}/libs/android_antlib_4-7-0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.thisisant</groupId>
+      <artifactId>antpluginlib</artifactId>
+      <version>3.1.0</version>
+      <scope>system</scope>
+	  <systemPath>${basedir}/libs/antpluginlib_3-1-0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>support</artifactId>
+      <version>v4</version>
+      <scope>system</scope>
+	  <systemPath>${env.ANDROID_HOME}/extras/android/support/v4/android-support-v4.jar</systemPath>
+    </dependency>
+	
+	<!-- Remote dependencies -->
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android</artifactId>
+      <version>${version.com.google.android.android}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.android</groupId>
+      <artifactId>spring-android-rest-template</artifactId>
+      <version>${version.org.springframework.android.spring-android-rest-template}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>support-v4</artifactId>
+      <version>r7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.simpleframework</groupId>
+      <artifactId>simple-xml</artifactId>
+      <version>${version.org.simpleframework.simple-xml}</version>
+      <exclusions>
+        <!-- StAX is not available on Android -->
+        <exclusion>
+          <artifactId>stax</artifactId>
+          <groupId>stax</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>stax-api</artifactId>
+          <groupId>stax</groupId>
+        </exclusion>
+        <!-- Provided by Android -->
+        <exclusion>
+          <artifactId>xpp3</artifactId>
+          <groupId>xpp3</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>annotations</artifactId>
+      <version>4.1.1.4</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>springsource-repo</id>
+      <name>SpringSource Repository</name>
+      <url>http://repo.springsource.org/release</url>
+    </repository>
+  </repositories>
+</project>
