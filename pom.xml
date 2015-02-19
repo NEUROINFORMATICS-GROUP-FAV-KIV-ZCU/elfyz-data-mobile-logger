@@ -58,21 +58,21 @@
       <artifactId>antlib</artifactId>
       <version>4.7.0</version>
       <scope>system</scope>
-	  <systemPath>${basedir}/libs/android_antlib_4-7-0.jar</systemPath>
+	  <systemPath>${basedir}/libraries/android_antlib_4-7-0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.thisisant</groupId>
       <artifactId>antpluginlib</artifactId>
       <version>3.1.0</version>
       <scope>system</scope>
-	  <systemPath>${basedir}/libs/antpluginlib_3-1-0.jar</systemPath>
+	  <systemPath>${basedir}/libraries/antpluginlib_3-1-0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.google.android</groupId>
       <artifactId>support</artifactId>
       <version>v4</version>
       <scope>system</scope>
-	  <systemPath>${env.ANDROID_HOME}/extras/android/support/v4/android-support-v4.jar</systemPath>
+      <systemPath>${basedir}/libraries/android-support-v4.jar</systemPath>
     </dependency>
 	
 	<!-- Remote dependencies -->
@@ -83,14 +83,14 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.android</groupId>
       <artifactId>spring-android-rest-template</artifactId>
       <version>${version.org.springframework.android.spring-android-rest-template}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>support-v4</artifactId>
-      <version>r7</version>
     </dependency>
     <dependency>
       <groupId>org.simpleframework</groupId>
