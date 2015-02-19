@@ -100,5 +100,13 @@
     <string name="label_type">Type:</string>
     <string name="title_activity_glucose_list">GlucoseListActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_profile_creation_type">ProfileCreationTypeActivity</string>
+    <string name="action_connect_eegbase">Connect to EEGbase account</string>
+    <string name="fail_login_credentials">Wrong credentials</string>
+    <string name="fail_communication">Failed to communicate with server</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_surname">Surname</string>
+    <string name="action_sign_in">Sign in</string>
 
 </resources>

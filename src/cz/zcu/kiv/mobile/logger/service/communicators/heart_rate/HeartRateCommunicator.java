@@ -67,7 +67,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
   public HeartRateCommunicator(Context context) {
     super(context);
     listeners = new HashSet<HeartRateCommunicator.HeartRateListener>();
-    userProfile = Application.getInstance().getUserProfile();
+    userProfile = Application.getInstance().getUserProfileOrLogIn();
   }
 
   

@@ -20,7 +20,10 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
 
   public static final String TABLE_NAME = "profiles";
 
-  public static final String COLUMN_PROFILE_NAME = "name";
+  public static final String COLUMN_PROFILE_NAME = "profile_name";
+  public static final String COLUMN_EMAIL = "email";
+  public static final String COLUMN_NAME = "name";
+  public static final String COLUMN_SURNAME = "surname";
   public static final String COLUMN_BIRTH_DATE = "birth_date";
   public static final String COLUMN_GENDER = "gender";
   public static final String COLUMN_HEIGHT = "height";
@@ -43,6 +46,9 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
     db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
         + COLUMN_ID + " INTEGER PRIMARY KEY,"
         + COLUMN_PROFILE_NAME + " TEXT NOT NULL UNIQUE,"
+        + COLUMN_EMAIL + " TEXT NOT NULL UNIQUE,"
+        + COLUMN_NAME + " TEXT NOT NULL,"
+        + COLUMN_SURNAME + " TEXT NOT NULL,"
         + COLUMN_BIRTH_DATE + " INTEGER NOT NULL,"
         + COLUMN_GENDER + " TEXT NOT NULL,"
         + COLUMN_HEIGHT + " INTEGER NOT NULL,"
@@ -65,11 +71,14 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
   }
   
   
-  public long createProfile(String profileName, Calendar birthDate, Gender gender, int height, int activityLevel, boolean lifetimeAthlete) throws DatabaseException {
+  public long createProfile(String profileName, String email, String name, String surname, Calendar birthDate, Gender gender, int height, int activityLevel, boolean lifetimeAthlete) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
     ContentValues values = new ContentValues(1);
       values.put(COLUMN_PROFILE_NAME, profileName);
+      values.put(COLUMN_EMAIL, email);
+      values.put(COLUMN_NAME, name);
+      values.put(COLUMN_SURNAME, surname);
       values.put(COLUMN_BIRTH_DATE, birthDate.getTimeInMillis());
       values.put(COLUMN_GENDER, gender.getLetter());
       values.put(COLUMN_HEIGHT, height);
@@ -86,8 +95,16 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       return id;
     }
     catch(Exception e){
-      if(e instanceof SQLiteConstraintException && e.getMessage().equals("column name is not unique (code 19)"))
-        throw new DuplicateEntryException(e);
+      if(e instanceof SQLiteConstraintException) {
+        String columnName = null;
+        
+        if(e.getMessage().equals("column " + COLUMN_PROFILE_NAME + " is not unique (code 19)"))
+          columnName = COLUMN_PROFILE_NAME;
+        else if(e.getMessage().equals("column " + COLUMN_EMAIL + " is not unique (code 19)"))
+          columnName = COLUMN_EMAIL;
+          
+        throw new DuplicateEntryException(e, columnName);
+      }
       throw new DatabaseException(e);
     }
   }
@@ -133,6 +150,9 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
         return new Profile(
             profileID,
             getString(c, COLUMN_PROFILE_NAME),
+            getString(c, COLUMN_EMAIL),
+            getString(c, COLUMN_NAME),
+            getString(c, COLUMN_SURNAME),
             getCalendar(c, COLUMN_BIRTH_DATE),
             Gender.fromLetter(getString(c, COLUMN_GENDER)),
             getInt(c, COLUMN_HEIGHT),

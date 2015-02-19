@@ -25,6 +25,42 @@
           android:layout_height="wrap_content"
           android:gravity="right"
           android:inputType="text" />
+        
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_email" />
+      <EditText 
+          android:id="@+id/v_email"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right"
+          android:inputType="textEmailAddress" />
+        
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_name" />
+      <EditText 
+          android:id="@+id/v_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right"
+          android:inputType="text" />
+        
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:text="@string/profile_surname" />
+      <EditText 
+          android:id="@+id/v_surname"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right"
+          android:inputType="text" />
       
       <TextView 
           android:layout_width="match_parent"

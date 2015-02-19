@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mobile Logger</string>
-    <string name="time_format">dd.MM.yyyy HH:mm</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_turn_on">Zapnout</string>
     <string name="action_turn_off">Vypnout</string>
@@ -97,5 +96,12 @@
     <string name="label_blood_sample_temperature">Teplota vzorku (°C):</string>
     <string name="label_code">Kód:</string>
     <string name="label_type">Typ:</string>
+    <string name="action_connect_eegbase">Spojit s EEGbase účtem</string>
+    <string name="fail_login_credentials">Špatné přihlašovací údaje</string>
+    <string name="fail_communication">Selhala komunikace se serverem</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_name">Jméno</string>
+    <string name="profile_surname">Příjmení</string>
+    <string name="action_sign_in">Přihlásit</string>
 
 </resources>

@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="cz.zcu.kiv.mobile.logger.Application"
@@ -35,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- TODO parent activity - actionbar's up fails for not sending profile, will be resolved with real login -->
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.DeviceListActivity"
             android:label="@string/title_device_list"
@@ -83,7 +83,7 @@
             android:label="@string/title_activity_service_management" >
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.LoginActivity"
+            android:name="cz.zcu.kiv.mobile.logger.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName="cz.zcu.kiv.mobile.logger.MainActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -103,6 +103,14 @@
             android:name="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterListActivity"
             android:label="@string/title_activity_glucose_list"
             android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity" >
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.profiles.ProfileCreationTypeActivity"
+            android:label="@string/title_activity_profile_creation_type"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.MainActivity" />
         </activity>
     </application>
 

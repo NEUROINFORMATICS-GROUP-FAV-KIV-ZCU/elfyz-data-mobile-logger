@@ -171,7 +171,7 @@ public abstract class AForaDeviceCommunicatorTask<T_Data, T_Listener> extends As
     int hour = 0x1F & message[5];
 
     Calendar time = new GregorianCalendar();
-    time.setTimeZone(TimeZone.getTimeZone("UTC"));
+    time.setTimeZone(TimeZone.getTimeZone("UTC"));  //TODO select timezone
     time.set(Calendar.YEAR, year);
     time.set(Calendar.MONTH, month - 1);
     time.set(Calendar.DAY_OF_MONTH, day);

@@ -9,6 +9,11 @@ import android.os.Parcelable;
 public class Profile implements Parcelable {
   private long id;
   private String profileName;
+  
+  private String email;
+  private String name;
+  private String surname;
+  
   private Calendar birthDate;
   private Gender gender;
   private int height;
@@ -18,10 +23,13 @@ public class Profile implements Parcelable {
   
   public Profile() {}
   
-  public Profile(long id, String profileName, Calendar birthDate, Gender gender,
+  public Profile(long id, String profileName, String email, String name, String surname, Calendar birthDate, Gender gender,
       int height, int activityLevel, boolean lifetimeAthlete) {
     this.id = id;
     this.profileName = profileName;
+    this.email = email;
+    this.name = name;
+    this.surname = surname;
     this.birthDate = birthDate;
     this.gender = gender;
     this.height = height;
@@ -45,6 +53,24 @@ public class Profile implements Parcelable {
   }
   public void setProfileName(String profileName) {
     this.profileName = profileName;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
+  }
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+  public String getSurname() {
+    return surname;
+  }
+  public void setSurname(String surname) {
+    this.surname = surname;
   }
   public Calendar getBirthDate() {
     return birthDate;
@@ -87,6 +113,9 @@ public class Profile implements Parcelable {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(id);
     dest.writeString(profileName);
+    dest.writeString(email);
+    dest.writeString(name);
+    dest.writeString(surname);
     dest.writeLong(birthDate.getTimeInMillis());
     dest.writeString(gender.getLetter());
     dest.writeInt(height);
@@ -97,6 +126,9 @@ public class Profile implements Parcelable {
   public void readFromParcel(Parcel source) {
     id = source.readLong();
     profileName = source.readString();
+    email = source.readString();
+    name = source.readString();
+    surname = source.readString();
     birthDate = Calendar.getInstance();
       birthDate.setTimeInMillis(source.readLong());
     gender = Gender.fromLetter(source.readString());

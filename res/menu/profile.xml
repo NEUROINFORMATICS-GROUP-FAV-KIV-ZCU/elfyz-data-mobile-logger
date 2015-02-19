@@ -1,9 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_connect_eegbase"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_cloud"
+        android:title="@string/action_connect_eegbase"/>
 
 </menu>

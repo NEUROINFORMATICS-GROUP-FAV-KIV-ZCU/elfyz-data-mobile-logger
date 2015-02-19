@@ -25,10 +25,6 @@ public class Application extends android.app.Application {
     return db;
   }
   
-  public Profile getUserProfile() {
-    return userProfile;
-  }
-  
   public Profile getUserProfileOrLogIn() {
     if(userProfile == null) {
       Intent login = new Intent(this, MainActivity.class);
