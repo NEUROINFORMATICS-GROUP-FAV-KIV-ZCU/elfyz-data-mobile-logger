@@ -4,7 +4,7 @@
         android:id="@+id/action_create_new_profile"
         android:orderInCategory="10"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_action_add_person"
         android:title="@string/create_new_profile" />
 
     <item
