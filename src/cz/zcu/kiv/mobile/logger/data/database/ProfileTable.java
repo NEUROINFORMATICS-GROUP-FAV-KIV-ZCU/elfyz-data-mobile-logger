@@ -30,7 +30,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
   public static final String COLUMN_ACTIVITY_LEVEL = "activity_level";
   public static final String COLUMN_LIFETIME_ATHLETE = "lifetime_athlete";
   
-  private static final String[] COLUMNS_PROFILES_ALL = new String[]{COLUMN_ID, COLUMN_PROFILE_NAME, COLUMN_BIRTH_DATE, COLUMN_GENDER, COLUMN_HEIGHT, COLUMN_ACTIVITY_LEVEL, COLUMN_LIFETIME_ATHLETE};
+  private static final String[] COLUMNS_PROFILES_ALL = new String[]{COLUMN_ID, COLUMN_PROFILE_NAME, COLUMN_EMAIL, COLUMN_NAME, COLUMN_SURNAME, COLUMN_BIRTH_DATE, COLUMN_GENDER, COLUMN_HEIGHT, COLUMN_ACTIVITY_LEVEL, COLUMN_LIFETIME_ATHLETE};
   private static final String[] COLUMNS_PROFILE_NAMES = new String[]{COLUMN_ID, COLUMN_PROFILE_NAME};
     
   private static final String ORDER_PROFILES_ALL_ASC = COLUMN_PROFILE_NAME + " ASC";
