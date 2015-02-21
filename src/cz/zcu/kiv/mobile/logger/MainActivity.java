@@ -106,29 +106,35 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
     switch (item.getItemId()) {
       case R.id.context_delete:
         new AlertDialog.Builder(this)
-        .setTitle(R.string.dialog_delete_profile_title)
-        .setMessage(R.string.dialog_delete_profile_message)
-        .setPositiveButton(R.string.dialog_delete_positive_button, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-              try {
-                dbProfileTable.deleteProfile(profileID);
+          .setTitle(R.string.dialog_delete_profile_title)
+          .setMessage(R.string.dialog_delete_profile_message)
+          .setPositiveButton(R.string.dialog_delete_positive_button, new OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                try {
+                  dbProfileTable.deleteProfile(profileID);
+                }
+                catch (DatabaseException e) {
+                  Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
+                  AndroidUtils.toast(MainActivity.this, R.string.profile_delete_fail);
+                }
+                dialog.dismiss();
               }
-              catch (DatabaseException e) {
-                Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
-                AndroidUtils.toast(MainActivity.this, R.string.profile_delete_fail);
+            })
+          .setNegativeButton(R.string.dialog_cancel_button, new OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
               }
-              dialog.dismiss();
-            }
-          })
-        .setNegativeButton(R.string.dialog_cancel_button, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-              dialog.dismiss();
-            }
-          })
-        .show();
-      return true;
+            })
+          .show();
+        return true;
+        
+      case R.id.context_edit:
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.EXTRA_PROFILE_ID, profileID);
+        startActivity(intent);
+        return true;
   
       default:
         return super.onContextItemSelected(item);

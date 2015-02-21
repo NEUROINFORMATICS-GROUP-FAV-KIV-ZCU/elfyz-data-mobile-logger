@@ -69,11 +69,15 @@ public class ProfileLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> { //
       observer = new ProfileDataObserver() {
         @Override
         public void onProfileDeleted(long profileID) {
-          onContentChanged(); //TODO on main thread???
+          onContentChanged();
         }
         @Override
         public void onProfileAdded(long id) {
           onContentChanged();
+        }
+        @Override
+        public void onProfileUpdated(long profileID) {
+          onContentChanged(); //TODO needed only if profile name changed
         }
       };
       dbProfile.addObserver(observer);

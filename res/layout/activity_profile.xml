@@ -158,12 +158,12 @@
           android:checked="false" />
       
       <Button 
+          android:id="@+id/btn_save_profile"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal"
           android:text="@string/profile_create_profile"
-          android:onClick="createProfile"/>
-      
+          android:onClick="saveProfile"/>
     </LinearLayout>
-    
 </ScrollView>
+    

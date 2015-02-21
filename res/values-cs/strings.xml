@@ -26,6 +26,7 @@
     <string name="title_activity_profile">Profil</string>
     <string name="title_activity_weight_scale">Váha</string>
     <string name="delete">Smazat</string>
+    <string name="edit">Upravit</string>
     <string name="dialog_delete_positive_button">Smazat</string>
     <string name="dialog_cancel_button">Zrušit</string>
     <string name="dialog_delete_profile_title">Smazat profil</string>
@@ -52,10 +53,12 @@
     <string name="profile_activity_level">Úroveň aktivity:</string>
     <string name="profile_lifetime_athlete">Celoživotní atlet:</string>
     <string name="profile_create_profile">Vytvořit profil</string>
+    <string name="profile_update_profile">Uložit profile</string>
     <string name="profile_specify_profile_name">Zadejte název profilu.</string>
     <string name="profile_specify_birth_date">Vyberte datum narození.</string>
     <string name="profile_specify_height">Zadejte svou výšku.</string>
     <string name="profile_duplicit_profile_name">Profil s tímto názvem již existuje.</string>
+    <string name="profile_duplicit_email">Tento email byl již použit.</string>
     <string name="profile_delete_fail">Nepodařilo se smazat profil.</string>
     <string name="profile_load_fail">Nepodařilo se načíst vybraný profil.</string>
     <string name="alert_device_doesnt_support_bluetooth">Toto zařízení nepodporuje Bluetooth.</string>
@@ -103,5 +106,6 @@
     <string name="profile_name">Jméno</string>
     <string name="profile_surname">Příjmení</string>
     <string name="action_sign_in">Přihlásit</string>
+    <string name="profile_profile_not_found">Požadovaný profil nebyl nalezen</string>
 
 </resources>

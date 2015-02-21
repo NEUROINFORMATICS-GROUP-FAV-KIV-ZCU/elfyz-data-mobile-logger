@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,21 +22,26 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
+import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.login.LoginActivity;
+import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 
 
 public class ProfileActivity extends Activity implements OnDateSetListener {
   private static final String TAG = ProfileActivity.class.getSimpleName();
   
-  private static final String SAVED_SELECTED_DATE = "save.selected.date";
+  public static final String EXTRA_PROFILE_ID = "extra.profile.id";
+  
+  private static final String STATE_SELECTED_DATE = "state.selected.date";
+  private static final String STATE_PROFILE = "extra.profile";
   private static final int REQUEST_LOGIN = 5;
   
   private EditText vProfileName;
@@ -52,6 +58,8 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
   
   private ProfileTable dbProfile;
   private Calendar selectedDate;
+  
+  private Profile profile;
   
 
   @Override
@@ -75,18 +83,58 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     
     dbProfile = Application.getInstance().getDatabase().getProfileTable();
     
-    if(state != null && state.containsKey(SAVED_SELECTED_DATE)){
-      selectedDate = Calendar.getInstance();
-      selectedDate.setTimeInMillis(state.getLong(SAVED_SELECTED_DATE));
-      updateBirthDate();
+    if(state == null) {
+      long profileID = getIntent().getLongExtra(EXTRA_PROFILE_ID, -1L);
+      if(profileID > 0L) {
+        try {
+          profile = dbProfile.getProfile(profileID);
+        }
+        catch (EntryNotFoundException e) {
+          AndroidUtils.toast(this, R.string.profile_profile_not_found);
+          Log.e(TAG, "Failed to load profile with ID: " + profileID, e);
+          finish();
+          return;
+        }
+        catch (DatabaseException e) {
+          AndroidUtils.toast(this, "Failed to load profile from database.");
+          Log.e(TAG, "Failed to load profile from DB: profileID=" + profileID);
+          finish();
+          return;
+        }
+        
+        setValues(profile);
+        ((Button) findViewById(R.id.btn_save_profile)).setText(R.string.profile_update_profile);
+      }
     }
+    else {
+      if(state.containsKey(STATE_SELECTED_DATE)){
+        selectedDate = Calendar.getInstance();
+        selectedDate.setTimeInMillis(state.getLong(STATE_SELECTED_DATE));
+        updateBirthDate();
+      }
+      profile = state.getParcelable(STATE_PROFILE);
+    }
+  }
+
+  private void setValues(Profile profile) {
+    vProfileName.setText(profile.getProfileName());
+    vEmail.setText(profile.getEmail());
+    vName.setText(profile.getName());
+    vSurname.setText(profile.getSurname());
+    selectedDate = profile.getBirthDate();
+    updateBirthDate();
+    vGender.setSelection(profile.getGender().getIndex());
+    vHeight.setText(String.valueOf(profile.getHeight()));
+    vActivityLevel.check(
+        vActivityLevel.getChildAt(profile.getActivityLevel() -1).getId());
+    vLifetimeAthlete.setChecked(profile.isLifetimeAthlete());
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     if(selectedDate != null)
-      outState.putLong(SAVED_SELECTED_DATE, selectedDate.getTimeInMillis());
+      outState.putLong(STATE_SELECTED_DATE, selectedDate.getTimeInMillis());
   }
   
 
@@ -128,7 +176,7 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     }
   }
 
-  public void createProfile(View view){
+  public void saveProfile(View view){
     String profileName = vProfileName.getText().toString();
     Gender gender = (Gender) vGender.getSelectedItem();
     String email = vEmail.getText().toString();
@@ -142,28 +190,51 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     boolean lifetimeAthlete = vLifetimeAthlete.isChecked();
     
     if(profileName.length() == 0) {
-      Toast.makeText(this, R.string.profile_specify_profile_name, Toast.LENGTH_LONG).show();
+      AndroidUtils.toast(this, R.string.profile_specify_profile_name);
       return;
     }
     if(selectedDate == null) {
-      Toast.makeText(this, R.string.profile_specify_birth_date, Toast.LENGTH_LONG).show();
+      AndroidUtils.toast(this, R.string.profile_specify_birth_date);
       return;
     }
     if(height < 0) {
-      Toast.makeText(this, R.string.profile_specify_height, Toast.LENGTH_LONG).show();
+      AndroidUtils.toast(this, R.string.profile_specify_height);
       return;
     }
     
+    if(profile == null)
+      profile = new Profile();
+    
+    profile.setProfileName(profileName);
+    profile.setEmail(email);
+    profile.setName(name);
+    profile.setSurname(surname);
+    profile.setBirthDate(selectedDate);
+    profile.setGender(gender);
+    profile.setHeight(height);
+    profile.setActivityLevel(activityLevel);
+    profile.setLifetimeAthlete(lifetimeAthlete);
+    
     try {
-      dbProfile.createProfile(profileName, email, name, surname, selectedDate, gender, height, activityLevel, lifetimeAthlete);
+      if(profile.getId() > 0L)
+        dbProfile.updateProfile(profile);
+      else
+        dbProfile.createProfile(profile);
     }
     catch(DuplicateEntryException e) {
-      Toast.makeText(this, R.string.profile_duplicit_profile_name, Toast.LENGTH_LONG).show();
-      Log.i(TAG, "Tried to create profile with duplicate name: " + profileName, e);
+      if(ProfileTable.COLUMN_PROFILE_NAME.equals(e.getColumnName())) {
+        AndroidUtils.toast(this, R.string.profile_duplicit_profile_name);
+        vProfileName.requestFocus();
+      }
+      else if(ProfileTable.COLUMN_EMAIL.equals(e.getColumnName())) {
+        AndroidUtils.toast(this, R.string.profile_duplicit_email);
+        vEmail.requestFocus();
+      }
+      Log.i(TAG, "Tried to save profile with duplicit value.", e);
       return;
     }
     catch(DatabaseException e) {
-      Toast.makeText(this, R.string.database_error, Toast.LENGTH_LONG).show();
+      AndroidUtils.toast(this, R.string.database_error);
       Log.e(TAG, "Failed to create new profile with name: " + profileName, e);
       return;
     }

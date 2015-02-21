@@ -27,6 +27,7 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_weight_scale">Weight scale</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
     <string name="dialog_delete_positive_button">Delete</string>
     <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_delete_profile_title">Delete profile</string>
@@ -53,10 +54,12 @@
     <string name="profile_activity_level">Activity level:</string>
     <string name="profile_lifetime_athlete">Lifetime athlete:</string>
     <string name="profile_create_profile">Create profile</string>
+    <string name="profile_update_profile">Update profile</string>
     <string name="profile_specify_profile_name">Specify profile name.</string>
     <string name="profile_specify_birth_date">Specify date of birth.</string>
     <string name="profile_specify_height">Specify your height.</string>
     <string name="profile_duplicit_profile_name">Profile with this name already exists.</string>
+    <string name="profile_duplicit_email">This email address is already in use.</string>
     <string name="profile_load_fail">Failed to load selected profile.</string>
     <string name="profile_delete_fail">Failed to delete profile.</string>
     <string name="alert_device_doesnt_support_bluetooth">This device does not support Bluetooth.</string>
@@ -108,5 +111,6 @@
     <string name="profile_name">Name</string>
     <string name="profile_surname">Surname</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="profile_profile_not_found">Specified profile not found</string>
 
 </resources>

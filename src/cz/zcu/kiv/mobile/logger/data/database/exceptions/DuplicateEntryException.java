@@ -6,33 +6,23 @@ public class DuplicateEntryException extends DatabaseException {
   private String columnName;
 
   
-  public DuplicateEntryException() {
-    super();
-  }
-
-  public DuplicateEntryException(String detailMessage, Throwable throwable) {
-    super(detailMessage, throwable);
-  }
-
-  public DuplicateEntryException(String detailMessage) {
-    super(detailMessage);
-  }
-
-  public DuplicateEntryException(Throwable throwable) {
-    super(throwable);
-  }
-
-  public DuplicateEntryException(Throwable throwable, String columnName) {  //TODO místo message jen column name a sestavit zprávu
-    super(throwable);
+  public DuplicateEntryException(String columnName, Throwable throwable) {
+    super(prepareMessage(columnName), throwable);
     this.columnName = columnName;
   }
-  
+
+  public DuplicateEntryException(String columnName) {
+    super(prepareMessage(columnName));
+    this.columnName = columnName;
+  }
+
   
   public String getColumnName() {
     return columnName;
   }
+
   
-  public void setColumnName(String columnName) {
-    this.columnName = columnName;
+  private static String prepareMessage(String columnName) {
+    return "Failed to persist data because of duplicit value on unique column: " + columnName;
   }
 }

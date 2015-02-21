@@ -9,11 +9,9 @@ import android.os.Parcelable;
 public class Profile implements Parcelable {
   private long id;
   private String profileName;
-  
   private String email;
   private String name;
   private String surname;
-  
   private Calendar birthDate;
   private Gender gender;
   private int height;
