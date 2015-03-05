@@ -112,5 +112,9 @@
     <string name="profile_surname">Surname</string>
     <string name="action_sign_in">Sign in</string>
     <string name="profile_profile_not_found">Specified profile not found</string>
+    <string name="action_load_all_records">Load all records</string>
+    <string name="action_select_bt">Select Bluetooth device</string>
+    <string name="fail_bt_not_selected">Bluetooth device is not selected</string>
+    <string name="no_device_selected">No device selected</string>
 
 </resources>

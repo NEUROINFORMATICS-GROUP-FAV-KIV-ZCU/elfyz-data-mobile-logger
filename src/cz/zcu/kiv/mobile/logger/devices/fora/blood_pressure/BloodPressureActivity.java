@@ -2,7 +2,6 @@ package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
 
 import java.util.List;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +38,8 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
     tvDiastolic = (TextView) findViewById(R.id.tv_diastolic);
     tvMeanPressure = (TextView) findViewById(R.id.tv_mean_pressure);
     tvHeartRate = (TextView) findViewById(R.id.tv_heart_rate);
+    
+    getActionBar().setSubtitle(R.string.no_device_selected);
   }
 
   @Override
@@ -47,17 +48,21 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
     getMenuInflater().inflate(R.menu.blood_pressure, menu);
     return true;
   }
-
+  
+  @Override
+  protected void loadRecords(boolean justLatest) {
+    if(btDevice == null) {
+      AndroidUtils.toast(this, R.string.fail_bt_not_selected);
+    }
+    else {
+      new BloodPressureDeviceCommunicatorTask(btDevice, this, justLatest).execute();
+    }
+  }
 
   public void showAllRecords(View button){
     startActivity(new Intent(this, BloodPressureListActivity.class));
   }
 
-  @Override
-  protected void onBluetoothDeviceSelected(BluetoothDevice device) {
-    new BloodPressureDeviceCommunicatorTask(device, this).execute();
-  }
-  
   private void showValues(String time, String systolic, String diastolic, String mean, String heartRate){
     tvTime.setText(time);
     tvSystolic.setText(systolic);

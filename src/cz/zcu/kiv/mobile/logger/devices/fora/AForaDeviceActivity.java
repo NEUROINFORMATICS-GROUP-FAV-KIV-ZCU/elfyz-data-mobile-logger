@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
@@ -24,9 +25,11 @@ public abstract class AForaDeviceActivity extends Activity {
   protected static final int REQUEST_PICK_BT_DEVICE = 2;
   
   protected static final String STATE_INCAPABLE = "state_incapable";
+  protected static final String STATE_BT_DEVICE = "state_bt_device";
   
   protected BluetoothAdapter bt;
   protected boolean communicationIncapable = false;
+  protected BluetoothDevice btDevice;
   
   protected DateFormat timeFormat;
   protected Profile userProfile;
@@ -57,12 +60,11 @@ public abstract class AForaDeviceActivity extends Activity {
   }
 
   
-  public void startCommunication(View button) {
+  public void selectBtDevice(View button) {
     if (communicationIncapable) {
       AndroidUtils.toast(this, R.string.alert_communication_not_possible);
     }
     else if(bt.isEnabled()) {
-      //TODO tlačítko na výběr BT device (nebo takto vždy při každém čtení?)
       Intent pickDeviceIntent = new Intent(this, BluetoothDevicePickerActivity.class);
       startActivityForResult(pickDeviceIntent, REQUEST_PICK_BT_DEVICE);
     }
@@ -83,13 +85,13 @@ public abstract class AForaDeviceActivity extends Activity {
           return;
         }
         AndroidUtils.toast(this, R.string.alert_bluetooth_must_be_enabled);
-        return;
+        break;
   
       case REQUEST_PICK_BT_DEVICE:
         if(resultCode == RESULT_OK){
           BluetoothDevice device = data.getParcelableExtra(BluetoothDevicePickerActivity.EXTRA_DEVICE);
-          if(device != null){
-            onBluetoothDeviceSelected(device);
+          if(device != null) {
+            setBtDevice(device);
             return;
           }
         }
@@ -101,19 +103,49 @@ public abstract class AForaDeviceActivity extends Activity {
         break;
     }
   }
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    case R.id.action_select_bt:
+      selectBtDevice(null);
+      return true;
+    case R.id.action_load_all_records:
+      loadRecords(false);
+      return true;
+
+    default:
+      return super.onOptionsItemSelected(item);
+    }
+  }
 
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putBoolean(STATE_INCAPABLE, communicationIncapable);
+    if(btDevice != null)
+      outState.putParcelable(STATE_BT_DEVICE, btDevice);
   }
   
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
     communicationIncapable = savedInstanceState.getBoolean(STATE_INCAPABLE);
+    setBtDevice(savedInstanceState.<BluetoothDevice>getParcelable(STATE_BT_DEVICE));
   }
   
-  protected abstract void onBluetoothDeviceSelected(BluetoothDevice device);
+  private void setBtDevice(BluetoothDevice device) {
+    if(device != null) {
+      btDevice = device;
+      getActionBar().setSubtitle(device.getName());
+    }
+  }
+
+
+  public void loadLastRecord(View view) {
+    loadRecords(true);
+  }
+
+  protected abstract void loadRecords(boolean justLatest);
 }

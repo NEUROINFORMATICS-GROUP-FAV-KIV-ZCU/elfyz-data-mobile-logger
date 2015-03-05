@@ -2,7 +2,6 @@ package cz.zcu.kiv.mobile.logger.devices.fora.glucose;
 
 import java.util.List;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +38,8 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
     tvTemperature = (TextView) findViewById(R.id.tv_temperature);
     tvCode = (TextView) findViewById(R.id.tv_code);
     tvType = (TextView) findViewById(R.id.tv_type);
+    
+    getActionBar().setSubtitle(R.string.no_device_selected);
   }
 
   @Override
@@ -47,17 +48,22 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
     getMenuInflater().inflate(R.menu.glucose_meter, menu);
     return true;
   }
+  
+  @Override
+  protected void loadRecords(boolean justLatest) {
+    if(btDevice == null) {
+      AndroidUtils.toast(this, R.string.fail_bt_not_selected);
+    }
+    else {
+      new GlucoseMeterDeviceCommunicatorTask(btDevice, this, justLatest).execute();
+    }
+  }
 
 
   public void showAllRecords(View button){
     startActivity(new Intent(this, GlucoseMeterListActivity.class));
   }
 
-  @Override
-  protected void onBluetoothDeviceSelected(BluetoothDevice device) {
-    new GlucoseMeterDeviceCommunicatorTask(device, this).execute();
-  }
-  
   private void showValues(String time, String glucose, String temperature, String code, String type){
     tvTime.setText(time);
     tvGlucose.setText(glucose);

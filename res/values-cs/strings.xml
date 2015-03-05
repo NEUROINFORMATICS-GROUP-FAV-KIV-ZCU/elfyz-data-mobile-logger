@@ -107,5 +107,9 @@
     <string name="profile_surname">Příjmení</string>
     <string name="action_sign_in">Přihlásit</string>
     <string name="profile_profile_not_found">Požadovaný profil nebyl nalezen</string>
+    <string name="action_load_all_records">Načíst všechny záznamy</string>
+    <string name="action_select_bt">Vybrat zařízení Bluetooth</string>
+    <string name="fail_bt_not_selected">Není vybráno zařízení Bluetooth</string>
+    <string name="no_device_selected">Zařízení nevybráno</string>
 
 </resources>

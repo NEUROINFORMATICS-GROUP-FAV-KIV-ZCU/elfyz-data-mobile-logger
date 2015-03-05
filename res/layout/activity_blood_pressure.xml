@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:ems="6"
             android:text="@string/load_from_device"
-            android:onClick="startCommunication" />
+            android:onClick="selectBtDevice" />
         
         <View
             android:layout_height="0dip"
