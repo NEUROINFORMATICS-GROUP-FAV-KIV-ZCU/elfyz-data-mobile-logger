@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:ems="6"
             android:text="@string/load_from_device"
-            android:onClick="selectBtDevice" />
+            android:onClick="loadLastRecord" />
         
         <View
             android:layout_height="0dip"
