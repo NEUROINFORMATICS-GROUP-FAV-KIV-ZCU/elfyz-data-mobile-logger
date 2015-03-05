@@ -10,15 +10,19 @@ import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand.InsertBatchCommandListener;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertGlucoseMeasurementBatchCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertGlucoseMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.AForaDeviceActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class GlucoseMeterActivity extends AForaDeviceActivity implements GlucoseMeterDeviceListener, InsertCommandListener {
+public class GlucoseMeterActivity extends AForaDeviceActivity implements GlucoseMeterDeviceListener, InsertCommandListener, InsertBatchCommandListener {
   private static final String TAG = GlucoseMeterActivity.class.getSimpleName();
   
   private TextView tvTime;
@@ -101,7 +105,10 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
           String.valueOf(latest.getType()));
       
 
-      new InsertGlucoseMeasurementCommand(userProfile.getId(), latest, this).execute();
+      if(result.size() == 1)
+        new InsertGlucoseMeasurementCommand(userProfile.getId(), latest, this).execute();
+      else
+        new InsertGlucoseMeasurementBatchCommand(userProfile.getId(), result, true, this).execute();
     }
   }
 
@@ -112,6 +119,15 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
   public void onInsertCommandFinished(AInsertMeasurementCommand<?> command, AsyncTaskResult<Long> result) {
     if(result.getError() != null) {
       Log.e(TAG, "Failed to insert record to DB.", result.getError());
+      if(!(result.getError() instanceof DuplicateEntryException))
+        AndroidUtils.toast(this, R.string.fail_db_insert);
+    }
+  }
+
+  @Override
+  public void onInsertBatchCommandFinished( AInsertMeasurementBatchCommand<?> command, AsyncTaskResult<List<Long>> result) {
+    if(result.getError() != null) {
+      Log.e(TAG, "Failed to insert record batch to DB.", result.getError());
       AndroidUtils.toast(this, R.string.fail_db_insert);
     }
   }

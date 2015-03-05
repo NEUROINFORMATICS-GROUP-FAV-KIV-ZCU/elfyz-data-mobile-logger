@@ -1,11 +1,15 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeasurement;
 
 
@@ -63,16 +67,8 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
   public long addMeasurement(long userID, GlucoseMeasurement measurement) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
-    ContentValues values = new ContentValues(1);
-      values.put(COLUMN_USER_ID, userID);
-      values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
-      values.put(COLUMN_GLUCOSE, measurement.getGlucose());
-      values.put(COLUMN_TEMPERATURE, measurement.getTemperature());
-      values.put(COLUMN_CODE, measurement.getCode());
-      values.put(COLUMN_TYPE, measurement.getType());
-    
     try{
-      long id =  db.insertOrThrow(TABLE_NAME, null, values);
+      long id =  db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
       
       for (GDataObserver observer : observers) {
         observer.onGlucoseMeasurementAdded(id);
@@ -83,6 +79,38 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
     catch(Exception e){
       throw new DatabaseException(e);
     }
+  }
+
+  public List<Long> addMeasurements(long userID, List<GlucoseMeasurement> measurements, boolean ignoreDuplicates) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    List<Long> ids = new ArrayList<Long>(measurements.size());
+    
+    try {
+      db.beginTransaction();
+      
+      for (GlucoseMeasurement measurement : measurements) {
+        try {
+          ids.add(insertMeasurement(db, userID, measurement));
+        }
+        catch (DuplicateEntryException e) {
+          if(!ignoreDuplicates) throw e;
+        }
+      }
+      
+      db.setTransactionSuccessful();
+    }
+    catch (Exception e) {
+      throw handleException(e);
+    }
+    finally {
+      db.endTransaction();
+    }
+
+    for (GDataObserver observer : observers) {
+      observer.onGlucoseMeasurementAdded(ids);
+    }
+    
+    return ids;
   }
 
   public Cursor getMeasurements(long profileID) throws DatabaseException {
@@ -97,9 +125,31 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
     }
   }
   
+  private long insertMeasurement(SQLiteDatabase db, long userID, GlucoseMeasurement measurement) throws DatabaseException {
+    try {
+      return db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
+    }
+    catch (Exception e) {
+      throw handleException(e);
+    }
+  }
+  
+  
+  private ContentValues makeValues(long userID, GlucoseMeasurement measurement) {
+    ContentValues values = new ContentValues(6);
+      values.put(COLUMN_USER_ID, userID);
+      values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
+      values.put(COLUMN_GLUCOSE, measurement.getGlucose());
+      values.put(COLUMN_TEMPERATURE, measurement.getTemperature());
+      values.put(COLUMN_CODE, measurement.getCode());
+      values.put(COLUMN_TYPE, measurement.getType());
+    return values;
+  }
+  
   
   
   public interface GDataObserver {
     void onGlucoseMeasurementAdded(long id);
+    void onGlucoseMeasurementAdded(List<Long> ids);
   }
 }

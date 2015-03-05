@@ -2,12 +2,10 @@ package cz.zcu.kiv.mobile.logger.data.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
@@ -93,17 +91,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       return id;
     }
     catch(Exception e){
-      if(e instanceof SQLiteConstraintException) {
-        String columnName = null;
-        
-        if(e.getMessage().equals("column " + COLUMN_PROFILE_NAME + " is not unique (code 19)"))
-          columnName = COLUMN_PROFILE_NAME;
-        else if(e.getMessage().equals("column " + COLUMN_EMAIL + " is not unique (code 19)"))
-          columnName = COLUMN_EMAIL;
-          
-        throw new DuplicateEntryException(columnName, e);
-      }
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
   
@@ -121,18 +109,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       }
     }
     catch(Exception e){
-      if(e instanceof SQLiteConstraintException) {
-        String columnName = null;
-        
-        if(e.getMessage().equals("column " + COLUMN_PROFILE_NAME + " is not unique (code 19)"))
-          columnName = COLUMN_PROFILE_NAME;
-        else if(e.getMessage().equals("column " + COLUMN_EMAIL + " is not unique (code 19)"))
-          columnName = COLUMN_EMAIL;
-          
-        if(columnName != null)
-          throw new DuplicateEntryException(columnName, e);
-      }
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
 
@@ -150,7 +127,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       }
     }
     catch(Exception e){
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
 
@@ -161,7 +138,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       return db.query(TABLE_NAME, COLUMNS_PROFILE_NAMES, null, null, null, null, ORDER_PROFILES_ALL_ASC);
     }
     catch(Exception e){
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
   
@@ -192,9 +169,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       }
     }
     catch(Exception e){
-      if(e instanceof DatabaseException)
-        throw (DatabaseException) e;
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
 

@@ -3,10 +3,14 @@ package cz.zcu.kiv.mobile.logger.data.database;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,6 +19,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class ATable<T_Observer> {
   protected static final int VALUE_TRUE = 1;
   protected static final int VALUE_FALSE = 0;
+
+  private static final Pattern PATTERN_DUPLICATE = Pattern.compile("column (.*) is not unique \\(code 19\\)");
 
   public static final String COLUMN_ID = "_id";
   
@@ -51,6 +57,18 @@ public abstract class ATable<T_Observer> {
     }
   }
   
+  public DatabaseException handleException(Exception e)  {
+    if(e instanceof SQLiteConstraintException) {
+      Matcher matcher = PATTERN_DUPLICATE.matcher(e.getMessage());
+      if(matcher.matches()) {
+        return new DuplicateEntryException(matcher.group(1), e);
+      }
+    }
+    if(e instanceof DatabaseException) {
+      return (DatabaseException) e;
+    }
+    return new DatabaseException(e);
+  }
   
   protected String getString(Cursor c, String columnName){
     return c.getString(c.getColumnIndex(columnName));

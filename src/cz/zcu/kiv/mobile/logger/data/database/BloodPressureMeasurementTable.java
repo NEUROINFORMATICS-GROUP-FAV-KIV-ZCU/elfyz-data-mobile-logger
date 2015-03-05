@@ -1,11 +1,15 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
 
 
@@ -63,16 +67,8 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
   public long addMeasurement(long userID, BloodPressureMeasurement measurement) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
-    ContentValues values = new ContentValues(1);
-      values.put(COLUMN_USER_ID, userID);
-      values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
-      values.put(COLUMN_SYSTOLIC, measurement.getSystolicPressure());
-      values.put(COLUMN_DIASTOLIC, measurement.getDiastolicPressure());
-      values.put(COLUMN_MEAN_PRESSURE, measurement.getMeanPressure());
-      values.put(COLUMN_HEART_RATE, measurement.getHeartRate());
-    
     try{
-      long id =  db.insertOrThrow(TABLE_NAME, null, values);
+      long id =  db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
       
       for (BPDataObserver observer : observers) {
         observer.onBPMeasurementAdded(id);
@@ -83,6 +79,38 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
     catch(Exception e){
       throw new DatabaseException(e);
     }
+  }
+
+  public List<Long> addMeasurements(long userID, List<BloodPressureMeasurement> measurements, boolean ignoreDuplicates) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    List<Long> ids = new ArrayList<Long>(measurements.size());
+    
+    try {
+      db.beginTransaction();
+      
+      for (BloodPressureMeasurement measurement : measurements) {
+        try {
+          ids.add(insertMeasurement(db, userID, measurement));
+        }
+        catch (DuplicateEntryException e) {
+          if(!ignoreDuplicates) throw e;
+        }
+      }
+      
+      db.setTransactionSuccessful();
+    }
+    catch (Exception e) {
+      throw handleException(e);
+    }
+    finally {
+      db.endTransaction();
+    }
+    
+    for (BPDataObserver observer : observers) {
+      observer.onBPMeasurementBatchAdded(ids);
+    }
+    
+    return ids;
   }
 
   public Cursor getMeasurements(long profileID) throws DatabaseException {
@@ -96,10 +124,32 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
       throw new DatabaseException(e);
     }
   }
+    
+  private long insertMeasurement(SQLiteDatabase db, long userID, BloodPressureMeasurement measurement) throws DatabaseException {
+    try {
+      return db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
+    }
+    catch (Exception e) {
+      throw handleException(e);
+    }
+  }
+
+
+  private ContentValues makeValues(long userID, BloodPressureMeasurement measurement) {
+    ContentValues values = new ContentValues(6);
+      values.put(COLUMN_USER_ID, userID);
+      values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
+      values.put(COLUMN_SYSTOLIC, measurement.getSystolicPressure());
+      values.put(COLUMN_DIASTOLIC, measurement.getDiastolicPressure());
+      values.put(COLUMN_MEAN_PRESSURE, measurement.getMeanPressure());
+      values.put(COLUMN_HEART_RATE, measurement.getHeartRate());
+    return values;
+  }
   
   
   
   public interface BPDataObserver {
     void onBPMeasurementAdded(long id);
+    void onBPMeasurementBatchAdded(List<Long> ids);
   }
 }

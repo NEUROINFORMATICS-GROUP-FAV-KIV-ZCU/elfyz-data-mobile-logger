@@ -10,15 +10,19 @@ import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand;
+import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand.InsertBatchCommandListener;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
+import cz.zcu.kiv.mobile.logger.data.database.commands.InsertBloodPressureMeasurementBatchCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertBloodPressureMeasurementCommand;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.AForaDeviceActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureDeviceCommunicatorTask.BloodPressureDeviceListener;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class BloodPressureActivity extends AForaDeviceActivity implements BloodPressureDeviceListener, InsertCommandListener {
+public class BloodPressureActivity extends AForaDeviceActivity implements BloodPressureDeviceListener, InsertCommandListener, InsertBatchCommandListener {
   private static final String TAG = BloodPressureActivity.class.getSimpleName();
   
   private TextView tvTime;
@@ -98,9 +102,11 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
           String.valueOf(latest.getDiastolicPressure()),
           String.valueOf(latest.getMeanPressure()),
           String.valueOf(latest.getHeartRate()));
-      
 
-      new InsertBloodPressureMeasurementCommand(userProfile.getId(), latest, this).execute();
+      if(result.size() == 1)
+        new InsertBloodPressureMeasurementCommand(userProfile.getId(), latest, this).execute();
+      else
+        new InsertBloodPressureMeasurementBatchCommand(userProfile.getId(), result, true, this);
     }
   }
 
@@ -111,6 +117,15 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
   public void onInsertCommandFinished(AInsertMeasurementCommand<?> command, AsyncTaskResult<Long> result) {
     if(result.getError() != null) {
       Log.e(TAG, "Failed to insert record to DB.", result.getError());
+      if(!(result.getError() instanceof DuplicateEntryException))
+        AndroidUtils.toast(this, R.string.fail_db_insert);
+    }
+  }
+
+  @Override
+  public void onInsertBatchCommandFinished(AInsertMeasurementBatchCommand<?> command, AsyncTaskResult<List<Long>> result) {
+    if(result.getError() != null) {
+      Log.e(TAG, "Failed to insert record batch to DB.", result.getError());
       AndroidUtils.toast(this, R.string.fail_db_insert);
     }
   }

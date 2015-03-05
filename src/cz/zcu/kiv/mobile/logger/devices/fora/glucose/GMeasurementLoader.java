@@ -1,5 +1,7 @@
 package cz.zcu.kiv.mobile.logger.devices.fora.glucose;
 
+import java.util.List;
+
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
@@ -69,9 +71,12 @@ public class GMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>>
     
     if(observer == null) {
       observer = new GDataObserver() {
-        
         @Override
         public void onGlucoseMeasurementAdded(long id) {
+          onContentChanged();
+        }
+        @Override
+        public void onGlucoseMeasurementAdded(List<Long> ids) {
           onContentChanged();
         }
       };

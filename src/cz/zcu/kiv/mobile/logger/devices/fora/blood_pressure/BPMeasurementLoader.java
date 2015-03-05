@@ -1,5 +1,7 @@
 package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
 
+import java.util.List;
+
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
@@ -71,6 +73,10 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
       observer = new BPDataObserver() {
         @Override
         public void onBPMeasurementAdded(long id) {
+          onContentChanged();
+        }
+        @Override
+        public void onBPMeasurementBatchAdded(List<Long> ids) {
           onContentChanged();
         }
       };
