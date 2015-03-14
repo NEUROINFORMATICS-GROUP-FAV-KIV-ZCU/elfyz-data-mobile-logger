@@ -46,6 +46,7 @@ public class BluetoothDevicePickerActivity extends Activity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == REQUEST_PICK_DEVICE){
       unregisterReceiver();
+      finish();
     }
     else{
       super.onActivityResult(requestCode, resultCode, data);
