@@ -93,7 +93,6 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
       case R.id.action_create_new_profile:
         createNewProfile(null);
         return true;
-        //TODO edit profile
       default:
         return super.onOptionsItemSelected(item);
     }
