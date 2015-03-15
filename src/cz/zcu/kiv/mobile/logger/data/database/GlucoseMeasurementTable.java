@@ -46,6 +46,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
         + COLUMN_TEMPERATURE + " INTEGER NOT NULL,"
         + COLUMN_CODE + " INTEGER NOT NULL,"
         + COLUMN_TYPE + " INTEGER NOT NULL,"
+        + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_GLUCOSE + "," + COLUMN_TEMPERATURE + "," + COLUMN_CODE + "," + COLUMN_TYPE + "),"
         + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
         + ");");
   }
@@ -68,7 +69,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
     SQLiteDatabase db = getDatabase();
     
     try{
-      long id =  db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
+      long id =  insertMeasurement(db, userID, measurement);
       
       for (GDataObserver observer : observers) {
         observer.onGlucoseMeasurementAdded(id);
@@ -77,7 +78,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
       return id;
     }
     catch(Exception e){
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
 
@@ -93,7 +94,10 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
           ids.add(insertMeasurement(db, userID, measurement));
         }
         catch (DuplicateEntryException e) {
-          if(!ignoreDuplicates) throw e;
+          if(!ignoreDuplicates) {
+            ids.add(-1L);
+            throw e;
+          }
         }
       }
       
