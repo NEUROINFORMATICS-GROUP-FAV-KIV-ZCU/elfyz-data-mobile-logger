@@ -69,7 +69,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
     SQLiteDatabase db = getDatabase();
     
     try{
-      long id =  db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
+      long id =  insertMeasurement(db, userID, measurement);
       
       for (BPDataObserver observer : observers) {
         observer.onBPMeasurementAdded(id);
