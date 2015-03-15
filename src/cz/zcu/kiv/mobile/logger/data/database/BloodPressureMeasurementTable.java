@@ -46,6 +46,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
         + COLUMN_DIASTOLIC + " INTEGER NOT NULL,"
         + COLUMN_MEAN_PRESSURE + " INTEGER NOT NULL,"
         + COLUMN_HEART_RATE + " INTEGER NOT NULL,"
+        + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_SYSTOLIC + "," + COLUMN_DIASTOLIC + "," + COLUMN_MEAN_PRESSURE + "," + COLUMN_HEART_RATE + "),"
         + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
         + ");");
   }
@@ -77,7 +78,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
       return id;
     }
     catch(Exception e){
-      throw new DatabaseException(e);
+      throw handleException(e);
     }
   }
 
@@ -93,7 +94,10 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
           ids.add(insertMeasurement(db, userID, measurement));
         }
         catch (DuplicateEntryException e) {
-          if(!ignoreDuplicates) throw e;
+          if(!ignoreDuplicates) {
+            ids.add(-1L);
+            throw e;
+          }
         }
       }
       

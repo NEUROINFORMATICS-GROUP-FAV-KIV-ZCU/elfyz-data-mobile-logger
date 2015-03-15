@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database {
   private static final String DATABASE_NAME = "elfyz-data-mobile-logger.db";
-  private static final int DATABASE_VERSION = 3;
+  private static final int DATABASE_VERSION = 4;
 
   private SQLiteOpenHelper openHelper;
   

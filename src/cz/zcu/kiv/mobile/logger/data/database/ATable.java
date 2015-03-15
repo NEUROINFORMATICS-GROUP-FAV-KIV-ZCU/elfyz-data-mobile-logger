@@ -20,7 +20,7 @@ public abstract class ATable<T_Observer> {
   protected static final int VALUE_TRUE = 1;
   protected static final int VALUE_FALSE = 0;
 
-  private static final Pattern PATTERN_DUPLICATE = Pattern.compile("column (.*) is not unique \\(code 19\\)");
+  private static final Pattern PATTERN_DUPLICATE = Pattern.compile("column(s)? (.*) (is|are) not unique \\(code 19\\)");
 
   public static final String COLUMN_ID = "_id";
   
@@ -61,7 +61,7 @@ public abstract class ATable<T_Observer> {
     if(e instanceof SQLiteConstraintException) {
       Matcher matcher = PATTERN_DUPLICATE.matcher(e.getMessage());
       if(matcher.matches()) {
-        return new DuplicateEntryException(matcher.group(1), e);
+        return new DuplicateEntryException(matcher.group(2), e);
       }
     }
     if(e instanceof DatabaseException) {
