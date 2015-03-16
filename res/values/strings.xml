@@ -116,6 +116,8 @@
     <string name="action_select_bt">Select Bluetooth device</string>
     <string name="fail_bt_not_selected">Bluetooth device is not selected</string>
     <string name="no_device_selected">No device selected</string>
+    <string name="weight_scale_measure_ok">Measure OK</string>
+    <string name="service_now_running">Logger service is now running...</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>

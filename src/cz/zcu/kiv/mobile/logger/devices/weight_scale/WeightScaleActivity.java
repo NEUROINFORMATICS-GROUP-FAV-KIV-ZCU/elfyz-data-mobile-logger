@@ -163,7 +163,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
               setText(tvBoneMass, measurement.boneMass.intValue() != -1, measurement.boneMass.toString() + UNIT_KG);
               setText(tvActiveMetabolicRate, measurement.activeMetabolicRate.intValue() != -1, measurement.activeMetabolicRate.toString() + UNIT_KCAL);
               setText(tvBasalMetabolicRate, measurement.basalMetabolicRate.intValue() != -1, measurement.basalMetabolicRate.toString() + UNIT_KCAL);
-              setText(tvStatus, "M��en� OK");
+              setText(tvStatus, R.string.weight_scale_measure_ok);
             }
             else {
               setText(tvStatus, R.string.weight_scale_measuring_failed);

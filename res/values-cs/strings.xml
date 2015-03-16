@@ -111,5 +111,7 @@
     <string name="action_select_bt">Vybrat zařízení Bluetooth</string>
     <string name="fail_bt_not_selected">Není vybráno zařízení Bluetooth</string>
     <string name="no_device_selected">Zařízení nevybráno</string>
+    <string name="weight_scale_measure_ok">Měření OK</string>
+    <string name="service_now_running">Služba Mobile Logger spuštěna...</string>
 
 </resources>

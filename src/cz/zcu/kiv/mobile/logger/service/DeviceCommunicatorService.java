@@ -71,7 +71,7 @@ public class DeviceCommunicatorService extends Service {
     Notification notice = new NotificationCompat.Builder(service)
         .setContentTitle("Mobile Logger")
         .setOngoing(true)
-        .setTicker("Logger service is now running...")
+        .setTicker(getString(R.string.service_now_running))
         .setSmallIcon(R.drawable.ic_launcher)
         .setContentIntent(pendingManagementIntent)
         .build();
