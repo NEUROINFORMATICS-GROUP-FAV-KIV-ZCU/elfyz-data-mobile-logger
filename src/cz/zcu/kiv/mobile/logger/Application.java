@@ -1,6 +1,8 @@
 package cz.zcu.kiv.mobile.logger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 
@@ -41,5 +43,9 @@ public class Application extends android.app.Application {
   
   public static String getStringResource(int textId) {
     return instance.getString(textId);
+  }
+  
+  public static SharedPreferences getPreferences() {
+    return PreferenceManager.getDefaultSharedPreferences(instance);
   }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+  <EditTextPreference 
+      android:key="eegbase_url"
+      android:title="EEGbase portal URL"
+      android:defaultValue="http://eeg2.kiv.zcu.cz:8080/rest/user/login"/>
+</PreferenceScreen>

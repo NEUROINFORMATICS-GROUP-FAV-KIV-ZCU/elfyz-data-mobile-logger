@@ -93,6 +93,11 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
       case R.id.action_create_new_profile:
         createNewProfile(null);
         return true;
+        
+      case R.id.action_settings:
+        startActivity(new Intent(this, SettingsActivity.class));
+        return true;
+        
       default:
         return super.onOptionsItemSelected(item);
     }
