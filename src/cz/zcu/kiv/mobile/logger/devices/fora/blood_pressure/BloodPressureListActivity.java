@@ -30,7 +30,7 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
     
     userProfile = Application.getInstance().getUserProfileOrLogIn();
     
-    if(userProfile == null){  //TODO oddědit...
+    if(userProfile == null){  //TODO inherit...
       AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
       Log.e(TAG, "User must be logged in.");
       finish();

@@ -27,12 +27,10 @@ public class ServiceManagementActivity extends Activity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_close:
-        stopService(new Intent(this, DeviceCommunicatorService.class)); //TODO finishes only if none is bound to it, stop anyway?
-        break;
+        stopService(new Intent(this, DeviceCommunicatorService.class)); //TODO finishes only if none is bound to it, force stop?
+        return true;
   
-      default:
-        break;
+      default: return super.onOptionsItemSelected(item);
     }
-    return super.onOptionsItemSelected(item);
   }
 }

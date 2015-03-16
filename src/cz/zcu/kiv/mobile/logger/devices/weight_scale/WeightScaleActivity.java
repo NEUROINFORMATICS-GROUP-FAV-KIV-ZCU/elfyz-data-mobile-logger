@@ -145,7 +145,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
     boolean success = weightScaleDevice.requestAdvancedMeasurement(new IAdvancedMeasurementFinishedReceiver() {
       @Override
       public void onAdvancedMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
-          final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) { //TODO vlastní enumy s mapováním...
+          final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) { //TODO custom enums with mapping...?
         WeightScaleAdvancedMeasurement data = new WeightScaleAdvancedMeasurement(estTimestamp, eventFlags, status,
             measurement.activeMetabolicRate, measurement.basalMetabolicRate, measurement.bodyFatPercentage, measurement.bodyWeight,
             measurement.boneMass, measurement.hydrationPercentage, measurement.muscleMass);
@@ -181,7 +181,6 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
     }
   }
 
-  //TODO process
   protected void subscribeToWsEvents() {
     Log.i(TAG, "subscribing to events...");
 
@@ -236,7 +235,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
           public void run() {
             tvBodyWeight.setText(
               (bodyWeightStatus == BodyWeightStatus.VALID)
-                ? bodyWeight.toString() + " kg" //TODO do textu?
+                ? bodyWeight.toString() + " kg"
                 : getString(R.string.value_n_a)
             );
             tvDataStatus.setText(bodyWeightStatus.toString());

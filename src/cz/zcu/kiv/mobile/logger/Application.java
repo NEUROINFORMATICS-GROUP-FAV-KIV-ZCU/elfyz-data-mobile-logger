@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService;
 
 
 public class Application extends android.app.Application {
@@ -30,13 +31,14 @@ public class Application extends android.app.Application {
   public Profile getUserProfileOrLogIn() {
     if(userProfile == null) {
       Intent login = new Intent(this, MainActivity.class);
-      login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  //TODO ukončit služby... to samé při odhlašování (z každé aktivity? zde mít odhlašovací logiku?)
+      login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
       startActivity(login);
     }
     return userProfile;
   }
   
   public void setUserProfile(Profile userProfile) {
+    stopService(new Intent(this, DeviceCommunicatorService.class));
     this.userProfile = userProfile;
   }
 

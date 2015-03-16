@@ -40,7 +40,7 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
 
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvGlucose.setText(String.valueOf(cursor.getInt(iGlucose))); //TODO rovnou getstring?
+    holder.tvGlucose.setText(String.valueOf(cursor.getInt(iGlucose)));
     holder.tvTemperature.setText(String.valueOf(cursor.getInt(iTemperature)));
     holder.tvCode.setText(String.valueOf(cursor.getInt(iCode)));
     holder.tvType.setText(String.valueOf(cursor.getInt(iType)));
