@@ -21,6 +21,7 @@ public abstract class ATable<T_Observer> {
   public static final int VALUE_FALSE = 0;
 
   public static final String COLUMN_ID = "_id";
+  public static final String COLUMN_UPLOADED = "uploaded";
   
   protected static final String WHERE_ID = COLUMN_ID + " = ? ";
   
@@ -91,5 +92,24 @@ public abstract class ATable<T_Observer> {
   protected boolean getBoolean(Cursor c, String columnName){
     int value = c.getInt(c.getColumnIndex(columnName));
     return value == VALUE_TRUE;
+  }
+
+  protected String[] toStringArray(long[] longs) {
+    String[] strings = new String[longs.length];
+    for (int i = 0; i < longs.length; i++) {
+      strings[i] = String.valueOf(longs[i]);
+    }
+    return strings;
+  }
+
+
+  protected String assemblePlaceholders(int length) {
+    StringBuilder sb = new StringBuilder(length * 2 + 2);
+    sb.append("(?");
+    for (int i = 1; i < length; i++) { //from 1 because one placeholder is already added
+      sb.append(",?");
+    }
+    sb.append(") ");
+    return sb.toString();
   }
 }

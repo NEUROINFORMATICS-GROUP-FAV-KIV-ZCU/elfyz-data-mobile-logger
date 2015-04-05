@@ -10,13 +10,15 @@ public class HeartRateManufacturerAndSerial {
   private EnumSet<EventFlag> eventFlags;
   private int manufacturerID;
   private int serialNumber;
+  private boolean uploaded;
   
   
-  public HeartRateManufacturerAndSerial(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber) {
+  public HeartRateManufacturerAndSerial(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.manufacturerID = manufacturerID;
     this.serialNumber = serialNumber;
+    this.uploaded = uploaded;
   }
   
 
@@ -34,5 +36,9 @@ public class HeartRateManufacturerAndSerial {
 
   public int getSerialNumber() {
     return serialNumber;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

@@ -174,7 +174,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
           final long heartBeatCount, BigDecimal heartBeatEventTime, final DataState dataState) {
         
         HeartRateMeasurement measurement = new HeartRateMeasurement(estTimestamp, eventFlags, computedHeartRate,
-            heartBeatCount, heartBeatEventTime, dataState);
+            heartBeatCount, heartBeatEventTime, dataState, false);
 
         for (HeartRateListener listener : listeners) {
           listener.onHeartRateDataReceived(measurement);
@@ -189,7 +189,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
       public void onNewPage4AddtData(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte,
           BigDecimal previousHeartBeatEventTime) {
 
-        HeartRatePage4 data = new HeartRatePage4(estTimestamp, eventFlags, manufacturerSpecificByte, previousHeartBeatEventTime);
+        HeartRatePage4 data = new HeartRatePage4(estTimestamp, eventFlags, manufacturerSpecificByte, previousHeartBeatEventTime, false);
         
         for (HeartRateListener listener : listeners) {
           listener.onAdditionalDataReceived(data);
@@ -202,7 +202,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
     heartRateDevice.subscribeCumulativeOperatingTimeEvent(new ICumulativeOperatingTimeReceiver() {
       @Override
       public void onNewCumulativeOperatingTime(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime) {
-        HeartRateCumulativeOperatingTime data = new HeartRateCumulativeOperatingTime(estTimestamp, eventFlags, cumulativeOperatingTime);
+        HeartRateCumulativeOperatingTime data = new HeartRateCumulativeOperatingTime(estTimestamp, eventFlags, cumulativeOperatingTime, false);
         
         for (HeartRateListener listener : listeners) {
           listener.onCumulativeOperatingTimeReceived(data);
@@ -215,7 +215,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
     heartRateDevice.subscribeManufacturerAndSerialEvent(new IManufacturerAndSerialReceiver() {
       @Override
       public void onNewManufacturerAndSerial(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerID, int serialNumber) {
-        HeartRateManufacturerAndSerial data = new HeartRateManufacturerAndSerial(estTimestamp, eventFlags, manufacturerID, serialNumber);
+        HeartRateManufacturerAndSerial data = new HeartRateManufacturerAndSerial(estTimestamp, eventFlags, manufacturerID, serialNumber, false);
         
         for (HeartRateListener listener : listeners) {
           listener.onManufacturerAndSerialReceived(data);
@@ -229,7 +229,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
       @Override
       public void onNewVersionAndModel(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion,
           int softwareVersion, int modelNumber) {
-        HeartRateVersionAndModel data = new HeartRateVersionAndModel(estTimestamp, eventFlags, hardwareVersion, softwareVersion, modelNumber);
+        HeartRateVersionAndModel data = new HeartRateVersionAndModel(estTimestamp, eventFlags, hardwareVersion, softwareVersion, modelNumber, false);
         
         for (HeartRateListener listener : listeners) {
           listener.onVersionAndModelReceived(data);
@@ -243,7 +243,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
       @Override
       public void onNewCalculatedRrInterval(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final BigDecimal calculatedRrInterval, RrFlag rrFlag) {
-        HeartRateCalculatedRrInterval data = new HeartRateCalculatedRrInterval(estTimestamp, eventFlags, calculatedRrInterval, rrFlag);
+        HeartRateCalculatedRrInterval data = new HeartRateCalculatedRrInterval(estTimestamp, eventFlags, calculatedRrInterval, rrFlag, false);
         
         for (HeartRateListener listener : listeners) {
           listener.onCalculatedRrIntervalReceived(data);

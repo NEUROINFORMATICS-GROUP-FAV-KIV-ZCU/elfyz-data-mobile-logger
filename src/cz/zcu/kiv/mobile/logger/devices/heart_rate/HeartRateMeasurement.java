@@ -14,16 +14,18 @@ public class HeartRateMeasurement {
   private long heartBeatCount;
   private BigDecimal heartBeatEventTime;
   private DataState dataState;
+  private boolean uploaded;
   
   
   public HeartRateMeasurement(long estTimestamp, EnumSet<EventFlag> eventFlags, int computedHeartRate,
-      long heartBeatCount, BigDecimal heartBeatEventTime, DataState dataState) {
+      long heartBeatCount, BigDecimal heartBeatEventTime, DataState dataState, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.computedHeartRate = computedHeartRate;
     this.heartBeatCount = heartBeatCount;
     this.heartBeatEventTime = heartBeatEventTime;
     this.dataState = dataState;
+    this.uploaded = uploaded;
   }
   
   
@@ -44,5 +46,8 @@ public class HeartRateMeasurement {
   }
   public DataState getDataState() {
     return dataState;
+  }
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

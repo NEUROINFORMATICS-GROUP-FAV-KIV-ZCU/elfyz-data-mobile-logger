@@ -9,12 +9,14 @@ public class HeartRateCumulativeOperatingTime {
   private long estTimestamp;
   private EnumSet<EventFlag> eventFlags;
   private long cumulativeOperatingTime;
+  private boolean uploaded;
   
   
-  public HeartRateCumulativeOperatingTime(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime) {
+  public HeartRateCumulativeOperatingTime(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.cumulativeOperatingTime = cumulativeOperatingTime;
+    this.uploaded = uploaded;
   }
 
   
@@ -28,5 +30,9 @@ public class HeartRateCumulativeOperatingTime {
 
   public long getCumulativeOperatingTime() {
     return cumulativeOperatingTime;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

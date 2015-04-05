@@ -11,13 +11,15 @@ public class HeartRatePage4 {
   private EnumSet<EventFlag> eventFlags;
   private int manufacturerSpecificByte;
   private BigDecimal previousHeartBeatEventTime;
+  private boolean uploaded;
   
   
-  public HeartRatePage4(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte, BigDecimal previousHeartBeatEventTime) {
+  public HeartRatePage4(long estTimestamp, EnumSet<EventFlag> eventFlags, int manufacturerSpecificByte, BigDecimal previousHeartBeatEventTime, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.manufacturerSpecificByte = manufacturerSpecificByte;
     this.previousHeartBeatEventTime = previousHeartBeatEventTime;
+    this.uploaded = uploaded;
   }
 
 
@@ -35,5 +37,9 @@ public class HeartRatePage4 {
 
   public BigDecimal getPreviousHeartBeatEventTime() {
     return previousHeartBeatEventTime;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

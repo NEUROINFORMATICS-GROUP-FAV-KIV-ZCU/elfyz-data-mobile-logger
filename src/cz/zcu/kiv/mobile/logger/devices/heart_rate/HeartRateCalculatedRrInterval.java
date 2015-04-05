@@ -12,14 +12,16 @@ public class HeartRateCalculatedRrInterval {
   private EnumSet<EventFlag> eventFlags;
   private BigDecimal calculatedRrInterval;
   private RrFlag rrFlag;
+  private boolean uploaded;
   
   
   public HeartRateCalculatedRrInterval(long estTimestamp, EnumSet<EventFlag> eventFlags,
-          BigDecimal calculatedRrInterval, RrFlag rrFlag) {
+          BigDecimal calculatedRrInterval, RrFlag rrFlag, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.calculatedRrInterval = calculatedRrInterval;
     this.rrFlag = rrFlag;
+    this.uploaded = uploaded;
   }
 
   
@@ -37,5 +39,9 @@ public class HeartRateCalculatedRrInterval {
 
   public RrFlag getRrFlag() {
     return rrFlag;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }
