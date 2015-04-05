@@ -25,10 +25,12 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
   public static final String COLUMN_MEAN_PRESSURE = "mean";
   public static final String COLUMN_HEART_RATE = "heart_rate";
   
-  private static final String[] COLUMNS_MEASUREMENT_ALL = new String[]{COLUMN_ID, COLUMN_TIME, COLUMN_SYSTOLIC, COLUMN_DIASTOLIC, COLUMN_MEAN_PRESSURE, COLUMN_HEART_RATE};
+  private static final String[] COLUMNS_MEASUREMENT_ALL = new String[]{COLUMN_ID, COLUMN_TIME, COLUMN_SYSTOLIC, COLUMN_DIASTOLIC, COLUMN_MEAN_PRESSURE, COLUMN_HEART_RATE, COLUMN_UPLOADED};
 
-  private static final String ORDER_MEASUREMENTS_ALL_DESC = COLUMN_TIME + " DESC";
+  private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
+  private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
   private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
+  private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
   
   public BloodPressureMeasurementTable(SQLiteOpenHelper openHelper) {
@@ -46,6 +48,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
         + COLUMN_DIASTOLIC + " INTEGER NOT NULL,"
         + COLUMN_MEAN_PRESSURE + " INTEGER NOT NULL,"
         + COLUMN_HEART_RATE + " INTEGER NOT NULL,"
+        + COLUMN_UPLOADED + " INTEGER NOT NULL,"
         + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_SYSTOLIC + "," + COLUMN_DIASTOLIC + "," + COLUMN_MEAN_PRESSURE + "," + COLUMN_HEART_RATE + "),"
         + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
         + ");");
@@ -120,15 +123,45 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
   public Cursor getMeasurements(long profileID) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
-    try{
+    try {
       String[] selectionArgs = new String[]{ String.valueOf(profileID) };
-      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_ALL_DESC);
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_DESC);
     }
-    catch(Exception e){
+    catch(Exception e) {
       throw new DatabaseException(e);
     }
   }
+
+  public Cursor getMeasurements(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
     
+    try {
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids), null, null, ORDER_MEASUREMENTS_ASC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public void setUploaded(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      ContentValues values = new ContentValues(1);
+      values.put(COLUMN_UPLOADED, VALUE_TRUE);
+      
+      db.update(TABLE_NAME, values, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids));
+      
+      for (BPDataObserver observer : observers) {
+        observer.onBPMeasurementsUpdated(ids);
+      }
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+
   private long insertMeasurement(SQLiteDatabase db, long userID, BloodPressureMeasurement measurement) throws DatabaseException {
     try {
       return db.insertOrThrow(TABLE_NAME, null, makeValues(userID, measurement));
@@ -140,13 +173,14 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
 
 
   private ContentValues makeValues(long userID, BloodPressureMeasurement measurement) {
-    ContentValues values = new ContentValues(6);
+    ContentValues values = new ContentValues(7);
       values.put(COLUMN_USER_ID, userID);
       values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
       values.put(COLUMN_SYSTOLIC, measurement.getSystolicPressure());
       values.put(COLUMN_DIASTOLIC, measurement.getDiastolicPressure());
       values.put(COLUMN_MEAN_PRESSURE, measurement.getMeanPressure());
       values.put(COLUMN_HEART_RATE, measurement.getHeartRate());
+      values.put(COLUMN_UPLOADED, measurement.isUploaded() ? VALUE_TRUE : VALUE_FALSE);
     return values;
   }
   
@@ -154,6 +188,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
   
   public interface BPDataObserver {
     void onBPMeasurementAdded(long id);
+    void onBPMeasurementsUpdated(long[] ids);
     void onBPMeasurementBatchAdded(List<Long> ids);
   }
 }

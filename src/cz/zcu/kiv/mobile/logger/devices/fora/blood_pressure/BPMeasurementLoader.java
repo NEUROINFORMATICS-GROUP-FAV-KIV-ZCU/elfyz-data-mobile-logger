@@ -79,6 +79,10 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
         public void onBPMeasurementBatchAdded(List<Long> ids) {
           onContentChanged();
         }
+        @Override
+        public void onBPMeasurementsUpdated(long[] ids) {
+          onContentChanged();
+        }
       };
       dbBPM.addObserver(observer);
     }

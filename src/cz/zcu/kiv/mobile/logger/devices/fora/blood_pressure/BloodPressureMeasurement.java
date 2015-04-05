@@ -14,17 +14,19 @@ public class BloodPressureMeasurement implements Parcelable {
   private int diastolicPressure;
   private int meanPressure;
   private int heartRate;
+  private boolean uploaded;
   
   
   public BloodPressureMeasurement() {}
   
   public BloodPressureMeasurement(Calendar time, int systolicPressure,
-      int diastolicPressure, int meanPressure, int heartRate) {
+      int diastolicPressure, int meanPressure, int heartRate, boolean uploaded) {
     this.time = time;
     this.systolicPressure = systolicPressure;
     this.diastolicPressure = diastolicPressure;
     this.meanPressure = meanPressure;
     this.heartRate = heartRate;
+    this.uploaded = uploaded;
   }
   
   public BloodPressureMeasurement(Parcel source) {
@@ -62,6 +64,12 @@ public class BloodPressureMeasurement implements Parcelable {
   public void setHeartRate(int heartRate) {
     this.heartRate = heartRate;
   }
+  public boolean isUploaded() {
+    return uploaded;
+  }
+  public void setUploaded(boolean uploaded) {
+    this.uploaded = uploaded;
+  }
 
   
   @Override
@@ -77,6 +85,7 @@ public class BloodPressureMeasurement implements Parcelable {
     dest.writeInt(diastolicPressure);
     dest.writeInt(meanPressure);
     dest.writeInt(heartRate);
+    dest.writeInt(uploaded ? 1 : 0);
   }
   
   public void readFromParcel(Parcel source) {
@@ -87,6 +96,7 @@ public class BloodPressureMeasurement implements Parcelable {
     diastolicPressure = source.readInt();
     meanPressure = source.readInt();
     heartRate = source.readInt();
+    uploaded = source.readInt() != 0;
   }
   
   

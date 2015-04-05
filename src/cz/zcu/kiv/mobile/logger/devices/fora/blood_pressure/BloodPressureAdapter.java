@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
+import cz.zcu.kiv.mobile.logger.data.database.ATable;
 import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
 
 
@@ -28,6 +30,7 @@ public class BloodPressureAdapter extends CursorAdapter {
   protected int iDiastolic;
   protected int iMeanPressure;
   protected int iHeartRate;
+  protected int iUploaded;
 
 
   public BloodPressureAdapter(Context context, Cursor c, int flags) {
@@ -47,17 +50,18 @@ public class BloodPressureAdapter extends CursorAdapter {
   @Override
   public void bindView(View view, Context context, Cursor cursor) {
     ViewHolder holder = (ViewHolder) view.getTag();
-
+    
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
     holder.tvSystolic.setText(systolic_ + String.valueOf(cursor.getInt(iSystolic)));
     holder.tvDiastolic.setText(diastolic_ + String.valueOf(cursor.getInt(iDiastolic)));
     holder.tvMeanPressure.setText(mean_ + String.valueOf(cursor.getInt(iMeanPressure)));
     holder.tvHeartRate.setText(heartBeat_ + String.valueOf(cursor.getInt(iHeartRate)));
+    holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 
   @Override
   public View newView(Context context, Cursor cursor, ViewGroup parent) {
-    View view = inflater.inflate(R.layout.blood_pressure_row, parent, false);
+    View view = inflater.inflate(R.layout.row_blood_pressure, parent, false);
 
     ViewHolder holder = new ViewHolder();
     holder.tvTime =         (TextView) view.findViewById(R.id.tv_time);
@@ -65,6 +69,7 @@ public class BloodPressureAdapter extends CursorAdapter {
     holder.tvDiastolic =    (TextView) view.findViewById(R.id.tv_diastolic);
     holder.tvMeanPressure = (TextView) view.findViewById(R.id.tv_mean_pressure);
     holder.tvHeartRate =    (TextView) view.findViewById(R.id.tv_heart_rate);
+    holder.ivUploaded =     (ImageView) view.findViewById(R.id.iv_uploaded_icon);
     view.setTag(holder);
 
     return view;
@@ -85,14 +90,16 @@ public class BloodPressureAdapter extends CursorAdapter {
     iDiastolic =    c.getColumnIndexOrThrow(BloodPressureMeasurementTable.COLUMN_DIASTOLIC);
     iMeanPressure = c.getColumnIndexOrThrow(BloodPressureMeasurementTable.COLUMN_MEAN_PRESSURE);
     iHeartRate =    c.getColumnIndexOrThrow(BloodPressureMeasurementTable.COLUMN_HEART_RATE);
+    iUploaded =     c.getColumnIndexOrThrow(BloodPressureMeasurementTable.COLUMN_UPLOADED);
   }
-
-
+  
+  
   static class ViewHolder {
     TextView tvTime;
     TextView tvSystolic;
     TextView tvDiastolic;
     TextView tvMeanPressure;
     TextView tvHeartRate;
+    ImageView ivUploaded;
   }
 }
