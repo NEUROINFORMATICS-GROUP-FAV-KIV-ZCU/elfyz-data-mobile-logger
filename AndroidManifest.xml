@@ -82,7 +82,7 @@
             android:label="@string/title_activity_service_management" >
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.login.LoginActivity"
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName="cz.zcu.kiv.mobile.logger.MainActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -114,6 +114,26 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.SettingsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.UploadGenericParametersActivity"
+            android:label="@string/title_activity_upload_data" >
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateDataListActivity"
+            android:label="@string/title_activity_heart_rate_data_list"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" />
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleDataListActivity"
+            android:label="@string/title_activity_weight_scale_data_list"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
         </activity>
     </application>
 
