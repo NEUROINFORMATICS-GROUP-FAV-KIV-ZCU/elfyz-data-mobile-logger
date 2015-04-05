@@ -8,6 +8,9 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.DataState;
@@ -26,18 +29,22 @@ import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 public class HeartRateActivity extends Activity implements ServiceConnection, HeartRateListener {
   private static final String TAG = HeartRateActivity.class.getSimpleName();
+  
+  private static final String STATE_LISTEN = "listen";
 
   protected TextView tvHeartRate;
   protected TextView tvDataStatus;
   protected TextView tvRateInterval;
   protected TextView tvBeatCount;
   protected TextView tvStatus;
+  protected Button bToggleListening;
 
   protected InsertHeartRateMeasurementCommand insertCommand;
   protected Profile userProfile;
   
   private DeviceCommunicatorBinder service;
   private boolean listening = false;
+  private boolean listen = false;
   
   
 
@@ -51,6 +58,7 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
     tvDataStatus = (TextView) findViewById(R.id.tv_data_status);
     tvBeatCount = (TextView) findViewById(R.id.tv_beat_count);
     tvRateInterval = (TextView) findViewById(R.id.tv_rate_interval);
+    bToggleListening = (Button) findViewById(R.id.b_toggle_listening);
     
     userProfile = Application.getInstance().getUserProfileOrLogIn();
     
@@ -73,7 +81,9 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   @Override
   protected void onResume() {
     super.onResume();
-    subscribe();
+    if(listen) {
+      subscribe();
+    }
   }
   
   @Override
@@ -83,9 +93,30 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   }
   
   @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean(STATE_LISTEN, listen);
+  }
+  
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    listen = savedInstanceState.getBoolean(STATE_LISTEN);
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.heart_rate, menu);
+    return true;
+  }
+
+  @Override
   public void onServiceConnected(ComponentName name, IBinder binder) {
     service = (DeviceCommunicatorBinder) binder;
-    subscribe();  //TODO this vs. subscribing in onPause
+    if(listen) {
+      subscribe();
+    }
   }
   
   @Override
@@ -129,6 +160,23 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
       service.stopHeartRate(this);
       listening = false;
     }
+  }
+  
+  public void toggleListening(View view) {
+    if(listen) {
+      listen = false;
+      unsubscribe();
+      bToggleListening.setText(R.string.start_listening);
+    }
+    else {
+      listen = true;
+      subscribe();
+      bToggleListening.setText(R.string.stop_listening);
+    }
+  }
+  
+  public void showAllRecords(View view) {
+    startActivity(new Intent(this, HeartRateDataListActivity.class));
   }
   
   protected void setStatus(final String status, boolean ensureUiThread) {

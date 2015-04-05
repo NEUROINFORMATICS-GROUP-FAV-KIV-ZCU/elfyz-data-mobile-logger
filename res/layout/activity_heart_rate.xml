@@ -106,5 +106,41 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-	
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1" />  <!-- Space -->
+        
+        <Button
+            android:id="@+id/b_toggle_listening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="6"
+            android:text="@string/start_listening"
+            android:onClick="toggleListening" />
+        
+        <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1" />  <!-- Space -->
+        
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="6"
+            android:text="@string/show_all_records"
+            android:onClick="showAllRecords" />
+        
+        <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1" />  <!-- Space -->
+    </LinearLayout>
 </LinearLayout>
