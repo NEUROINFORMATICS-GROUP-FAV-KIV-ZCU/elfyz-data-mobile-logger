@@ -117,7 +117,14 @@
     <string name="fail_bt_not_selected">Bluetooth device is not selected</string>
     <string name="no_device_selected">No device selected</string>
     <string name="weight_scale_measure_ok">Measure OK</string>
-    <string name="service_now_running">Logger service is now running...</string>
+    <string name="service_now_running">Logger service is now running&#8230;</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="action_upload">Upload to EEGbase</string>
+    <string name="title_activity_upload_data">UploadDataActivity</string>
+    <string name="uploaded">Uploaded</string>
+    <string name="title_activity_heart_rate_data_list">HeartRateDataListActivity</string>
+    <string name="start_listening">Listen</string>
+    <string name="stop_listening">Stop</string>
+    <string name="title_activity_weight_scale_data_list">WeightScaleDataListActivity</string>
 
 </resources>
