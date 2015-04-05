@@ -17,14 +17,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 public abstract class ATable<T_Observer> {
-  protected static final int VALUE_TRUE = 1;
-  protected static final int VALUE_FALSE = 0;
-
-  private static final Pattern PATTERN_DUPLICATE = Pattern.compile("column(s)? (.*) (is|are) not unique \\(code 19\\)");
+  public static final int VALUE_TRUE = 1;
+  public static final int VALUE_FALSE = 0;
 
   public static final String COLUMN_ID = "_id";
   
   protected static final String WHERE_ID = COLUMN_ID + " = ? ";
+  
+  private static final Pattern PATTERN_DUPLICATE = Pattern.compile("column(s)? (.*) (is|are) not unique \\(code 19\\)");
   
   protected Set<T_Observer> observers = new HashSet<T_Observer>();
   private SQLiteOpenHelper openHelper;
