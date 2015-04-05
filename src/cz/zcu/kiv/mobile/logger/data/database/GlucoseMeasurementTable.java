@@ -25,10 +25,12 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
   public static final String COLUMN_CODE = "code";
   public static final String COLUMN_TYPE = "type";
   
-  private static final String[] COLUMNS_MEASUREMENT_ALL = new String[]{COLUMN_ID, COLUMN_TIME, COLUMN_GLUCOSE, COLUMN_TEMPERATURE, COLUMN_CODE, COLUMN_TYPE};
+  private static final String[] COLUMNS_MEASUREMENT_ALL = new String[]{COLUMN_ID, COLUMN_TIME, COLUMN_GLUCOSE, COLUMN_TEMPERATURE, COLUMN_CODE, COLUMN_TYPE, COLUMN_UPLOADED};
 
-  private static final String ORDER_MEASUREMENTS_ALL_DESC = COLUMN_TIME + " DESC";
+  private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
+  private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
   private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
+  private static final String WHERE_IDS_IN_= COLUMN_ID + " IN ";
   
   
   public GlucoseMeasurementTable(SQLiteOpenHelper openHelper) {
@@ -46,6 +48,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
         + COLUMN_TEMPERATURE + " INTEGER NOT NULL,"
         + COLUMN_CODE + " INTEGER NOT NULL,"
         + COLUMN_TYPE + " INTEGER NOT NULL,"
+        + COLUMN_UPLOADED + " INTEGER NOT NULL,"
         + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_GLUCOSE + "," + COLUMN_TEMPERATURE + "," + COLUMN_CODE + "," + COLUMN_TYPE + "),"
         + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
         + ");");
@@ -122,9 +125,38 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
     
     try{
       String[] selectionArgs = new String[]{ String.valueOf(profileID) };
-      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_ALL_DESC);
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_DESC);
     }
     catch(Exception e){
+      throw new DatabaseException(e);
+    }
+  }
+
+  public Cursor getMeasurements(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids), null, null, ORDER_MEASUREMENTS_ASC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public void setUploaded(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      ContentValues values = new ContentValues(1);
+      values.put(COLUMN_UPLOADED, VALUE_TRUE);
+      
+      db.update(TABLE_NAME, values, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids));
+      
+      for (GDataObserver observer : observers) {
+        observer.onGlucoseMeasurementsUpdated(ids);
+      }
+    }
+    catch(Exception e) {
       throw new DatabaseException(e);
     }
   }
@@ -140,13 +172,14 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
   
   
   private ContentValues makeValues(long userID, GlucoseMeasurement measurement) {
-    ContentValues values = new ContentValues(6);
+    ContentValues values = new ContentValues(7);
       values.put(COLUMN_USER_ID, userID);
       values.put(COLUMN_TIME, measurement.getTime().getTime().getTime());
       values.put(COLUMN_GLUCOSE, measurement.getGlucose());
       values.put(COLUMN_TEMPERATURE, measurement.getTemperature());
       values.put(COLUMN_CODE, measurement.getCode());
       values.put(COLUMN_TYPE, measurement.getType());
+      values.put(COLUMN_UPLOADED, measurement.isUploaded() ? VALUE_TRUE : VALUE_FALSE);
     return values;
   }
   
@@ -154,6 +187,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
   
   public interface GDataObserver {
     void onGlucoseMeasurementAdded(long id);
+    void onGlucoseMeasurementsUpdated(long[] ids);
     void onGlucoseMeasurementAdded(List<Long> ids);
   }
 }

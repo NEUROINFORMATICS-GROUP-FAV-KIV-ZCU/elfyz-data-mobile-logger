@@ -9,8 +9,20 @@ public class GlucoseMeasurement {
   private int temperature;
   private int code;
   private int type;
+  private boolean uploaded;
 
   
+  public GlucoseMeasurement() {}
+  
+  public GlucoseMeasurement(Calendar time, int glucose, int temperature, int code, int type, boolean uploaded) {
+    this.time = time;
+    this.glucose = glucose;
+    this.temperature = temperature;
+    this.code = code;
+    this.type = type;
+    this.uploaded = uploaded;
+  }
+
   public Calendar getTime() {
     return time;
   }
@@ -49,5 +61,12 @@ public class GlucoseMeasurement {
   
   public void setType(int type) {
     this.type = type;
+  }
+  public boolean isUploaded() {
+    return uploaded;
+  }
+
+  public void setUploaded(boolean uploaded) {
+    this.uploaded = uploaded;
   }
 }

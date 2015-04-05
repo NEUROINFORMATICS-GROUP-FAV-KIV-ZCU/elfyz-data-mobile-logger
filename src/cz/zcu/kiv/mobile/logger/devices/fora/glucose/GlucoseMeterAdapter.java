@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
+import cz.zcu.kiv.mobile.logger.data.database.ATable;
 import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable;
 
 
@@ -23,6 +25,7 @@ public class GlucoseMeterAdapter extends CursorAdapter {
   protected int iTemperature;
   protected int iCode;
   protected int iType;
+  protected int iUploaded;
 
 
   public GlucoseMeterAdapter(Context context, Cursor c, int flags) {
@@ -44,11 +47,12 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     holder.tvTemperature.setText(String.valueOf(cursor.getInt(iTemperature)));
     holder.tvCode.setText(String.valueOf(cursor.getInt(iCode)));
     holder.tvType.setText(String.valueOf(cursor.getInt(iType)));
+    holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 
   @Override
   public View newView(Context context, Cursor cursor, ViewGroup parent) {
-    View view = inflater.inflate(R.layout.glucose_row, parent, false);
+    View view = inflater.inflate(R.layout.row_glucose, parent, false);
 
     ViewHolder holder = new ViewHolder();
     holder.tvTime =        (TextView) view.findViewById(R.id.tv_time);
@@ -56,6 +60,7 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     holder.tvTemperature = (TextView) view.findViewById(R.id.tv_temperature);
     holder.tvCode =        (TextView) view.findViewById(R.id.tv_code);
     holder.tvType =        (TextView) view.findViewById(R.id.tv_type);
+    holder.ivUploaded =     (ImageView) view.findViewById(R.id.iv_uploaded_icon);
     view.setTag(holder);
 
     return view;
@@ -76,6 +81,7 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     iTemperature = c.getColumnIndexOrThrow(GlucoseMeasurementTable.COLUMN_TEMPERATURE);
     iCode =        c.getColumnIndexOrThrow(GlucoseMeasurementTable.COLUMN_CODE);
     iType =        c.getColumnIndexOrThrow(GlucoseMeasurementTable.COLUMN_TYPE);
+    iUploaded =    c.getColumnIndexOrThrow(GlucoseMeasurementTable.COLUMN_UPLOADED);
   }
 
 
@@ -85,5 +91,6 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     TextView tvTemperature;
     TextView tvCode;
     TextView tvType;
+    ImageView ivUploaded;
   }
 }
