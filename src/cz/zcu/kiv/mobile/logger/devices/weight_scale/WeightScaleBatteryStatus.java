@@ -16,11 +16,12 @@ public class WeightScaleBatteryStatus {
   private int cumulativeOperatingTimeResolution;
   private int numberOfBatteries;
   private int batteryIdentifier;
+  private boolean uploaded;
 
 
   public WeightScaleBatteryStatus(long estTimestamp, EnumSet<EventFlag> eventFlags, long cumulativeOperatingTime,
       BigDecimal batteryVoltage, BatteryStatus batteryStatus, int cumulativeOperatingTimeResolution, int numberOfBatteries,
-      int batteryIdentifier) {
+      int batteryIdentifier, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.cumulativeOperatingTime = cumulativeOperatingTime;
@@ -29,6 +30,7 @@ public class WeightScaleBatteryStatus {
     this.cumulativeOperatingTimeResolution = cumulativeOperatingTimeResolution;
     this.numberOfBatteries = numberOfBatteries;
     this.batteryIdentifier = batteryIdentifier;
+    this.uploaded = uploaded;
   }
   
   
@@ -62,5 +64,9 @@ public class WeightScaleBatteryStatus {
 
   public int getBatteryIdentifier() {
     return batteryIdentifier;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

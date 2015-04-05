@@ -9,12 +9,14 @@ public class WeightScaleManufacturerSpecificData {
   private long estTimestamp;
   private EnumSet<EventFlag> eventFlags;
   private byte[] rawDataBytes;
+  private boolean uploaded;
   
   
-  public WeightScaleManufacturerSpecificData(long estTimestamp, EnumSet<EventFlag> eventFlags, byte[] rawDataBytes) {
+  public WeightScaleManufacturerSpecificData(long estTimestamp, EnumSet<EventFlag> eventFlags, byte[] rawDataBytes, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.rawDataBytes = rawDataBytes;
+    this.uploaded = uploaded;
   }
   
   
@@ -28,5 +30,9 @@ public class WeightScaleManufacturerSpecificData {
   
   public byte[] getRawDataBytes() {
     return rawDataBytes;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

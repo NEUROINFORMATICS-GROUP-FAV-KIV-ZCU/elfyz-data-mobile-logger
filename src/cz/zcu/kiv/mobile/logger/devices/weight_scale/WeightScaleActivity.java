@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -110,12 +111,16 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
     return true;
   }
   
+  public void showAllRecords(View view) {
+    startActivity(new Intent(this, WeightScaleDataListActivity.class));
+  }
+  
   public void doBasicMeasurement(View view){//TODO disable if device not available
     boolean success = weightScaleDevice.requestBasicMeasurement(new IBasicMeasurementFinishedReceiver() {
       @Override
       public void onBasicMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final WeightScaleRequestStatus status, final BigDecimal bodyWeight) {
-        WeightScaleBasicMeasurement data = new WeightScaleBasicMeasurement(estTimestamp, eventFlags, status, bodyWeight);
+        WeightScaleBasicMeasurement data = new WeightScaleBasicMeasurement(estTimestamp, eventFlags, status, bodyWeight, false);
         
         runOnUiThread(new Runnable() {
           @Override
@@ -148,7 +153,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
           final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) { //TODO custom enums with mapping...?
         WeightScaleAdvancedMeasurement data = new WeightScaleAdvancedMeasurement(estTimestamp, eventFlags, status,
             measurement.activeMetabolicRate, measurement.basalMetabolicRate, measurement.bodyFatPercentage, measurement.bodyWeight,
-            measurement.boneMass, measurement.hydrationPercentage, measurement.muscleMass);
+            measurement.boneMass, measurement.hydrationPercentage, measurement.muscleMass, false);
         
         runOnUiThread(new Runnable() {
           @Override
@@ -191,7 +196,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
           int numberOfBatteries, int batteryIdentifier) {
         
         WeightScaleBatteryStatus data = new WeightScaleBatteryStatus(estTimestamp, eventFlags, cumulativeOperatingTime,
-            batteryVoltage, batteryStatus, cumulativeOperatingTimeResolution, numberOfBatteries, batteryIdentifier);
+            batteryVoltage, batteryStatus, cumulativeOperatingTimeResolution, numberOfBatteries, batteryIdentifier, false);
         new InsertWeightScaleBatteryStatusCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
@@ -202,7 +207,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
           int manufacturerID, int modelNumber) {
 
         WeightScaleManufacturerIdentification data = new WeightScaleManufacturerIdentification(estTimestamp, eventFlags,
-            hardwareRevision, manufacturerID, modelNumber);
+            hardwareRevision, manufacturerID, modelNumber, false);
         new InsertWeightScaleManufacturerIdentificationCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
@@ -210,7 +215,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
     weightScaleDevice.subscribeManufacturerSpecificDataEvent(new IManufacturerSpecificDataReceiver() {
       @Override
       public void onNewManufacturerSpecificData(long estTimestamp, EnumSet<EventFlag> eventFlags, byte[] rawDataBytes) {
-        WeightScaleManufacturerSpecificData data = new WeightScaleManufacturerSpecificData(estTimestamp, eventFlags, rawDataBytes);
+        WeightScaleManufacturerSpecificData data = new WeightScaleManufacturerSpecificData(estTimestamp, eventFlags, rawDataBytes, false);
         new InsertWeightScaleManufacturerSpecificDataCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
@@ -220,7 +225,7 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
       public void onNewProductInformation(long estTimestamp, EnumSet<EventFlag> eventFlags, int mainSoftwareRevision,
           int supplementalSoftwareRevision, long serialNumber) {
         WeightScaleProductInformation data = new WeightScaleProductInformation(estTimestamp, eventFlags,
-            mainSoftwareRevision, supplementalSoftwareRevision, serialNumber);
+            mainSoftwareRevision, supplementalSoftwareRevision, serialNumber, false);
         new InsertWeightScaleProductInformationTableCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });

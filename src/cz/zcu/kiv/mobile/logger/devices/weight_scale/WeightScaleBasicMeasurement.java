@@ -12,14 +12,16 @@ public class WeightScaleBasicMeasurement {
   private EnumSet<EventFlag> eventFlags;
   private WeightScaleRequestStatus status;
   private BigDecimal bodyWeight;
+  private boolean uploaded;
   
   
   public WeightScaleBasicMeasurement(long estTimestamp, EnumSet<EventFlag> eventFlags,
-          WeightScaleRequestStatus status, BigDecimal bodyWeight) {
+          WeightScaleRequestStatus status, BigDecimal bodyWeight, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.status = status;
     this.bodyWeight = bodyWeight;
+    this.uploaded = uploaded;
   }
 
 
@@ -37,5 +39,9 @@ public class WeightScaleBasicMeasurement {
 
   public BigDecimal getBodyWeight() {
     return bodyWeight;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

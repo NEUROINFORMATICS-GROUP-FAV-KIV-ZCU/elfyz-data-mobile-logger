@@ -11,15 +11,17 @@ public class WeightScaleManufacturerIdentification {
   private int hardwareRevision;
   private int manufacturerID;
   private int modelNumber;
+  private boolean uploaded;
   
   
   public WeightScaleManufacturerIdentification(long estTimestamp, EnumSet<EventFlag> eventFlags,
-      int hardwareRevision, int manufacturerID, int modelNumber) {
+      int hardwareRevision, int manufacturerID, int modelNumber, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.hardwareRevision = hardwareRevision;
     this.manufacturerID = manufacturerID;
     this.modelNumber = modelNumber;
+    this.uploaded = uploaded;
   }
 
   
@@ -41,5 +43,9 @@ public class WeightScaleManufacturerIdentification {
 
   public int getModelNumber() {
     return modelNumber;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

@@ -18,13 +18,14 @@ public class WeightScaleAdvancedMeasurement {
   private BigDecimal boneMass;
   private BigDecimal hydrationPercentage;
   private BigDecimal muscleMass;
+  private boolean uploaded;
   
 
   public WeightScaleAdvancedMeasurement(long estTimestamp,
       EnumSet<EventFlag> eventFlags, WeightScaleRequestStatus status,
       BigDecimal activeMetabolicRate, BigDecimal basalMetabolicRate,
       BigDecimal bodyFatPercentage, BigDecimal bodyWeight, BigDecimal boneMass,
-      BigDecimal hydrationPercentage, BigDecimal muscleMass) {
+      BigDecimal hydrationPercentage, BigDecimal muscleMass, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.status = status;
@@ -35,6 +36,7 @@ public class WeightScaleAdvancedMeasurement {
     this.boneMass = boneMass;
     this.hydrationPercentage = hydrationPercentage;
     this.muscleMass = muscleMass;
+    this.uploaded = uploaded;
   }
 
 
@@ -76,5 +78,9 @@ public class WeightScaleAdvancedMeasurement {
 
   public BigDecimal getMuscleMass() {
     return muscleMass;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

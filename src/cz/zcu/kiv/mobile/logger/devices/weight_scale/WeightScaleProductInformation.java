@@ -11,15 +11,17 @@ public class WeightScaleProductInformation {
   private int mainSoftwareRevision;
   private int supplementalSoftwareRevision;
   private long serialNumber;
+  private boolean uploaded;
   
   
   public WeightScaleProductInformation(long estTimestamp, EnumSet<EventFlag> eventFlags, int mainSoftwareRevision,
-      int supplementalSoftwareRevision, long serialNumber) {
+      int supplementalSoftwareRevision, long serialNumber, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
     this.mainSoftwareRevision = mainSoftwareRevision;
     this.supplementalSoftwareRevision = supplementalSoftwareRevision;
     this.serialNumber = serialNumber;
+    this.uploaded = uploaded;
   }
   
 
@@ -41,5 +43,9 @@ public class WeightScaleProductInformation {
 
   public long getSerialNumber() {
     return serialNumber;
+  }
+  
+  public boolean isUploaded() {
+    return uploaded;
   }
 }

@@ -1,6 +1,7 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -20,6 +21,13 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
   public static final String COLUMN_MANUF_ID = "manuf_id";
   public static final String COLUMN_MODEL_NR = "model_nr";
   
+  private static final String[] COLUMNS_MEASUREMENT_ALL = new String[]{COLUMN_ID, COLUMN_TIME, COLUMN_HW_REV, COLUMN_MANUF_ID, COLUMN_MODEL_NR, COLUMN_UPLOADED};
+
+  private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
+  private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
+  private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
+  private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
+  
   
   public WeightScaleManufacturerIdentificationTable(SQLiteOpenHelper openHelper) {
     super(openHelper);
@@ -35,6 +43,7 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
         + COLUMN_HW_REV + " INTEGER NOT NULL,"
         + COLUMN_MANUF_ID + " INTEGER NOT NULL,"
         + COLUMN_MODEL_NR + " INTEGER NOT NULL,"
+        + COLUMN_UPLOADED + " INTEGER NOT NULL,"
         + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
         + ");");
   }
@@ -56,18 +65,19 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
   public long addManufacturerIdentification(long userID, WeightScaleManufacturerIdentification measurement) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
-    ContentValues values = new ContentValues(5);
+    ContentValues values = new ContentValues(6);
       values.put(COLUMN_USER_ID, userID);
       values.put(COLUMN_TIME, measurement.getEstTimestamp());
       values.put(COLUMN_HW_REV, measurement.getHardwareRevision());
       values.put(COLUMN_MANUF_ID, measurement.getManufacturerID());
       values.put(COLUMN_MODEL_NR, measurement.getModelNumber());
+      values.put(COLUMN_UPLOADED, measurement.isUploaded() ? VALUE_TRUE : VALUE_FALSE);
     
     try{
       long id = db.insertOrThrow(TABLE_NAME, null, values);
       
       for (WSManufacturerIdentificationObserver o : observers) {
-        o.onWSManufacturerIdentification(id);
+        o.onWSManufacturerIdentificationDataAdded(id);
       }
       
       return id;
@@ -76,10 +86,52 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
       throw new DatabaseException(e);
     }
   }
+
+  public Cursor getMeasurements(long profileID) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      String[] selectionArgs = new String[]{ String.valueOf(profileID) };
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_DESC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public Cursor getMeasurements(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids), null, null, ORDER_MEASUREMENTS_ASC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public void setUploaded(long[] ids) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      ContentValues values = new ContentValues(1);
+      values.put(COLUMN_UPLOADED, VALUE_TRUE);
+      
+      db.update(TABLE_NAME, values, WHERE_IDS_IN_ + assemblePlaceholders(ids.length), toStringArray(ids));
+      
+      for (WSManufacturerIdentificationObserver observer : observers) {
+        observer.onWSManufacturerIdentificationDataUpdated(ids);
+      }
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
   
   
   
   public interface WSManufacturerIdentificationObserver {
-    void onWSManufacturerIdentification(long id);
+    void onWSManufacturerIdentificationDataAdded(long id);
+    void onWSManufacturerIdentificationDataUpdated(long[] ids);
   }
 }
