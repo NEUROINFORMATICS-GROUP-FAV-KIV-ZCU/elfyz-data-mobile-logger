@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.ws;
+package cz.zcu.kiv.mobile.logger.eegbase;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,15 +12,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import cz.zcu.kiv.mobile.logger.Application;
-import cz.zcu.kiv.mobile.logger.ws.data.UserInfo;
-import cz.zcu.kiv.mobile.logger.ws.data.wrappers.UserInfoWrapper;
-import cz.zcu.kiv.mobile.logger.ws.exceptions.CommunicationException;
-import cz.zcu.kiv.mobile.logger.ws.exceptions.WrongCredentialsException;
+import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.AddExperimentDataResult;
+import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
+import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfo;
+import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfoWrapper;
+import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
+import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
 
 
 public class EegbaseRest {
@@ -53,6 +56,35 @@ public class EegbaseRest {
       throw new CommunicationException(e);
     }
     return userinfo;
+  }
+  
+  //TODO predelat do real
+  public static AddExperimentDataResult uploadGenericParameters(ExperimentParametersData parameters) throws CommunicationException, WrongCredentialsException {
+    try {
+      HttpHeaders requestHeaders = new HttpHeaders();
+      requestHeaders.setAuthorization(new HttpBasicAuthentication("krupa@students.zcu.cz", "eegbase")); //TODO get from where?
+      requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+      requestHeaders.setContentType(MediaType.APPLICATION_XML);
+      
+      RestTemplate restTemplate = new RestTemplate();
+      restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
+      
+      HttpEntity<ExperimentParametersData> entity = new HttpEntity<ExperimentParametersData>(parameters, requestHeaders);
+      
+      ResponseEntity<AddExperimentDataResult> response = restTemplate.exchange(URI.create("http://10.0.2.2:8080"), HttpMethod.POST, entity, AddExperimentDataResult.class);
+      return response.getBody();
+    }
+    catch (HttpClientErrorException e) {
+      if(e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+        throw new WrongCredentialsException(e);
+      }
+      else {
+        throw new CommunicationException(e);
+      }
+    }
+    catch (RestClientException e) {
+      throw new CommunicationException(e);
+    }
   }
 
   private static URI getURL() throws CommunicationException {

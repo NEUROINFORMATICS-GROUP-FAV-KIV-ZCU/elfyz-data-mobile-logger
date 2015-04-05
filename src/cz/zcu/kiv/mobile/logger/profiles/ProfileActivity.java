@@ -30,7 +30,7 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.login.LoginActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.LoginActivity;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 

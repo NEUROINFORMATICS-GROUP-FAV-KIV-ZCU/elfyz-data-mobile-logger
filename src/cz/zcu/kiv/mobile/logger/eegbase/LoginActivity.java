@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.login;
+package cz.zcu.kiv.mobile.logger.eegbase;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,11 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfo;
+import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
+import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
-import cz.zcu.kiv.mobile.logger.ws.EegbaseRest;
-import cz.zcu.kiv.mobile.logger.ws.data.UserInfo;
-import cz.zcu.kiv.mobile.logger.ws.exceptions.CommunicationException;
-import cz.zcu.kiv.mobile.logger.ws.exceptions.WrongCredentialsException;
 
 
 /**

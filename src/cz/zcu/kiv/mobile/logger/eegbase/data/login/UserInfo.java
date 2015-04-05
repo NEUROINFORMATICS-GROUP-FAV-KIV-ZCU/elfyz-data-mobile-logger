@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.ws.data;
+package cz.zcu.kiv.mobile.logger.eegbase.data.login;
 
 
 public class UserInfo {

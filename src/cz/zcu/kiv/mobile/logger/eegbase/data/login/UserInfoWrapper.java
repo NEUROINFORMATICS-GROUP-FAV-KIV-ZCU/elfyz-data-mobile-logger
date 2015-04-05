@@ -1,6 +1,5 @@
-package cz.zcu.kiv.mobile.logger.ws.data.wrappers;
+package cz.zcu.kiv.mobile.logger.eegbase.data.login;
 
-import cz.zcu.kiv.mobile.logger.ws.data.UserInfo;
 
 
 public class UserInfoWrapper {

@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.ws.exceptions;
+package cz.zcu.kiv.mobile.logger.eegbase.exceptions;
 
 
 public class CommunicationException extends Exception {
