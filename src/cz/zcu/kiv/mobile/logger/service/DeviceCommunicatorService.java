@@ -19,9 +19,6 @@ public class DeviceCommunicatorService extends Service {
   
   private static final int NOTIFICATION_ID = 123;
   
-  public static final String HEART_EVENT = "heart.event";
-  public static final String DATA = "data";
-
   private DeviceCommunicatorService service = DeviceCommunicatorService.this;
   private Binder binder = new DeviceCommunicatorBinder();
   
