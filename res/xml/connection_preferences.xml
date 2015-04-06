@@ -2,6 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
   <EditTextPreference 
       android:key="eegbase_url"
-      android:title="EEGbase portal URL"
-      android:defaultValue="http://eeg2.kiv.zcu.cz:8080/rest/user/login"/>
+      android:title="EEGbase portal REST URL"
+      android:defaultValue="http://eeg2.kiv.zcu.cz:8080/rest"/>
 </PreferenceScreen>

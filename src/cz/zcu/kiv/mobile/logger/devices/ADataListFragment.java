@@ -26,8 +26,6 @@ import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 public abstract class ADataListFragment extends ListFragment implements LoaderCallbacks<AsyncTaskResult<Cursor>> {
   protected static final String ARG_USER_ID = "user.id";
   
-  protected static final int RESULT_UPLOAD = 22;
-  
   protected long userID;
   protected int loaderID;
   protected CursorAdapter dataAdapter;
@@ -86,12 +84,11 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
       return;
     }
     
-    //TODO configurable by user
     IExperimentParametersUploadHelper uploadHelper = getUploadHelper(selected);
     
     Intent uploadIntent = new Intent(getActivity(), UploadGenericParametersActivity.class);
     uploadIntent.putExtra(UploadGenericParametersActivity.PARAM_GENERIC_PARAMETERS_UPLOAD_HELPER, uploadHelper);
-    startActivityForResult(uploadIntent, RESULT_UPLOAD);  //TODO zpracovani vysledku?
+    startActivity(uploadIntent);
   }
 
 
