@@ -18,21 +18,23 @@ public class UploadGenericParametersActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_upload_data);  //TODO rename
+    setContentView(R.layout.activity_upload_generic_parameters);
     
+    //upload parameters
     ExperimentParametersData data = getIntent().getParcelableExtra(PARAM_GENERIC_PARAMETERS);
     if(data != null) {
       new UploadGenericParametersTask(data).execute();
       return;
     }
     
+    //use helper to upload parameters
     IExperimentParametersUploadHelper uploadHelper = getIntent().getParcelableExtra(PARAM_GENERIC_PARAMETERS_UPLOAD_HELPER);
     if(uploadHelper != null) {
       new UploadGenericParametersTask(uploadHelper).execute();
       return;
     }
     
-    AndroidUtils.toast(this, "No data to upload."); //TODO text
+    AndroidUtils.toast(this, R.string.fail_no_upload_data);
   }
 
   @Override

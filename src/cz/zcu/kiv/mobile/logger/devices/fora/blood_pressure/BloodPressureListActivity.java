@@ -26,7 +26,6 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
   private static final String TAG = BloodPressureListActivity.class.getSimpleName();
   
   private static final int LOADER_BPM_LIST = 10;
-  private static final int RESULT_UPLOAD = 22;
 
   private CursorAdapter dataAdapter;
   private Profile userProfile;
@@ -78,12 +77,13 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
       return;
     }
     
-    //TODO configurable by user
-    IExperimentParametersUploadHelper uploadHelper = new BloodPressureMeasurementDbUploadHelper("Blood pressure measurements", 0.0, selected, true);
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_bp", "Blood pressure measurements");
+    boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
+    IExperimentParametersUploadHelper uploadHelper = new BloodPressureMeasurementDbUploadHelper(parameterName, 0.0, selected, append);
     
     Intent uploadIntent = new Intent(this, UploadGenericParametersActivity.class);
     uploadIntent.putExtra(UploadGenericParametersActivity.PARAM_GENERIC_PARAMETERS_UPLOAD_HELPER, uploadHelper);
-    startActivityForResult(uploadIntent, RESULT_UPLOAD);  //TODO zpracovani vysledku?
+    startActivity(uploadIntent);
   }
 
   @Override

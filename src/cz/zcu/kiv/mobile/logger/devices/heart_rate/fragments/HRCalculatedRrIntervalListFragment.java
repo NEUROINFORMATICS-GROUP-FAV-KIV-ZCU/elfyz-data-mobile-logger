@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
+import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.adapters.HRCalculatedRrIntervalAdapter;
@@ -16,9 +17,8 @@ import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUplo
 
 public class HRCalculatedRrIntervalListFragment extends ADataListFragment {
   private static final int LOADER_ID = 51;
-  private static final String EXPERIMENT_PARAMETER_NAME = "HR Calculated RR Interval";
+
   
-    
   @Override
   public Loader<AsyncTaskResult<Cursor>> onCreateLoader(int id, Bundle args) {
     return new HRCalculatedRrIntervalLoader(getActivity(), userID);
@@ -31,7 +31,9 @@ public class HRCalculatedRrIntervalListFragment extends ADataListFragment {
 
   @Override
   protected IExperimentParametersUploadHelper getUploadHelper(long[] selected) {
-    return new HRCalculatedRrIntervalDbUploadHelper(EXPERIMENT_PARAMETER_NAME, 0.0, selected, true);
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_hr_crri", "HR Calculated RR Interval");
+    boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
+    return new HRCalculatedRrIntervalDbUploadHelper(parameterName, 0.0, selected, append);
   }
 
   @Override

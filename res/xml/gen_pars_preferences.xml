@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <CheckBoxPreference
+        android:title="@string/pref_gen_par_append"
+        android:key="pref_gen_par_append"
+        android:defaultValue="true" />
+    
+    <PreferenceCategory
+        android:title="@string/prefs_cat_gen_par_names"
+        android:key="prefs_cat_gen_par_names">
+        
+        <EditTextPreference
+            android:title="@string/pref_gen_par_name_bp"
+            android:key="pref_gen_par_name_bp"
+            android:defaultValue="Blood pressure measurements" />
+        
+        <EditTextPreference
+            android:title="@string/pref_gen_par_name_gm"
+            android:key="pref_gen_par_name_gm"
+            android:defaultValue="Glucose measurements"/>
+        
+        <PreferenceScreen
+            android:title="@string/pref_gen_par_name_hr"
+            android:key="prefs_cat_gen_par_names_hr">
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_crri"
+                android:key="pref_gen_par_name_hr_crri"
+                android:defaultValue="HR Calculated RR Interval" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_copt"
+                android:key="pref_gen_par_name_hr_copt"
+                android:defaultValue="HR Cumulative Operating Time" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_mas"
+                android:key="pref_gen_par_name_hr_mas"
+                android:defaultValue="HR Manufacturer And Serial" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_p4"
+                android:key="pref_gen_par_name_hr_p4"
+                android:defaultValue="HR Page 4" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_vam"
+                android:key="pref_gen_par_name_hr_vam"
+                android:defaultValue="HR Version And Model" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr_vam"
+                android:key="pref_gen_par_name_hr_vam"
+                android:defaultValue="HR Version And Model" />
+        </PreferenceScreen>
+        
+        <PreferenceScreen
+            android:title="@string/pref_gen_par_name_ws"
+            android:key="prefs_cat_gen_par_names_ws">
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_bs"
+                android:key="pref_gen_par_name_ws_bs"
+                android:defaultValue="WS Battery Status" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_mid"
+                android:key="pref_gen_par_name_ws_mid"
+                android:defaultValue="WS Manufacturer Identification" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_ms"
+                android:key="pref_gen_par_name_ws_ms"
+                android:defaultValue="WS Manufacturer Specific" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_measurement"
+                android:key="pref_gen_par_name_ws_measurement"
+                android:defaultValue="WS Measurement" />
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_pi"
+                android:key="pref_gen_par_name_ws_pi"
+                android:defaultValue="WS Product Info" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

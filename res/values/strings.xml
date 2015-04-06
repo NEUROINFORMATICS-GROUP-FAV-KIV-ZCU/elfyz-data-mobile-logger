@@ -126,5 +126,27 @@
     <string name="start_listening">Listen</string>
     <string name="stop_listening">Stop</string>
     <string name="title_activity_weight_scale_data_list">WeightScaleDataListActivity</string>
+    <string name="prefs_connection_title">Connection</string>
+    <string name="prefs_connection_summary">Connection preferences</string>
+    <string name="prefs_gen_pars_title">General parameters</string>
+    <string name="prefs_gen_pars_summary">Data preferences for EEGbase upload</string>
+    <string name="pref_gen_par_append">Append parameter values</string>
+    <string name="prefs_cat_gen_par_names">Names</string>
+    <string name="pref_gen_par_name_bp">Blood pressure</string>
+    <string name="pref_gen_par_name_gm">Glucose</string>
+    <string name="pref_gen_par_name_hr">Heart rate</string>
+    <string name="pref_gen_par_name_hr_crri">Calculated RR interval</string>
+    <string name="pref_gen_par_name_hr_copt">Cumulative operating time</string>
+    <string name="pref_gen_par_name_hr_mas">Manufacturer and serial</string>
+    <string name="pref_gen_par_name_hr_measurement">Measurement</string>
+    <string name="pref_gen_par_name_hr_p4">Page 4</string>
+    <string name="pref_gen_par_name_hr_vam">Version and model</string>
+    <string name="pref_gen_par_name_ws">Weight scale</string>
+    <string name="pref_gen_par_name_ws_bs">Battery status</string>
+    <string name="pref_gen_par_name_ws_mid">Manufacturer identification</string>
+    <string name="pref_gen_par_name_ws_ms">Manufacturer specific data</string>
+    <string name="pref_gen_par_name_ws_measurement">Measurement</string>
+    <string name="pref_gen_par_name_ws_pi">Product information</string>
+    <string name="fail_no_upload_data">No data to upload</string>
 
 </resources>

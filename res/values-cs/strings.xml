@@ -117,5 +117,28 @@
     <string name="uploaded">Odesláno</string>
     <string name="start_listening">Spustit</string>
     <string name="stop_listening">Ukončit</string>
+    
+    <string name="prefs_connection_title">Připojení</string>
+    <string name="prefs_connection_summary">Nastavení připojení</string>
+    <string name="prefs_gen_pars_title">General parameters</string>
+    <string name="prefs_gen_pars_summary">Nastavení dat pro upload do EEGbase</string>
+    <string name="pref_gen_par_append">Přidat data k existujícím</string>
+    <string name="prefs_cat_gen_par_names">Názvy</string>
+    <string name="pref_gen_par_name_bp">Krevní tlak</string>
+    <string name="pref_gen_par_name_gm">Glukóza v krvi</string>
+    <string name="pref_gen_par_name_hr">Srdeční tep</string>
+    <string name="pref_gen_par_name_hr_crri">Vypočítaný RR interval</string>
+    <string name="pref_gen_par_name_hr_copt">Souhrnný provozní čas</string>
+    <string name="pref_gen_par_name_hr_mas">Výrobce a seriové číslo</string>
+    <string name="pref_gen_par_name_hr_measurement">Měření</string>
+    <string name="pref_gen_par_name_hr_p4">Page 4</string>
+    <string name="pref_gen_par_name_hr_vam">Verze a model</string>
+    <string name="pref_gen_par_name_ws">Váha</string>
+    <string name="pref_gen_par_name_ws_bs">Stav baterie</string>
+    <string name="pref_gen_par_name_ws_mid">Identifikace výrobce</string>
+    <string name="pref_gen_par_name_ws_ms">Specifická data výrobce</string>
+    <string name="pref_gen_par_name_ws_measurement">Měření</string>
+    <string name="pref_gen_par_name_ws_pi">Informace o produktu</string>
+    <string name="fail_no_upload_data">Žádná data pro upload</string>
 
 </resources>

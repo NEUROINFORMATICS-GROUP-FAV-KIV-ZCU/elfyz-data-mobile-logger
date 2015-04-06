@@ -26,7 +26,6 @@ public class GlucoseMeterListActivity extends ListActivity implements LoaderCall
   private static final String TAG = BloodPressureListActivity.class.getSimpleName();
   
   private static final int LOADER_GM_LIST = 10;
-  private static final int RESULT_UPLOAD = 22;
 
   private CursorAdapter dataAdapter;
   private Profile userProfile;
@@ -77,13 +76,14 @@ public class GlucoseMeterListActivity extends ListActivity implements LoaderCall
       AndroidUtils.toast(this, "No records selected for upload.");
       return;
     }
-    
-    //TODO configurable by user
-    IExperimentParametersUploadHelper uploadHelper = new GlucoseMeasurementDbUploadHelper("Glucose measurements", 0.0, selected, true);
+
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_gm", "Glucose measurements");
+    boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
+    IExperimentParametersUploadHelper uploadHelper = new GlucoseMeasurementDbUploadHelper(parameterName, 0.0, selected, append);
     
     Intent uploadIntent = new Intent(this, UploadGenericParametersActivity.class);
     uploadIntent.putExtra(UploadGenericParametersActivity.PARAM_GENERIC_PARAMETERS_UPLOAD_HELPER, uploadHelper);
-    startActivityForResult(uploadIntent, RESULT_UPLOAD);  //TODO zpracovani vysledku?
+    startActivity(uploadIntent);
   }
 
   @Override

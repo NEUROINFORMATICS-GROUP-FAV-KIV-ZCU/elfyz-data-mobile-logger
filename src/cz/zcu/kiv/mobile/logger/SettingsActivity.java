@@ -16,14 +16,25 @@ public class SettingsActivity extends PreferenceActivity {
   }
 
 
-  public static class GeneralSettingsFragment extends PreferenceFragment {
+  public static class ConnectionPrefsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
-      PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+      PreferenceManager.setDefaultValues(getActivity(), R.xml.connection_preferences, false);
 
-      addPreferencesFromResource(R.xml.preferences);
+      addPreferencesFromResource(R.xml.connection_preferences);
+    }
+  }
+
+  public static class GeneralParametersPrefsFragment extends PreferenceFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+
+      PreferenceManager.setDefaultValues(getActivity(), R.xml.gen_pars_preferences, false);
+
+      addPreferencesFromResource(R.xml.gen_pars_preferences);
     }
   }
 }

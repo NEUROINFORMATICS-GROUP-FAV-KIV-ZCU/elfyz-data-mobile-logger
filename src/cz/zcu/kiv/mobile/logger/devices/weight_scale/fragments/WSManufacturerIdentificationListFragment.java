@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
+import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters.WSManufacturerIdentificationAdapter;
@@ -16,7 +17,6 @@ import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSManufacturerIdentificat
 
 public class WSManufacturerIdentificationListFragment extends ADataListFragment {
   private static final int LOADER_ID = 62;
-  private static final String EXPERIMENT_PARAMETER_NAME = "WS Manufacturer Identification";
   
     
   @Override
@@ -31,7 +31,9 @@ public class WSManufacturerIdentificationListFragment extends ADataListFragment 
 
   @Override
   protected IExperimentParametersUploadHelper getUploadHelper(long[] selected) {
-    return new WSManufacturerIdentificationDbUploadHelper(EXPERIMENT_PARAMETER_NAME, 0.0, selected, true);
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_ws_mid", "WS Manufacturer Identification");
+    boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
+    return new WSManufacturerIdentificationDbUploadHelper(parameterName, 0.0, selected, append);
   }
 
   @Override
