@@ -52,6 +52,15 @@
   </build>
 
   <dependencies>
+  <dependency>
+  <groupId>com.android.support</groupId>
+  <artifactId>appcompat-v7</artifactId>
+  <version>18.0.0</version>
+  <type>aar</type>
+  </dependency>
+  
+
+  
 	<!-- Local dependencies -->
     <dependency>
       <groupId>com.thisisant</groupId>
@@ -67,13 +76,7 @@
       <scope>system</scope>
 	  <systemPath>${basedir}/libraries/antpluginlib_3-1-0.jar</systemPath>
     </dependency>
-    <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>support</artifactId>
-      <version>v4</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/libraries/android-support-v4.jar</systemPath>
-    </dependency>
+
 	
 	<!-- Remote dependencies -->
     <dependency>
@@ -121,10 +124,16 @@
   </dependencies>
 
   <repositories>
+              <repository>
+            <id>google-repo</id>
+            <name>Google local repository</name>
+            <url>file:${env.ANDROID_HOME}/extras/android/m2repository</url>
+        </repository>
     <repository>
       <id>springsource-repo</id>
       <name>SpringSource Repository</name>
       <url>http://repo.springsource.org/release</url>
     </repository>
+
   </repositories>
 </project>
