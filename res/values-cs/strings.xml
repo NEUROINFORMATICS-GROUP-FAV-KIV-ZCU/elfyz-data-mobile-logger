@@ -139,6 +139,17 @@
     <string name="pref_gen_par_name_ws_ms">Specifická data výrobce</string>
     <string name="pref_gen_par_name_ws_measurement">Měření</string>
     <string name="pref_gen_par_name_ws_pi">Informace o produktu</string>
-    <string name="fail_no_upload_data">Žádná data pro upload</string>
+    <string name="fail_no_upload_data_selected">Žádná data vybrána pro upload</string>
+    <string name="alert_pair_eegbase_profile">Tento profil není spárován s EEGbase. Pro spárování se přihlašte do EEGbase.</string>
+    <string name="empty_list_experiments">Nejsou dostupné žádné experimenty</string>
+    <string name="experiment_id">ID experimentu</string>
+    <string name="experiment_scenario_name">Scénář</string>
+    <string name="experiment_research_group_name">Výzkumná skupina</string>
+    <string name="experiment_time_from">Čas od</string>
+    <string name="experiment_time_to">Čas do</string>
+    <string name="experiment_subject_name">Subjekt</string>
+    <string name="fail_experiments_already_downloading">Seznam experimentů se již stahuje.</string>
+    <string name="fail_data_already_uploading">Data se ještě odesílají.</string>
+    <string name="fail_select_experiment">Zvolte experiment pro upload dat.</string>
 
 </resources>

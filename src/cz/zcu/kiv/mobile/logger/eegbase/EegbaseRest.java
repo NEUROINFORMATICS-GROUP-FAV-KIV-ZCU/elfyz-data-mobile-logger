@@ -93,6 +93,9 @@ public class EegbaseRest {
     catch (RestClientException e) {
       throw new CommunicationException(e);
     }
+    catch (Exception e) {
+      throw new CommunicationException("Serious communication error.", e);
+    }
   }
   
   public static AddExperimentDataResult uploadGenericParameters(String email, String password, ExperimentParametersData parameters) throws CommunicationException, WrongCredentialsException {

@@ -147,6 +147,16 @@
     <string name="pref_gen_par_name_ws_ms">Manufacturer specific data</string>
     <string name="pref_gen_par_name_ws_measurement">Measurement</string>
     <string name="pref_gen_par_name_ws_pi">Product information</string>
-    <string name="fail_no_upload_data">No data to upload</string>
-
+    <string name="fail_no_upload_data_selected">No data selected to upload</string>
+    <string name="alert_pair_eegbase_profile">This profile is not paired with EEGbase. Login to EEGbase to pair the profile.</string>
+    <string name="empty_list_experiments">No experiments available</string>
+    <string name="experiment_id">Experiment ID</string>
+    <string name="experiment_scenario_name">Scenario</string>
+    <string name="experiment_research_group_name">Research group</string>
+    <string name="experiment_time_from">Time from</string>
+    <string name="experiment_time_to">Time to</string>
+    <string name="experiment_subject_name">Subject</string>
+    <string name="fail_experiments_already_downloading">Experiments are already being downloaded.</string>
+    <string name="fail_data_already_uploading">Data are already being uploaded.</string>
+    <string name="fail_select_experiment">Select experiment to upload data to.</string>
 </resources>
