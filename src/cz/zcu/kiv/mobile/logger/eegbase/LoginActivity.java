@@ -36,6 +36,7 @@ public class LoginActivity extends Activity {
   public static final String EXTRA_EMAIL = "extra_email";
   public static final String EXTRA_NAME= "extra_name";
   public static final String EXTRA_SURNAME = "extra_surname";
+  public static final String EXTRA_EEGBASE_PASSWORD = "extra_eegbase_password";
   
   private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -158,8 +159,6 @@ public class LoginActivity extends Activity {
       focusView.requestFocus();
     }
     else {
-      //TODO save last email
-      
       // Show a progress spinner, and kick off a background task to
       // perform the user login attempt.
       mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
@@ -259,7 +258,7 @@ public class LoginActivity extends Activity {
         data.putExtra(EXTRA_EMAIL, email);
         data.putExtra(EXTRA_NAME, info.getName());
         data.putExtra(EXTRA_SURNAME, info.getSurname());
-        //TODO remember password
+        data.putExtra(EXTRA_EEGBASE_PASSWORD, password);
         setResult(RESULT_OK, data);
         finish();
       }

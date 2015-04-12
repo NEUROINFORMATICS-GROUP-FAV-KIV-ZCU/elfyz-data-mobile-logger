@@ -17,12 +17,13 @@ public class Profile implements Parcelable {
   private int height;
   private int activityLevel;
   private boolean lifetimeAthlete;
+  private String eegbasePassword;
   
   
   public Profile() {}
   
   public Profile(long id, String profileName, String email, String name, String surname, Calendar birthDate, Gender gender,
-      int height, int activityLevel, boolean lifetimeAthlete) {
+      int height, int activityLevel, boolean lifetimeAthlete, String eegbasePassword) {
     this.id = id;
     this.profileName = profileName;
     this.email = email;
@@ -33,6 +34,7 @@ public class Profile implements Parcelable {
     this.height = height;
     this.activityLevel = activityLevel;
     this.lifetimeAthlete = lifetimeAthlete;
+    this.eegbasePassword = eegbasePassword;
   }
   
   public Profile(Parcel source) {
@@ -100,6 +102,12 @@ public class Profile implements Parcelable {
   public void setLifetimeAthlete(boolean lifetimeAthlete) {
     this.lifetimeAthlete = lifetimeAthlete;
   }
+  public String getEegbasePassword() {
+    return eegbasePassword;
+  }
+  public void setEegbasePassword(String eegbasePassword) {
+    this.eegbasePassword = eegbasePassword;
+  }
   
   
   @Override
@@ -111,7 +119,13 @@ public class Profile implements Parcelable {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(id);
     dest.writeString(profileName);
-    dest.writeString(email);
+    if(email == null) {
+      dest.writeInt(0);
+    }
+    else {
+      dest.writeInt(1);
+      dest.writeString(email);
+    }
     dest.writeString(name);
     dest.writeString(surname);
     dest.writeLong(birthDate.getTimeInMillis());
@@ -119,12 +133,21 @@ public class Profile implements Parcelable {
     dest.writeInt(height);
     dest.writeInt(activityLevel);
     dest.writeInt(lifetimeAthlete ? 1 : 0);
+    if(eegbasePassword == null) {
+      dest.writeInt(0);
+    }
+    else {
+      dest.writeInt(1);
+      dest.writeString(eegbasePassword);
+    }
   }
   
   public void readFromParcel(Parcel source) {
     id = source.readLong();
     profileName = source.readString();
-    email = source.readString();
+    if(source.readInt() == 1) {
+      email = source.readString();
+    }
     name = source.readString();
     surname = source.readString();
     birthDate = Calendar.getInstance();
@@ -133,6 +156,9 @@ public class Profile implements Parcelable {
     height = source.readInt();
     activityLevel = source.readInt();
     lifetimeAthlete = source.readInt() == 1;
+    if(source.readInt() == 1) {
+      eegbasePassword = source.readString();
+    }
   }
   
   

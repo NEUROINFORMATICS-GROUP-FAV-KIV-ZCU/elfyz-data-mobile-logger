@@ -42,6 +42,8 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
   
   private static final String STATE_SELECTED_DATE = "state.selected.date";
   private static final String STATE_PROFILE = "extra.profile";
+  private static final String STATE_VERIFIED_EMAIL = "extra.verified.email";
+  private static final String STATE_VERIFIED_PASSWORD = "extra.verified.password";
   private static final int REQUEST_LOGIN = 5;
   
   private EditText vProfileName;
@@ -60,6 +62,9 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
   private Calendar selectedDate;
   
   private Profile profile;
+  
+  private String verifiedEmail;
+  private String verifiedPassword;
   
 
   @Override
@@ -103,6 +108,7 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
         }
         
         setValues(profile);
+        //TODO better separate layout with included input fields and set it as a whole by setContentView?
         ((Button) findViewById(R.id.btn_save_profile)).setText(R.string.profile_update_profile);
       }
     }
@@ -112,10 +118,12 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
         selectedDate.setTimeInMillis(state.getLong(STATE_SELECTED_DATE));
         updateBirthDate();
       }
+      verifiedEmail = state.getString(STATE_VERIFIED_EMAIL);
+      verifiedPassword = state.getString(STATE_VERIFIED_PASSWORD);
       profile = state.getParcelable(STATE_PROFILE);
     }
   }
-
+  
   private void setValues(Profile profile) {
     vProfileName.setText(profile.getProfileName());
     vEmail.setText(profile.getEmail());
@@ -135,9 +143,12 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     super.onSaveInstanceState(outState);
     if(selectedDate != null)
       outState.putLong(STATE_SELECTED_DATE, selectedDate.getTimeInMillis());
+    if(verifiedEmail != null)
+      outState.putString(STATE_VERIFIED_EMAIL, verifiedEmail);
+    if(verifiedPassword != null)
+      outState.putString(STATE_VERIFIED_PASSWORD, verifiedPassword);
   }
   
-
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -164,7 +175,9 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     switch (requestCode) {
       case REQUEST_LOGIN:
         if(resultCode == RESULT_OK) {
-          vEmail.setText(data.getStringExtra(LoginActivity.EXTRA_EMAIL));
+          verifiedEmail = data.getStringExtra(LoginActivity.EXTRA_EMAIL);
+          verifiedPassword = data.getStringExtra(LoginActivity.EXTRA_EEGBASE_PASSWORD);
+          vEmail.setText(verifiedEmail);
           vName.setText(data.getStringExtra(LoginActivity.EXTRA_NAME));
           vSurname.setText(data.getStringExtra(LoginActivity.EXTRA_SURNAME));
         }
@@ -214,6 +227,9 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     profile.setHeight(height);
     profile.setActivityLevel(activityLevel);
     profile.setLifetimeAthlete(lifetimeAthlete);
+    if(email.equals(verifiedEmail)) {
+      profile.setEegbasePassword(verifiedPassword);
+    }
     
     try {
       if(profile.getId() > 0L)
