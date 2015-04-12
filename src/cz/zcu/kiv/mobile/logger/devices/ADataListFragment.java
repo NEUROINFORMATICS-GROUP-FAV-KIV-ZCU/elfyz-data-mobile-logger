@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.eegbase.UploadGenericParametersActivity;
@@ -52,12 +51,6 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragments_data_list, container, false);
     return rootView;
-  }
-  
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
   }
   
   @Override
