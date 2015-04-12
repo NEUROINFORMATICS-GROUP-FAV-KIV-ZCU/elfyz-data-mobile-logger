@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import android.util.Log;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
@@ -13,7 +14,7 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCalculatedRrInterval;
 
 
-public class HeartRateCalculatedRrIntervalTable extends ATable<HeartRateCalculatedRrIntervalTable.HRCalculatedRrIntervalObserver>{
+public class HeartRateCalculatedRrIntervalTable extends ARecordTable<HeartRateCalculatedRrIntervalTable.HRCalculatedRrIntervalObserver>{
   private static final String TAG = HeartRateCalculatedRrIntervalTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_calc_rr_interval";
@@ -51,7 +52,7 @@ public class HeartRateCalculatedRrIntervalTable extends ATable<HeartRateCalculat
         + COLUMN_CALC_RR_INTERVAL + " INTEGER NOT NULL,"
         + COLUMN_RR_FLAG + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -159,9 +160,14 @@ public class HeartRateCalculatedRrIntervalTable extends ATable<HeartRateCalculat
     }
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
+  
   
 
-  public interface HRCalculatedRrIntervalObserver {
+  public interface HRCalculatedRrIntervalObserver extends IRecordDataObserver {
     void onHRCalculatedRrIntervalDataAdded(long id);
     void onHRCalculatedRrIntervalDataUpdated(long[] ids);
   }

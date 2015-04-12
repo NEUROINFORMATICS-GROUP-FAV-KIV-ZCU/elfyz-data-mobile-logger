@@ -5,12 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleAdvancedMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleBasicMeasurement;
 
 
-public class WeightScaleMeasurementTable extends ATable<WeightScaleMeasurementTable.WSDataObserver> {
+public class WeightScaleMeasurementTable extends ARecordTable<WeightScaleMeasurementTable.WSDataObserver> {
   private static final String TAG = WeightScaleMeasurementTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "ws_measurement";
@@ -54,7 +55,7 @@ public class WeightScaleMeasurementTable extends ATable<WeightScaleMeasurementTa
         + COLUMN_ACTIVE_METABOLIC_RATE + " REAL NULL,"
         + COLUMN_BASAL_METABOLIC_RATE + " REAL NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
   
@@ -158,9 +159,14 @@ public class WeightScaleMeasurementTable extends ATable<WeightScaleMeasurementTa
     }
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
+  
   
 
-  public interface WSDataObserver {
+  public interface WSDataObserver extends IRecordDataObserver {
     void onWSMeasurementAdded(long id);
     void onWSMeasurementsUpdated(long[] ids);
   }

@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCumulativeOperatingTime;
 
 
-public class HeartRateCumulativeOperatingTimeTable extends ATable<HeartRateCumulativeOperatingTimeTable.HRCumulativeOperatingTimeObserver> {
+public class HeartRateCumulativeOperatingTimeTable extends ARecordTable<HeartRateCumulativeOperatingTimeTable.HRCumulativeOperatingTimeObserver> {
   private static final String TAG = HeartRateCumulativeOperatingTimeTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_cumul_op_time";
@@ -40,7 +41,7 @@ public class HeartRateCumulativeOperatingTimeTable extends ATable<HeartRateCumul
         + COLUMN_TIME + " INTEGER NOT NULL,"
         + COLUMN_CUMUL_OP_TIME + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -121,10 +122,15 @@ public class HeartRateCumulativeOperatingTimeTable extends ATable<HeartRateCumul
       throw new DatabaseException(e);
     }
   }
+  
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
     
   
     
-  public interface HRCumulativeOperatingTimeObserver {
+  public interface HRCumulativeOperatingTimeObserver extends IRecordDataObserver {
     void onHRCumulativeOperatingTimeDataAdded(long id);
     void onHRCumulativeOperatingTimeDataUpdated(long[] ids);
   }

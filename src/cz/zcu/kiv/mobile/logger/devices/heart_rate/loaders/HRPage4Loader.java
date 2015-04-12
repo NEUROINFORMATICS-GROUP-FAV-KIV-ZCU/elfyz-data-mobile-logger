@@ -36,6 +36,10 @@ public class HRPage4Loader extends AMeasurementListLoader {
         public void onHRPage4DataAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getHeartRatePage4Table().addObserver(observer);
     }

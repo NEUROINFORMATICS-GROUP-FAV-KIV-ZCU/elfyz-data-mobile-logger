@@ -8,17 +8,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
 
 
-public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasurementTable.BPDataObserver> {
+public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMeasurementTable.BPDataObserver> {
   private static final String TAG = BloodPressureMeasurementTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "blood_pressure_measurement";
 
-  public static final String COLUMN_USER_ID = "user_id";
   public static final String COLUMN_TIME = "time";
   public static final String COLUMN_SYSTOLIC = "systolic";
   public static final String COLUMN_DIASTOLIC = "diastolic";
@@ -29,7 +29,6 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
   private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
   
@@ -50,7 +49,7 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
         + COLUMN_HEART_RATE + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
         + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_SYSTOLIC + "," + COLUMN_DIASTOLIC + "," + COLUMN_MEAN_PRESSURE + "," + COLUMN_HEART_RATE + "),"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
   
@@ -185,8 +184,12 @@ public class BloodPressureMeasurementTable extends ATable<BloodPressureMeasureme
   }
   
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
   
-  public interface BPDataObserver {
+  public interface BPDataObserver extends IRecordDataObserver {
     void onBPMeasurementAdded(long id);
     void onBPMeasurementsUpdated(long[] ids);
     void onBPMeasurementBatchAdded(List<Long> ids);

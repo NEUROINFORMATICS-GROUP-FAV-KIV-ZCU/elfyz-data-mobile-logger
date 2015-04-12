@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleManufacturerIdentification;
 
 
-public class WeightScaleManufacturerIdentificationTable extends ATable<WeightScaleManufacturerIdentificationTable.WSManufacturerIdentificationObserver> {
+public class WeightScaleManufacturerIdentificationTable extends ARecordTable<WeightScaleManufacturerIdentificationTable.WSManufacturerIdentificationObserver> {
   private static final String TAG = WeightScaleManufacturerIdentificationTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "ws_manuf_id";
@@ -44,7 +45,7 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
         + COLUMN_MANUF_ID + " INTEGER NOT NULL,"
         + COLUMN_MODEL_NR + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -128,9 +129,14 @@ public class WeightScaleManufacturerIdentificationTable extends ATable<WeightSca
     }
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
   
   
-  public interface WSManufacturerIdentificationObserver {
+  
+  public interface WSManufacturerIdentificationObserver extends IRecordDataObserver {
     void onWSManufacturerIdentificationDataAdded(long id);
     void onWSManufacturerIdentificationDataUpdated(long[] ids);
   }

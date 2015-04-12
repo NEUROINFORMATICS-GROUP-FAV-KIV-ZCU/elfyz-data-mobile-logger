@@ -8,12 +8,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeasurement;
 
 
-public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDataObserver> {
+public class GlucoseMeasurementTable extends ARecordTable<GlucoseMeasurementTable.GDataObserver> {
   private static final String TAG = GlucoseMeasurementTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "glucose_measurement";
@@ -50,7 +51,7 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
         + COLUMN_TYPE + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
         + "UNIQUE (" + COLUMN_USER_ID + "," + COLUMN_TIME + "," + COLUMN_GLUCOSE + "," + COLUMN_TEMPERATURE + "," + COLUMN_CODE + "," + COLUMN_TYPE + "),"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -183,9 +184,14 @@ public class GlucoseMeasurementTable extends ATable<GlucoseMeasurementTable.GDat
     return values;
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
   
   
-  public interface GDataObserver {
+  
+  public interface GDataObserver extends IRecordDataObserver {
     void onGlucoseMeasurementAdded(long id);
     void onGlucoseMeasurementsUpdated(long[] ids);
     void onGlucoseMeasurementAdded(List<Long> ids);

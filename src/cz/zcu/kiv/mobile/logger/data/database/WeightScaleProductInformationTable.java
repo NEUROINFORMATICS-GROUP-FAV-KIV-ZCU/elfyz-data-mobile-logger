@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleProductInformation;
 
 
-public class WeightScaleProductInformationTable extends ATable<WeightScaleProductInformationTable.WSProductInformationObserver> {
+public class WeightScaleProductInformationTable extends ARecordTable<WeightScaleProductInformationTable.WSProductInformationObserver> {
   private static final String TAG = WeightScaleProductInformationTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "ws_prod_info";
@@ -44,7 +45,7 @@ public class WeightScaleProductInformationTable extends ATable<WeightScaleProduc
         + COLUMN_SUPP_SW_REV + " INTEGER NOT NULL,"
         + COLUMN_SERIAL_NR + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -127,10 +128,15 @@ public class WeightScaleProductInformationTable extends ATable<WeightScaleProduc
       throw new DatabaseException(e);
     }
   }
+  
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
 
   
   
-  public interface WSProductInformationObserver {
+  public interface WSProductInformationObserver extends IRecordDataObserver {
     void onWSProductInformationDataAdded(long id);
     void onWSProductInformationDataUpdated(long[] ids);
   }

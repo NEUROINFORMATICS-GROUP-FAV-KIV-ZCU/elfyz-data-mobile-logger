@@ -9,11 +9,12 @@ import android.util.Log;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.DataState;
 
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateMeasurement;
 
 
-public class HeartRateMeasurementTable extends ATable<HeartRateMeasurementTable.HRDataObserver> {
+public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurementTable.HRDataObserver> {
   private static final String TAG = HeartRateMeasurementTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_measurement";
@@ -54,7 +55,7 @@ public class HeartRateMeasurementTable extends ATable<HeartRateMeasurementTable.
         + COLUMN_BEAT_TIME + " INTEGER NOT NULL,"
         + COLUMN_DATA_STATE + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
   
@@ -161,10 +162,15 @@ public class HeartRateMeasurementTable extends ATable<HeartRateMeasurementTable.
       default: throw new RuntimeException("Unexpected enum value: " + dataState);
     }
   }
+  
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
 
 
 
-  public interface HRDataObserver {
+  public interface HRDataObserver extends IRecordDataObserver {
     void onHRMeasurementAdded(long id);
     void onHRMeasurementsUpdated(long[] ids);
   }

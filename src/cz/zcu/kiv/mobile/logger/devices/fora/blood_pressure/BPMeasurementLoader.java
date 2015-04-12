@@ -83,6 +83,10 @@ public class BPMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>
         public void onBPMeasurementsUpdated(long[] ids) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       dbBPM.addObserver(observer);
     }

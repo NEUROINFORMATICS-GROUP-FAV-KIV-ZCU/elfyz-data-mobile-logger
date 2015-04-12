@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRatePage4;
 
 
-public class HeartRatePage4Table extends ATable<HeartRatePage4Table.HRPage4Observer> {
+public class HeartRatePage4Table extends ARecordTable<HeartRatePage4Table.HRPage4Observer> {
   private static final String TAG = HeartRatePage4.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_page_4";
@@ -42,7 +43,7 @@ public class HeartRatePage4Table extends ATable<HeartRatePage4Table.HRPage4Obser
         + COLUMN_MANUFACTURER_SPECIFIC + " INTEGER NOT NULL,"
         + COLUMN_PREVIOUS_HB_TIME + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -125,9 +126,14 @@ public class HeartRatePage4Table extends ATable<HeartRatePage4Table.HRPage4Obser
     }
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
   
   
-  public interface HRPage4Observer {
+  
+  public interface HRPage4Observer extends IRecordDataObserver {
     void onHRPage4DataAdded(long id);
     void onHRPage4DataUpdated(long[] ids);
   }

@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateVersionAndModel;
 
 
-public class HeartRateVersionAndModelTable extends ATable<HeartRateVersionAndModelTable.HRVersionAndModelObserver>{
+public class HeartRateVersionAndModelTable extends ARecordTable<HeartRateVersionAndModelTable.HRVersionAndModelObserver>{
   private static final String TAG = HeartRateVersionAndModelTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_version_and_model";
@@ -44,7 +45,7 @@ public class HeartRateVersionAndModelTable extends ATable<HeartRateVersionAndMod
         + COLUMN_SW_VERSION + " INTEGER NOT NULL,"
         + COLUMN_MODEL_NUMBER + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -127,10 +128,15 @@ public class HeartRateVersionAndModelTable extends ATable<HeartRateVersionAndMod
       throw new DatabaseException(e);
     }
   }
+  
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
 
   
   
-  public interface HRVersionAndModelObserver {
+  public interface HRVersionAndModelObserver extends IRecordDataObserver {
     void onHRVersionAndModelDataAdded(long id);
     void onHRVersionAndModelDataUpdated(long[] ids);
   }

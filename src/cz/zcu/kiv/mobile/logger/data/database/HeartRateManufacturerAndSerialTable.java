@@ -6,11 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateManufacturerAndSerial;
 
 
-public class HeartRateManufacturerAndSerialTable extends ATable<HeartRateManufacturerAndSerialTable.HRManufacturerAndSerialObserver>{
+public class HeartRateManufacturerAndSerialTable extends ARecordTable<HeartRateManufacturerAndSerialTable.HRManufacturerAndSerialObserver>{
   private static final String TAG = HeartRateManufacturerAndSerialTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "hr_manuf_and_serial";
@@ -42,7 +43,7 @@ public class HeartRateManufacturerAndSerialTable extends ATable<HeartRateManufac
         + COLUMN_MANUFACTURER_ID + " INTEGER NOT NULL,"
         + COLUMN_SERIAL_NUMBER + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -125,9 +126,14 @@ public class HeartRateManufacturerAndSerialTable extends ATable<HeartRateManufac
     }
   }
   
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
+  
   
 
-  public interface HRManufacturerAndSerialObserver {
+  public interface HRManufacturerAndSerialObserver extends IRecordDataObserver {
     void onHRManufacturerAndSerialDataAdded(long id);
     void onHRManufacturerAndSerialDataUpdated(long[] ids);
   }

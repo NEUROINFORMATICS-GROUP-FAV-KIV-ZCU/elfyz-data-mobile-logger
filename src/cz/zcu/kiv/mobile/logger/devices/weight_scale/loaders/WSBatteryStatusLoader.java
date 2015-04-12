@@ -36,6 +36,10 @@ public class WSBatteryStatusLoader extends AMeasurementListLoader {
         public void onWSBatteryStatusDataAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getWeightScaleBatteryStatusTable().addObserver(observer);
     }

@@ -36,6 +36,10 @@ public class HRMeasurementLoader extends AMeasurementListLoader {
         public void onHRMeasurementAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getHeartRateMeasurementTable().addObserver(observer);
     }

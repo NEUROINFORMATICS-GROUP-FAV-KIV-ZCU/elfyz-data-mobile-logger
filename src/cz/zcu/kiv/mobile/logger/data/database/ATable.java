@@ -21,7 +21,6 @@ public abstract class ATable<T_Observer> {
   public static final int VALUE_FALSE = 0;
 
   public static final String COLUMN_ID = "_id";
-  public static final String COLUMN_UPLOADED = "uploaded";
   
   protected static final String WHERE_ID = COLUMN_ID + " = ? ";
   

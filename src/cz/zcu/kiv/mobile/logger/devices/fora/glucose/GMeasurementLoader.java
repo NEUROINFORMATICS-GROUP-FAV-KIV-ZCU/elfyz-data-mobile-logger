@@ -83,6 +83,10 @@ public class GMeasurementLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>>
         public void onGlucoseMeasurementsUpdated(long[] ids) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       dbGM.addObserver(observer);
     }

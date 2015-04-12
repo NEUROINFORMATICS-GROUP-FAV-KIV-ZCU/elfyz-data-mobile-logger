@@ -9,11 +9,12 @@ import android.util.Log;
 
 import com.dsi.ant.plugins.antplus.pcc.defines.BatteryStatus;
 
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleBatteryStatus;
 
 
-public class WeightScaleBatteryStatusTable extends ATable<WeightScaleBatteryStatusTable.WSBatteryStatusObserver> {
+public class WeightScaleBatteryStatusTable extends ARecordTable<WeightScaleBatteryStatusTable.WSBatteryStatusObserver> {
   private static final String TAG = WeightScaleBatteryStatusTable.class.getSimpleName();
 
   private static final String TABLE_NAME = "ws_battery_status";
@@ -62,7 +63,7 @@ public class WeightScaleBatteryStatusTable extends ATable<WeightScaleBatteryStat
         + COLUMN_BAT_COUNT + " INTEGER NOT NULL,"
         + COLUMN_BAT_ID + " INTEGER NOT NULL,"
         + COLUMN_UPLOADED + " INTEGER NOT NULL,"
-        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ")"
+        + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + ProfileTable.TABLE_NAME + " (" + COLUMN_ID + ") ON DELETE CASCADE"
         + ");");
   }
 
@@ -177,10 +178,15 @@ public class WeightScaleBatteryStatusTable extends ATable<WeightScaleBatteryStat
       default: throw new RuntimeException("Unexpected enum value: " + batteryStatus);
     }
   }
+  
+  @Override
+  protected String getTableName() {
+    return TABLE_NAME;
+  }
 
 
 
-  public interface WSBatteryStatusObserver {
+  public interface WSBatteryStatusObserver extends IRecordDataObserver {
     void onWSBatteryStatusDataAdded(long id);
     void onWSBatteryStatusDataUpdated(long[] ids);
   }

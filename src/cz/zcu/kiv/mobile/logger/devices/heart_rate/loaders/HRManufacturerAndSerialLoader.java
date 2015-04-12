@@ -36,6 +36,10 @@ public class HRManufacturerAndSerialLoader extends AMeasurementListLoader {
         public void onHRManufacturerAndSerialDataAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getHeartRateManufacturerAndSerialTable().addObserver(observer);
     }

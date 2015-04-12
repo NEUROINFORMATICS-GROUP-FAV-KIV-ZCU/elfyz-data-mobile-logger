@@ -36,6 +36,10 @@ public class HRCalculatedRrIntervalLoader extends AMeasurementListLoader {
         public void onHRCalculatedRrIntervalDataAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getHeartRateCalculatedRrIntervalTable().addObserver(observer);
     }

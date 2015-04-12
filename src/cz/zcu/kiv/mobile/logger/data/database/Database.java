@@ -1,5 +1,8 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database {
   private static final String DATABASE_NAME = "elfyz-data-mobile-logger.db";
-  private static final int DATABASE_VERSION = 11;
+  private static final int DATABASE_VERSION = 13;
 
   private SQLiteOpenHelper openHelper;
   
@@ -25,25 +28,32 @@ public class Database {
   private WeightScaleManufacturerSpecificDataTable wsMsTable;
   private WeightScaleProductInformationTable wsPiTable;
   private GlucoseMeasurementTable gTable;
+  
+  private List<ATable<?>> tables;
+  private List<ARecordTable<?>> recordTables;
 
 
   public Database(Context context){
     openHelper = new DatabaseHelper(context);
     
-    profileTable = new ProfileTable(openHelper);
-    bpmTable = new BloodPressureMeasurementTable(openHelper);
-    wsTable = new WeightScaleMeasurementTable(openHelper);
-    hrTable = new HeartRateMeasurementTable(openHelper);
-    hrP4Table = new HeartRatePage4Table(openHelper);
-    hrCotTable = new HeartRateCumulativeOperatingTimeTable(openHelper);
-    hrMasTable = new HeartRateManufacturerAndSerialTable(openHelper);
-    hrVamTable = new HeartRateVersionAndModelTable(openHelper);
-    hrCrrTable = new HeartRateCalculatedRrIntervalTable(openHelper);
-    wsBsTable = new WeightScaleBatteryStatusTable(openHelper);
-    wsMiTable = new WeightScaleManufacturerIdentificationTable(openHelper);
-    wsMsTable = new WeightScaleManufacturerSpecificDataTable(openHelper);
-    wsPiTable = new WeightScaleProductInformationTable(openHelper);
-    gTable = new GlucoseMeasurementTable(openHelper);
+    recordTables = new ArrayList<ARecordTable<?>>(16);
+    recordTables.add(bpmTable = new BloodPressureMeasurementTable(openHelper));
+    recordTables.add(wsTable = new WeightScaleMeasurementTable(openHelper));
+    recordTables.add(hrTable = new HeartRateMeasurementTable(openHelper));
+    recordTables.add(hrP4Table = new HeartRatePage4Table(openHelper));
+    recordTables.add(hrCotTable = new HeartRateCumulativeOperatingTimeTable(openHelper));
+    recordTables.add(hrMasTable = new HeartRateManufacturerAndSerialTable(openHelper));
+    recordTables.add(hrVamTable = new HeartRateVersionAndModelTable(openHelper));
+    recordTables.add(hrCrrTable = new HeartRateCalculatedRrIntervalTable(openHelper));
+    recordTables.add(wsBsTable = new WeightScaleBatteryStatusTable(openHelper));
+    recordTables.add(wsMiTable = new WeightScaleManufacturerIdentificationTable(openHelper));
+    recordTables.add(wsMsTable = new WeightScaleManufacturerSpecificDataTable(openHelper));
+    recordTables.add(wsPiTable = new WeightScaleProductInformationTable(openHelper));
+    recordTables.add(gTable = new GlucoseMeasurementTable(openHelper));
+
+    tables = new ArrayList<ATable<?>>(16);
+    tables.add(profileTable = new ProfileTable(openHelper));
+    tables.addAll(recordTables);
   }
   
   
@@ -118,38 +128,22 @@ public class Database {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      profileTable.onCreate(db);
-      bpmTable.onCreate(db);
-      hrTable.onCreate(db);
-      hrP4Table.onCreate(db);
-      hrCotTable.onCreate(db);
-      hrMasTable.onCreate(db);
-      hrVamTable.onCreate(db);
-      hrCrrTable.onCreate(db);
-      wsTable.onCreate(db);
-      wsBsTable.onCreate(db);
-      wsMiTable.onCreate(db);
-      wsMsTable.onCreate(db);
-      wsPiTable.onCreate(db);
-      gTable.onCreate(db);
+      for (ATable<?> table : tables) {
+        table.onCreate(db);
+      }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
-      profileTable.onUpgrade(db, oldVersion, currentVersion);
-      bpmTable.onUpgrade(db, oldVersion, currentVersion);
-      wsTable.onUpgrade(db, oldVersion, currentVersion);
-      hrTable.onUpgrade(db, oldVersion, currentVersion);
-      hrP4Table.onUpgrade(db, oldVersion, currentVersion);
-      hrCotTable.onUpgrade(db, oldVersion, currentVersion);
-      hrMasTable.onUpgrade(db, oldVersion, currentVersion);
-      hrVamTable.onUpgrade(db, oldVersion, currentVersion);
-      hrCrrTable.onUpgrade(db, oldVersion, currentVersion);
-      wsBsTable.onUpgrade(db, oldVersion, currentVersion);
-      wsMiTable.onUpgrade(db, oldVersion, currentVersion);
-      wsMsTable.onUpgrade(db, oldVersion, currentVersion);
-      wsPiTable.onUpgrade(db, oldVersion, currentVersion);
-      gTable.onUpgrade(db, oldVersion, currentVersion);
+      for (ATable<?> table : tables) {
+        table.onUpgrade(db, oldVersion, currentVersion);
+      }
+    }
+    
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+      super.onOpen(db);
+      db.execSQL("PRAGMA foreign_keys=ON");
     }
   }
 }

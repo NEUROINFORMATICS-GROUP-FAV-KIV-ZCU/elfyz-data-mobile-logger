@@ -36,6 +36,10 @@ public class HRCumulativeOperatingTimeLoader extends AMeasurementListLoader {
         public void onHRCumulativeOperatingTimeDataAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onClear() {
+          onContentChanged();
+        }
       };
       db.getHeartRateCumulativeOperatingTimeTable().addObserver(observer);
     }
