@@ -21,9 +21,9 @@ public class SettingsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
-      PreferenceManager.setDefaultValues(getActivity(), R.xml.connection_preferences, false);
+      PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences_connection, false);
 
-      addPreferencesFromResource(R.xml.connection_preferences);
+      addPreferencesFromResource(R.xml.preferences_connection);
     }
   }
 
@@ -32,9 +32,9 @@ public class SettingsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
-      PreferenceManager.setDefaultValues(getActivity(), R.xml.gen_pars_preferences, false);
+      PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences_gen_pars, false);
 
-      addPreferencesFromResource(R.xml.gen_pars_preferences);
+      addPreferencesFromResource(R.xml.preferences_gen_pars);
     }
   }
 }
