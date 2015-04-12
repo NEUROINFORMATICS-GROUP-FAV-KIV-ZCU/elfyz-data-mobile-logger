@@ -30,7 +30,7 @@ import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
 public class EegbaseRest {
   private static final String ENDPOINT_USER_LOGIN = "/user/login";
   private static final String ENDPOINT_MY_EXPERIMENT_LIST = "/experiment/myList"; //TODO endpoints
-  private static final String ENDPOINT_UPLOAD_GENERIC_PARAMETERS = "/experiment/parameters";
+  private static final String ENDPOINT_UPLOAD_GENERIC_PARAMETERS_ = "/experiment/addGeneralParameters/";
   
   
   public static UserInfo login(String email, String password) throws WrongCredentialsException, CommunicationException {
@@ -61,6 +61,9 @@ public class EegbaseRest {
     }
     catch (RestClientException e) {
       throw new CommunicationException(e);
+    }
+    catch (Exception e) {
+      throw new CommunicationException("Serious communication error.", e);
     }
   }
   
@@ -98,7 +101,7 @@ public class EegbaseRest {
     }
   }
   
-  public static AddExperimentDataResult uploadGenericParameters(String email, String password, ExperimentParametersData parameters) throws CommunicationException, WrongCredentialsException {
+  public static AddExperimentDataResult uploadGenericParameters(String email, String password, String experimentID, ExperimentParametersData parameters) throws CommunicationException, WrongCredentialsException {
     try {
       HttpHeaders requestHeaders = new HttpHeaders();
       requestHeaders.setAuthorization(new HttpBasicAuthentication(email, password));
@@ -111,7 +114,10 @@ public class EegbaseRest {
       
       HttpEntity<ExperimentParametersData> entity = new HttpEntity<ExperimentParametersData>(parameters, requestHeaders);
       
-      ResponseEntity<AddExperimentDataResult> response = restTemplate.exchange(getURI(ENDPOINT_UPLOAD_GENERIC_PARAMETERS), HttpMethod.POST, entity, AddExperimentDataResult.class);
+      ResponseEntity<AddExperimentDataResult> response = restTemplate.exchange(
+          getURI(ENDPOINT_UPLOAD_GENERIC_PARAMETERS_ + experimentID),
+          HttpMethod.POST, entity,
+          AddExperimentDataResult.class);
       return response.getBody();
     }
     catch (HttpClientErrorException e) {
@@ -124,6 +130,9 @@ public class EegbaseRest {
     }
     catch (RestClientException e) {
       throw new CommunicationException(e);
+    }
+    catch (Exception e) {
+      throw new CommunicationException("Serious communication error.", e);
     }
   }
 

@@ -14,13 +14,22 @@ import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUplo
 public class UploadGenericParametersTask extends AsyncTask<Void, Void, AsyncTaskResult<AddExperimentDataResult>> {
   private ExperimentParametersData parameters;
   private IExperimentParametersUploadHelper uploadHelper;
+  private String experimentID;
+  private String email;
+  private String password;
   
   
-  public UploadGenericParametersTask(ExperimentParametersData parameters) {
+  public UploadGenericParametersTask(String email, String password, String experimentID, ExperimentParametersData parameters) {
+    this.experimentID = experimentID;
+    this.email = email;
+    this.password = password;
     this.parameters = parameters;
   }
   
-  public UploadGenericParametersTask(IExperimentParametersUploadHelper uploadHelper) {
+  public UploadGenericParametersTask(String email, String password, String experimentID, IExperimentParametersUploadHelper uploadHelper) {
+    this.experimentID = experimentID;
+    this.email = email;
+    this.password = password;
     this.uploadHelper = uploadHelper;
   }
 
@@ -32,13 +41,13 @@ public class UploadGenericParametersTask extends AsyncTask<Void, Void, AsyncTask
     try {
       //use parameters
       if(parameters != null) {
-        result.setResult(EegbaseRest.uploadGenericParameters(parameters));
+        result.setResult(EegbaseRest.uploadGenericParameters(email, password, experimentID, parameters));
       }
       //or upload helper
       else {
         parameters = uploadHelper.buildParameters();
         
-        result.setResult(EegbaseRest.uploadGenericParameters(parameters));
+        result.setResult(EegbaseRest.uploadGenericParameters(email, password, experimentID, parameters));
         
         uploadHelper.markUploaded();
       }
