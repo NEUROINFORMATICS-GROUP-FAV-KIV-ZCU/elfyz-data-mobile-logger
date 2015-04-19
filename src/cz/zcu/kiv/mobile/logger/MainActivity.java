@@ -1,8 +1,11 @@
 package cz.zcu.kiv.mobile.logger;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -25,6 +28,7 @@ import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileActivity;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileLoader;
+import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
@@ -51,8 +55,10 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
     registerForContextMenu(getListView());
     
     getLoaderManager().initLoader(LOADER_PROFILES, null, this);
+    
+    setupSyncAccount();
   }
-  
+
   @Override
   protected void onListItemClick(ListView l, View v, int position, long id) {
     Log.d(TAG, "Profile selected: " + position);
@@ -69,6 +75,12 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
     }
     
     Application.getInstance().setUserProfile(userProfile);
+    
+    //TODO data syncing setting
+    if(userProfile.getEegbasePassword() != null) {
+      Account account = new Account(String.valueOf(userProfile.getId()), AuthenticatorService.ACCOUNT_TYPE);
+      ContentResolver.setSyncAutomatically(account, AuthenticatorService.AUTHORITY, true);
+    }
     
     startActivity(new Intent(this, DeviceListActivity.class));
   }
@@ -115,13 +127,7 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
           .setPositiveButton(R.string.dialog_delete_positive_button, new OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
-                try {
-                  dbProfileTable.deleteProfile(profileID);
-                }
-                catch (DatabaseException e) {
-                  Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
-                  AndroidUtils.toast(MainActivity.this, R.string.profile_delete_fail);
-                }
+                removeProfile(profileID);
                 dialog.dismiss();
               }
             })
@@ -149,6 +155,37 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
   public void createNewProfile(View view){
     Log.d(TAG, "New profile creation requested.");
     startActivity(new Intent(this, ProfileActivity.class));
+  }
+  
+  private void setupSyncAccount() {
+    // Create the account type and default account
+    Account newAccount = new Account("setup_account", AuthenticatorService.ACCOUNT_TYPE);
+    // Get an instance of the Android account manager
+    AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+    /*
+     * Add the account and account type, no password or user data
+     * If successful, return the Account object, otherwise report an error.
+     */
+    if ( !accountManager.addAccountExplicitly(newAccount, null, null)) {
+      Log.w(TAG, "sync account exists or error occured while setup");
+    }
+  }
+
+  private void removeProfile(long profileID) {
+    try {
+      dbProfileTable.deleteProfile(profileID);
+    }
+    catch (DatabaseException e) {
+      Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
+      AndroidUtils.toast(MainActivity.this, R.string.profile_delete_fail);
+      return;
+    }
+
+    Account removeAccount = new Account(String.valueOf(profileID), AuthenticatorService.ACCOUNT_TYPE);
+    AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+    Account[] a1 = accountManager.getAccounts();  //TODO
+    accountManager.removeAccount(removeAccount, null, null);
+    Account[] a2 = accountManager.getAccounts();
   }
   
   

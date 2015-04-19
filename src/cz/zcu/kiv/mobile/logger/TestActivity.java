@@ -2,7 +2,6 @@ package cz.zcu.kiv.mobile.logger;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import android.os.Parcelable;
 import android.view.Menu;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
-import com.dsi.ant.plugins.antplus.pcc.defines.EventFlag;
 
 import cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity;
 import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
@@ -29,14 +27,14 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureDeviceCommunicatorTask.BloodPressureDeviceListener;
+import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureListActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCalculatedRrInterval;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCumulativeOperatingTime;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateDataListActivity;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateManufacturerAndSerial;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterDataList;
@@ -73,9 +71,9 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
 //      finish();
       
       
-//      Intent testIntent = new Intent(this, HeartRateDataListActivity.class);
+      Intent testIntent = new Intent(this, BloodPressureListActivity.class);
 //      testIntent.putExtra(UploadGenericParametersActivity.PARAM_GENERIC_PARAMETERS, getParameters());
-//      startActivityForResult(testIntent, 1111);
+      startActivityForResult(testIntent, 1111);
     }
     catch (DatabaseException e) {
       e.printStackTrace();
@@ -108,7 +106,7 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
         t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111111L, null, new BigDecimal(1.1), RrFlag.HEART_RATE_ZERO_DETECTED, false));
         t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111200L, null, new BigDecimal(1.0), RrFlag.DATA_SOURCE_PAGE_4, false));
         t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111500L, null, new BigDecimal(1.2), RrFlag.DATA_SOURCE_CACHED, false));
-        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111650L, null, new BigDecimal(10.9), RrFlag.UNRECOGNIZED, false));
+        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111650L, null, new BigDecimal(0.9), RrFlag.UNRECOGNIZED, false));
       }
       catch (DatabaseException e) {
         e.printStackTrace();
@@ -134,7 +132,7 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
         "krupa@students.zcu.cz",
         "Jan", "Krupicka",
         new GregorianCalendar(1989, 12, 30),
-        Gender.MALE, 185, 3, false);
+        Gender.MALE, 185, 3, false, "eegbase");
   }
 
   private void printProfiles(Database db) {

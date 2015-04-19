@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.DialogFragment;
@@ -31,6 +33,7 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.eegbase.LoginActivity;
+import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 
@@ -232,10 +235,16 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
     }
     
     try {
-      if(profile.getId() > 0L)
+      if(profile.getId() > 0L) {
         dbProfile.updateProfile(profile);
-      else
-        dbProfile.createProfile(profile);
+      }
+      else {
+        long id = dbProfile.createProfile(profile);
+        
+        Account newAccount = new Account(String.valueOf(id), AuthenticatorService.ACCOUNT_TYPE);
+        AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+        accountManager.addAccountExplicitly(newAccount, null, null);
+      }
     }
     catch(DuplicateEntryException e) {
       if(ProfileTable.COLUMN_PROFILE_NAME.equals(e.getColumnName())) {

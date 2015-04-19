@@ -151,10 +151,16 @@
     <string name="fail_experiments_already_downloading">Seznam experimentů se již stahuje.</string>
     <string name="fail_data_already_uploading">Data se ještě odesílají.</string>
     <string name="fail_select_experiment">Zvolte experiment pro upload dat.</string>
+    <string name="action_auto_sync">Automatický upload dat</string>
     <string name="btn_refresh">Obnovit</string>
     <string name="btn_upload">Odeslat</string>
     <string name="btn_select">Vybrat</string>
     <string name="btn_select_experiment">Vybrat experiment</string>
+    <string name="records"> záznamů</string>
+    <string name="parameters_for_upload"> parameterů k odeslání</string>
+    <string name="fail_change_autosync">Nepodařilo se změnit automatickou synchronizaci.</string>
+    <string name="no_autosync">Nesynchronizováno</string>
+    <string name="fail_load_autosync_info">Nepodařilo se načíst info o synchronizaci.</string>
     <string name="success_data_uploaded">Záznamy odeslány</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
@@ -14,17 +15,25 @@ import android.widget.ListView;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.AutoSyncTable;
+import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
+import cz.zcu.kiv.mobile.logger.data.types.AutoSync;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.eegbase.UploadGenericParametersActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.data.get_experiment_list.Experiment;
+import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity;
 import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.BloodPressureMeasurementDbUploadHelper;
 import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-//TODO use ADataListFragment for this...
+//TODO duplicit code - use ADataListFragment for this...
 public class BloodPressureListActivity extends ListActivity implements LoaderCallbacks<AsyncTaskResult<Cursor>> {
   private static final String TAG = BloodPressureListActivity.class.getSimpleName();
-  
+
+  private static final int REQUEST_SELECT_EXPERIMENT = 121;
   private static final int LOADER_BPM_LIST = 10;
 
   private CursorAdapter dataAdapter;
@@ -50,6 +59,25 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
     setListAdapter(dataAdapter);
     
     getLoaderManager().initLoader(LOADER_BPM_LIST, null, this);
+    
+    AutoSync autosync = loadAutosync();
+    setAutosyncInfo(autosync);
+  }
+
+  private AutoSync loadAutosync() {
+    AutoSyncTable db = Application.getInstance().getDatabase().getAutoSyncTable();
+    AutoSync autosync = null;
+    try {
+      autosync = db.getAutoSync(userProfile.getId(), Database.TABLE_ID_BP);
+    }
+    catch(EntryNotFoundException e) {
+      autosync = null;
+    }
+    catch(DatabaseException e) {
+      AndroidUtils.toast(this, R.string.fail_load_autosync_info);
+      Log.e(TAG, "Failed to load autosync info.", e);
+    }
+    return autosync;
   }
 
   @Override
@@ -65,15 +93,58 @@ public class BloodPressureListActivity extends ListActivity implements LoaderCal
       case R.id.action_upload:
         triggerUpload();
         return true;
+        
+      case R.id.action_auto_sync:
+        startActivityForResult(new Intent(this, SelectExperimentActivity.class), REQUEST_SELECT_EXPERIMENT);
+        return true;
 
       default: return super.onOptionsItemSelected(item);
     }
+  }
+  
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    switch (requestCode) {
+      case REQUEST_SELECT_EXPERIMENT:
+        if(resultCode == Activity.RESULT_OK) {
+          Experiment experiment = data.getParcelableExtra(SelectExperimentActivity.EXTRA_EXPERIMENT);
+          handleAutoSyncChange(experiment);
+        }
+        break;
+  
+      default:
+        super.onActivityResult(requestCode, resultCode, data);
+        break;
+    }
+  }
+
+  private void handleAutoSyncChange(Experiment experiment) {
+    AutoSyncTable db = Application.getInstance().getDatabase().getAutoSyncTable();
+    try {
+      db.deleteAutoSync(userProfile.getId(), Database.TABLE_ID_BP);
+      setAutosyncInfo(null);
+      
+      if(experiment != null) {
+        AutoSync newAutosync = new AutoSync(Database.TABLE_ID_BP, experiment.getExperimentId(), experiment.getExperimentId() + " " + experiment.getScenarioName());
+        db.addAutoSync(userProfile.getId(), newAutosync);
+        setAutosyncInfo(newAutosync);
+      }
+    }
+    catch (DatabaseException e) {
+      AndroidUtils.toast(this, R.string.fail_change_autosync);
+      Log.e(TAG, "Failed to change autosync.", e);
+    }
+  }
+
+  private void setAutosyncInfo(AutoSync autosync) {
+    getActionBar().setSubtitle(
+        (autosync == null) ? getString(R.string.no_autosync) : autosync.getExperimentName());
   }
 
   private void triggerUpload() {
     long[] selected = getListView().getCheckedItemIds();
     if(selected.length == 0){
-      AndroidUtils.toast(this, "No records selected for upload.");
+      AndroidUtils.toast(this, R.string.fail_no_upload_data_selected);
       return;
     }
     
