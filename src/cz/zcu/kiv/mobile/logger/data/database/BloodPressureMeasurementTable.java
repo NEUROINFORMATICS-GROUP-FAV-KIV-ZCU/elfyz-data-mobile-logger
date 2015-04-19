@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
@@ -189,7 +188,7 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
     return TABLE_NAME;
   }
   
-  public interface BPDataObserver extends IRecordDataObserver {
+  public interface BPDataObserver extends ARecordTable.IRecordDataObserver {
     void onBPMeasurementAdded(long id);
     void onBPMeasurementsUpdated(long[] ids);
     void onBPMeasurementBatchAdded(List<Long> ids);

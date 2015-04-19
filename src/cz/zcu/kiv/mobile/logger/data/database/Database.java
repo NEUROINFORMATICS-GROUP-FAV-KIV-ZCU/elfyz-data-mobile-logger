@@ -12,9 +12,22 @@ public class Database {
   private static final String DATABASE_NAME = "elfyz-data-mobile-logger.db";
   private static final int DATABASE_VERSION = 13;
 
+  public static final int TABLE_ID_BP = 0;
+  public static final int TABLE_ID_GM = 1;
+  public static final int TABLE_ID_HR = 2;
+  public static final int TABLE_ID_HR_CRRI = 3;
+  public static final int TABLE_ID_HR_COP = 4;
+  public static final int TABLE_ID_HR_MAN = 5;
+  public static final int TABLE_ID_HR_P4 = 6;
+  public static final int TABLE_ID_HR_VAM = 7;
+  public static final int TABLE_ID_WS = 8;
+  public static final int TABLE_ID_WS_BAT = 9;
+  public static final int TABLE_ID_WS_MID = 10;
+  public static final int TABLE_ID_WS_MS = 11;
+  public static final int TABLE_ID_WS_PI = 12;
+
   private SQLiteOpenHelper openHelper;
   
-  private ProfileTable profileTable;
   private BloodPressureMeasurementTable bpmTable;
   private HeartRateMeasurementTable hrTable;
   private HeartRatePage4Table hrP4Table;
@@ -28,6 +41,9 @@ public class Database {
   private WeightScaleManufacturerSpecificDataTable wsMsTable;
   private WeightScaleProductInformationTable wsPiTable;
   private GlucoseMeasurementTable gTable;
+
+  private ProfileTable profileTable;
+  private AutoSyncTable asTable;
   
   private List<ATable<?>> tables;
   private List<ARecordTable<?>> recordTables;
@@ -53,12 +69,17 @@ public class Database {
 
     tables = new ArrayList<ATable<?>>(16);
     tables.add(profileTable = new ProfileTable(openHelper));
+    tables.add(asTable = new AutoSyncTable(openHelper));
     tables.addAll(recordTables);
   }
   
   
   public ProfileTable getProfileTable() {
     return profileTable;
+  }
+  
+  public AutoSyncTable getAutoSyncTable() {
+    return asTable;
   }
 
   public BloodPressureMeasurementTable getBloodPressureMeasurementTable() {

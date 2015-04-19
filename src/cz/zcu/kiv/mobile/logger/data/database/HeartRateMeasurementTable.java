@@ -19,7 +19,6 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
 
   private static final String TABLE_NAME = "hr_measurement";
 
-  public static final String COLUMN_USER_ID = "user_id";
   public static final String COLUMN_TIME = "time";
   public static final String COLUMN_HEART_RATE = "heart_rate";
   public static final String COLUMN_BEAT_COUNT = "beat_count";
@@ -35,7 +34,6 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
   private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
 
   

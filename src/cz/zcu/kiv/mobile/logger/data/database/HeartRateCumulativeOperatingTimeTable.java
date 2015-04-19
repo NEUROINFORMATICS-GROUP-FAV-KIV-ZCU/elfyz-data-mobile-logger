@@ -16,7 +16,6 @@ public class HeartRateCumulativeOperatingTimeTable extends ARecordTable<HeartRat
 
   private static final String TABLE_NAME = "hr_cumul_op_time";
 
-  public static final String COLUMN_USER_ID = "user_id";
   public static final String COLUMN_TIME = "time";
   public static final String COLUMN_CUMUL_OP_TIME = "cumul_op_time";
   
@@ -24,7 +23,6 @@ public class HeartRateCumulativeOperatingTimeTable extends ARecordTable<HeartRat
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
   private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
 

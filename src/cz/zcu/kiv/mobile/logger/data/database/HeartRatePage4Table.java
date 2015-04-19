@@ -16,7 +16,6 @@ public class HeartRatePage4Table extends ARecordTable<HeartRatePage4Table.HRPage
 
   private static final String TABLE_NAME = "hr_page_4";
 
-  public static final String COLUMN_USER_ID = "user_id";
   public static final String COLUMN_TIME = "time";
   public static final String COLUMN_MANUFACTURER_SPECIFIC = "man_specific";
   public static final String COLUMN_PREVIOUS_HB_TIME = "prev_hb_time";
@@ -25,7 +24,6 @@ public class HeartRatePage4Table extends ARecordTable<HeartRatePage4Table.HRPage
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
   private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
 
   
