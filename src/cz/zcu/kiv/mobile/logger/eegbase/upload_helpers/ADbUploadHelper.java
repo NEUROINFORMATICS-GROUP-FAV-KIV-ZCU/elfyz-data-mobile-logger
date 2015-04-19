@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import cz.zcu.kiv.mobile.logger.Application;
+import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterDataList;
@@ -125,6 +127,12 @@ public abstract class ADbUploadHelper implements IExperimentParametersUploadHelp
     if(source.readInt() == 1) {
       valueInteger = source.readDouble();
     }
+  }
+
+
+  @Override
+  public String getDisplayableInfo() {
+    return parameterName + " - " + ids.length + Application.getStringResource(R.string.records);
   }
 
 

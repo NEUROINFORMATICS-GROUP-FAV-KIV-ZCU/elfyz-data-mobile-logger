@@ -160,7 +160,11 @@
     <string name="fail_data_already_uploading">Data are already being uploaded.</string>
     <string name="fail_select_experiment">Select experiment to upload data to.</string>
     <string name="btn_refresh">Refresh</string>
+    <string name="btn_upload">Upload</string>
     <string name="title_activity_select_experiment">SelectExperimentActivity</string>
     <string name="btn_select">Select</string>
     <string name="btn_select_experiment">Select experiment</string>
+    <string name="title_data_info">Data info</string>
+    <string name="title_experiment_info">Experiment info</string>
+    <string name="success_data_uploaded">Records uploaded</string>
 </resources>

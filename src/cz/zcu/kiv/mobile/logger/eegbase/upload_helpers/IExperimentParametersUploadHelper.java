@@ -8,4 +8,5 @@ import cz.zcu.kiv.mobile.logger.eegbase.exceptions.UploadHelperException;
 public interface IExperimentParametersUploadHelper extends Parcelable {
   public ExperimentParametersData buildParameters() throws UploadHelperException;
   public void markUploaded() throws UploadHelperException;
+  public String getDisplayableInfo();
 }

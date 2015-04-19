@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.eegbase.UploadGenericParametersActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity;
 import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 

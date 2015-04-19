@@ -116,7 +116,7 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.eegbase.UploadGenericParametersActivity"
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity"
             android:label="@string/title_activity_upload_data" >
         </activity>
         <activity
