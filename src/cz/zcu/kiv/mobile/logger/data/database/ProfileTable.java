@@ -76,6 +76,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
     
     try{
       long id = db.insertOrThrow(TABLE_NAME, null, values);
+      profile.setId(id);
       
       for (ProfileDataObserver o : observers) {
         o.onProfileAdded(id);
