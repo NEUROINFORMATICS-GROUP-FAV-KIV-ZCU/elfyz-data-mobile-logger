@@ -3,7 +3,7 @@ package cz.zcu.kiv.mobile.logger.data.database.commands;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.HeartRateCalculatedRrIntervalTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCalculatedRrInterval;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
 
 
 public class InsertHeartRateCalculatedRrIntervalCommand extends AInsertMeasurementCommand<HeartRateCalculatedRrInterval> {

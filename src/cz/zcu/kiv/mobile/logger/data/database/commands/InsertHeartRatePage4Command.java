@@ -3,7 +3,7 @@ package cz.zcu.kiv.mobile.logger.data.database.commands;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.HeartRatePage4Table;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRatePage4;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRatePage4;
 
 
 public class InsertHeartRatePage4Command extends AInsertMeasurementCommand<HeartRatePage4> {

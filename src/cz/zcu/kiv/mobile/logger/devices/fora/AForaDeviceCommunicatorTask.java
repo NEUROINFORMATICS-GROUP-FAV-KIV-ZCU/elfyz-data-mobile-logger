@@ -14,7 +14,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
 
 

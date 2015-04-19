@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.retain;
+package cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload;
 
 import java.util.List;
 

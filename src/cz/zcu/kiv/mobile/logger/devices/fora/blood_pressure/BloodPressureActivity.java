@@ -17,6 +17,7 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertBloodPressureMeasurementBatchCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertBloodPressureMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
+import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.AForaDeviceActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureDeviceCommunicatorTask.BloodPressureDeviceListener;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;

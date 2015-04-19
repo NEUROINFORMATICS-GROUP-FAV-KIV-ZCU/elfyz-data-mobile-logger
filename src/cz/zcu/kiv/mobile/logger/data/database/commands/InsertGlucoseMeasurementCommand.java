@@ -3,7 +3,7 @@ package cz.zcu.kiv.mobile.logger.data.database.commands;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.glucose.GlucoseMeasurement;
 
 
 public class InsertGlucoseMeasurementCommand extends AInsertMeasurementCommand<GlucoseMeasurement> {

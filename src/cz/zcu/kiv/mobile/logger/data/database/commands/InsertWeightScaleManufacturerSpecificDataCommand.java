@@ -3,7 +3,7 @@ package cz.zcu.kiv.mobile.logger.data.database.commands;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.WeightScaleManufacturerSpecificDataTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleManufacturerSpecificData;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleManufacturerSpecificData;
 
 
 public class InsertWeightScaleManufacturerSpecificDataCommand extends AInsertMeasurementCommand<WeightScaleManufacturerSpecificData> {

@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.fora.glucose;
+package cz.zcu.kiv.mobile.logger.data.types.glucose;
 
 import java.util.Calendar;
 

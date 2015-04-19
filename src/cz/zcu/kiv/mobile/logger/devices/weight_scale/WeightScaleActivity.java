@@ -3,7 +3,6 @@ package cz.zcu.kiv.mobile.logger.devices.weight_scale;
 import java.math.BigDecimal;
 import java.util.EnumSet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +32,7 @@ import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
+import cz.zcu.kiv.mobile.logger.common.UserActivity;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.WeightScaleMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
@@ -45,10 +45,16 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleManufact
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleProductInformationTableCommand;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleAdvancedMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBasicMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBatteryStatus;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleManufacturerIdentification;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleManufacturerSpecificData;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleProductInformation;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class WeightScaleActivity extends Activity implements InsertCommandListener {
+public class WeightScaleActivity extends UserActivity implements InsertCommandListener {
   private static final String TAG = WeightScaleActivity.class.getSimpleName();
   
   private static final String UNIT_KG = " kg";
@@ -68,7 +74,6 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
   protected PccReleaseHandle<AntPlusWeightScalePcc> releaseHandle;
   protected AntPlusWeightScalePcc weightScaleDevice;
   protected UserProfile userProfileANT;
-  protected Profile userProfile;
   
   protected WeightScaleMeasurementTable dbWSM;
 
@@ -87,15 +92,6 @@ public class WeightScaleActivity extends Activity implements InsertCommandListen
     tvBoneMass = (TextView) findViewById(R.id.tv_bone_mass);
     tvActiveMetabolicRate = (TextView) findViewById(R.id.tv_active_metabolic_rate);
     tvBasalMetabolicRate = (TextView) findViewById(R.id.tv_basal_metabolic_rate);
-    
-    userProfile = Application.getInstance().getUserProfileOrLogIn();
-    
-    if(userProfile == null){
-      AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
-      Log.e(TAG, "User must be logged in.");
-      finish();
-      return;
-    }
     
     dbWSM = Application.getInstance().getDatabase().getWeightScaleMeasurementTable();
     

@@ -5,7 +5,7 @@ import java.util.List;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 
 
 public class InsertBloodPressureMeasurementBatchCommand extends AInsertMeasurementBatchCommand<BloodPressureMeasurement> {

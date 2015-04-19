@@ -42,12 +42,12 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateMeasuremen
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRatePage4Command;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateVersionAndModelCommand;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCalculatedRrInterval;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateCumulativeOperatingTime;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateManufacturerAndSerial;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateMeasurement;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRatePage4;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateVersionAndModel;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateManufacturerAndSerial;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRatePage4;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateVersionAndModel;
 import cz.zcu.kiv.mobile.logger.service.communicators.ACommunicator;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
@@ -259,7 +259,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
   public void onInsertCommandFinished(AInsertMeasurementCommand<?> command, AsyncTaskResult<Long> result) {
     if(result.getError() != null) {
       Log.e(TAG, "Failed to insert record to DB.", result.getError());
-      AndroidUtils.toast(context, R.string.fail_db_insert); //TODO jak se to ukáže ze služby?
+      AndroidUtils.toast(context, R.string.fail_db_insert);
     }
   }
   

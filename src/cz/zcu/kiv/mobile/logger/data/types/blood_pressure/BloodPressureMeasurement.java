@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure;
+package cz.zcu.kiv.mobile.logger.data.types.blood_pressure;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

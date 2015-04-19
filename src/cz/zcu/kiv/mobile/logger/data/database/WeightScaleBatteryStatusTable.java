@@ -11,7 +11,7 @@ import com.dsi.ant.plugins.antplus.pcc.defines.BatteryStatus;
 
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleBatteryStatus;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBatteryStatus;
 
 
 public class WeightScaleBatteryStatusTable extends ARecordTable<WeightScaleBatteryStatusTable.WSBatteryStatusObserver> {

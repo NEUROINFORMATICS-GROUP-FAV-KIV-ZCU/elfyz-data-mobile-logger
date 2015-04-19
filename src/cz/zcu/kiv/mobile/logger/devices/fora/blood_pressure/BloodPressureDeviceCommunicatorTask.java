@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import android.bluetooth.BluetoothDevice;
+import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.AForaDeviceCommunicatorTask;
 import cz.zcu.kiv.mobile.logger.devices.fora.CommunicationException;
 

@@ -77,7 +77,7 @@ public class ProfileLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> { //
         }
         @Override
         public void onProfileUpdated(long profileID) {
-          onContentChanged(); //TODO needed only if profile name changed
+          onContentChanged();
         }
       };
       dbProfile.addObserver(observer);

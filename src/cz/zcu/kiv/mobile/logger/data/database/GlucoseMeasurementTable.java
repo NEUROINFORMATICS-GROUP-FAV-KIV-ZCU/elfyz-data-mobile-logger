@@ -11,7 +11,7 @@ import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
-import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.glucose.GlucoseMeasurement;
 
 
 public class GlucoseMeasurementTable extends ARecordTable<GlucoseMeasurementTable.GDataObserver> {

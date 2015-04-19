@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.heart_rate;
+package cz.zcu.kiv.mobile.logger.data.types.heart_rate;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
-import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 
 
 public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMeasurementTable.BPDataObserver> {

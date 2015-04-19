@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.weight_scale;
+package cz.zcu.kiv.mobile.logger.data.types.weight_scale;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;
@@ -7,7 +7,7 @@ import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.WeightScaleRequestS
 import com.dsi.ant.plugins.antplus.pcc.defines.EventFlag;
 
 
-public class WeightScaleAdvancedMeasurement {
+public class WeightScaleAdvancedMeasurement { //TODO could be inherited from basic measurement
   private long estTimestamp;
   private EnumSet<EventFlag> eventFlags;
   private WeightScaleRequestStatus status;

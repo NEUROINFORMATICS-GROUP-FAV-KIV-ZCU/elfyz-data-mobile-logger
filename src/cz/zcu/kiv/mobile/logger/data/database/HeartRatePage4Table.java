@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRatePage4;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRatePage4;
 
 
 public class HeartRatePage4Table extends ARecordTable<HeartRatePage4Table.HRPage4Observer> {

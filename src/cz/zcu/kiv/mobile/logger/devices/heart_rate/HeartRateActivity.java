@@ -1,6 +1,5 @@
 package cz.zcu.kiv.mobile.logger.devices.heart_rate;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,17 +15,22 @@ import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.DataState;
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceState;
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult;
 
-import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
+import cz.zcu.kiv.mobile.logger.common.UserActivity;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateMeasurementCommand;
-import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateManufacturerAndSerial;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRatePage4;
+import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateVersionAndModel;
 import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService;
 import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService.DeviceCommunicatorBinder;
 import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator.HeartRateListener;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public class HeartRateActivity extends Activity implements ServiceConnection, HeartRateListener {
+public class HeartRateActivity extends UserActivity implements ServiceConnection, HeartRateListener {
   private static final String TAG = HeartRateActivity.class.getSimpleName();
   
   private static final String STATE_LISTEN = "listen";
@@ -39,7 +43,6 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
   protected Button bToggleListening;
 
   protected InsertHeartRateMeasurementCommand insertCommand;
-  protected Profile userProfile;
   
   private DeviceCommunicatorBinder service;
   private boolean listening = false;
@@ -58,15 +61,6 @@ public class HeartRateActivity extends Activity implements ServiceConnection, He
     tvBeatCount = (TextView) findViewById(R.id.tv_beat_count);
     tvRateInterval = (TextView) findViewById(R.id.tv_rate_interval);
     bToggleListening = (Button) findViewById(R.id.b_toggle_listening);
-    
-    userProfile = Application.getInstance().getUserProfileOrLogIn();
-    
-    if(userProfile == null) {
-      AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
-      Log.e(TAG, "User must be logged in.");
-      finish();
-      return;
-    }
     
     connectService();
   }

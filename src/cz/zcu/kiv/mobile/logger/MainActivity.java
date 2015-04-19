@@ -28,6 +28,7 @@ import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.devices.DeviceListActivity;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileActivity;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileLoader;
+import cz.zcu.kiv.mobile.logger.settings.SettingsActivity;
 import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 

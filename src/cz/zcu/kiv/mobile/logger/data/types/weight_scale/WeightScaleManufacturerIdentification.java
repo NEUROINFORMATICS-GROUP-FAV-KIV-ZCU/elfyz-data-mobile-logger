@@ -1,30 +1,30 @@
-package cz.zcu.kiv.mobile.logger.devices.heart_rate;
+package cz.zcu.kiv.mobile.logger.data.types.weight_scale;
 
 import java.util.EnumSet;
 
 import com.dsi.ant.plugins.antplus.pcc.defines.EventFlag;
 
 
-public class HeartRateVersionAndModel {
+public class WeightScaleManufacturerIdentification {
   private long estTimestamp;
   private EnumSet<EventFlag> eventFlags;
-  private int hardwareVersion;
-  private int softwareVersion;
+  private int hardwareRevision;
+  private int manufacturerID;
   private int modelNumber;
   private boolean uploaded;
   
   
-  public HeartRateVersionAndModel(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareVersion,
-          int softwareVersion, int modelNumber, boolean uploaded) {
+  public WeightScaleManufacturerIdentification(long estTimestamp, EnumSet<EventFlag> eventFlags,
+      int hardwareRevision, int manufacturerID, int modelNumber, boolean uploaded) {
     this.estTimestamp = estTimestamp;
     this.eventFlags = eventFlags;
-    this.hardwareVersion = hardwareVersion;
-    this.softwareVersion = softwareVersion;
+    this.hardwareRevision = hardwareRevision;
+    this.manufacturerID = manufacturerID;
     this.modelNumber = modelNumber;
     this.uploaded = uploaded;
   }
 
-
+  
   public long getEstTimestamp() {
     return estTimestamp;
   }
@@ -33,12 +33,12 @@ public class HeartRateVersionAndModel {
     return eventFlags;
   }
 
-  public int getHardwareVersion() {
-    return hardwareVersion;
+  public int getHardwareRevision() {
+    return hardwareRevision;
   }
 
-  public int getSoftwareVersion() {
-    return softwareVersion;
+  public int getManufacturerID() {
+    return manufacturerID;
   }
 
   public int getModelNumber() {

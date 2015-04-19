@@ -18,7 +18,6 @@ import cz.zcu.kiv.mobile.logger.eegbase.data.get_experiment_list.ExperimentList;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
 import cz.zcu.kiv.mobile.logger.profiles.ProfileActivity;
-import cz.zcu.kiv.mobile.logger.retain.ExperimentRetainFragment;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 

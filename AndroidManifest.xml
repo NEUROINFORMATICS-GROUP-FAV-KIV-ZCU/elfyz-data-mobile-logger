@@ -115,7 +115,7 @@
                 android:value="cz.zcu.kiv.mobile.logger.MainActivity" />
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.SettingsActivity"
+            android:name="cz.zcu.kiv.mobile.logger.settings.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity

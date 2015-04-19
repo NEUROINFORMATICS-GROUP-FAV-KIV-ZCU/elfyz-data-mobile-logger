@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.devices.weight_scale;
+package cz.zcu.kiv.mobile.logger.data.types.weight_scale;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;

@@ -3,7 +3,6 @@ package cz.zcu.kiv.mobile.logger.devices.fora;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -11,14 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity;
-import cz.zcu.kiv.mobile.logger.data.types.Profile;
+import cz.zcu.kiv.mobile.logger.common.UserActivity;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
-public abstract class AForaDeviceActivity extends Activity {
+public abstract class AForaDeviceActivity extends UserActivity {
   private static final String TAG = AForaDeviceActivity.class.getSimpleName();
   
   protected static final int REQUEST_ENABLE_BT = 1;
@@ -32,7 +30,6 @@ public abstract class AForaDeviceActivity extends Activity {
   protected BluetoothDevice btDevice;
   
   protected DateFormat timeFormat;
-  protected Profile userProfile;
   
 
   @Override
@@ -45,15 +42,6 @@ public abstract class AForaDeviceActivity extends Activity {
       Log.e(TAG, "Device does not support Bluetooth.");
       AndroidUtils.toast(this, R.string.alert_device_doesnt_support_bluetooth);
       communicationIncapable = true;
-    }
-    
-    userProfile = Application.getInstance().getUserProfileOrLogIn();
-    
-    if(userProfile == null){
-      AndroidUtils.toast(this, R.string.alert_must_be_logged_in);
-      Log.e(TAG, "User must be logged in.");
-      finish();
-      return;
     }
     
     timeFormat = SimpleDateFormat.getDateTimeInstance();

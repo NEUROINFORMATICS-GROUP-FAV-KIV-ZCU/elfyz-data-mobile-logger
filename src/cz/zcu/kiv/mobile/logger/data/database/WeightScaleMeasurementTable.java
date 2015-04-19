@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleAdvancedMeasurement;
-import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleBasicMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleAdvancedMeasurement;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBasicMeasurement;
 
 
 public class WeightScaleMeasurementTable extends ARecordTable<WeightScaleMeasurementTable.WSDataObserver> {

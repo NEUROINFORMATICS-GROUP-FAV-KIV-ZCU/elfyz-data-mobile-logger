@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleProductInformation;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleProductInformation;
 
 
 public class WeightScaleProductInformationTable extends ARecordTable<WeightScaleProductInformationTable.WSProductInformationObserver> {
