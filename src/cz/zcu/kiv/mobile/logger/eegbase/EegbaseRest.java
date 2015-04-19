@@ -29,8 +29,8 @@ import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
 
 public class EegbaseRest {
   private static final String ENDPOINT_USER_LOGIN = "/user/login";
-  private static final String ENDPOINT_MY_EXPERIMENT_LIST = "/experiment/myList"; //TODO endpoints
-  private static final String ENDPOINT_UPLOAD_GENERIC_PARAMETERS_ = "/experiment/addGeneralParameters/";
+  private static final String ENDPOINT_MY_EXPERIMENT_LIST = "/experiments/mineInfo";
+  private static final String ENDPOINT_UPLOAD_GENERIC_PARAMETERS_ = "/experiments/addGeneralParameters/";
   
   
   public static UserInfo login(String email, String password) throws WrongCredentialsException, CommunicationException {
@@ -72,11 +72,9 @@ public class EegbaseRest {
     try {
       HttpHeaders requestHeaders = new HttpHeaders();
       requestHeaders.setAuthorization(new HttpBasicAuthentication(email, password));
-      requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
-      requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+      requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
       
       RestTemplate restTemplate = new RestTemplate();
-      restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
       restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
       
       HttpEntity<Void> entity = new HttpEntity<Void>(requestHeaders);
@@ -105,11 +103,10 @@ public class EegbaseRest {
     try {
       HttpHeaders requestHeaders = new HttpHeaders();
       requestHeaders.setAuthorization(new HttpBasicAuthentication(email, password));
-      requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
+      requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
       requestHeaders.setContentType(MediaType.APPLICATION_XML);
       
       RestTemplate restTemplate = new RestTemplate();
-      restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
       restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
       
       HttpEntity<ExperimentParametersData> entity = new HttpEntity<ExperimentParametersData>(parameters, requestHeaders);
