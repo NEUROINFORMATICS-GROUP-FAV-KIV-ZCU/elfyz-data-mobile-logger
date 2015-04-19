@@ -79,6 +79,14 @@ public class LoginActivity extends Activity {
     mLoginStatusView = findViewById(R.id.login_status);
     mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
   }
+  
+  @Override
+  protected void onDestroy() {
+    if(mAuthTask != null) {
+      mAuthTask.cancel(true);
+    }
+    super.onDestroy();
+  }
 
   /**
    * Set up the {@link android.app.ActionBar}, if the API is available.
