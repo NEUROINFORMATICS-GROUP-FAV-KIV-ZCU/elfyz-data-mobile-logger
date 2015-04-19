@@ -135,6 +135,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
         </activity>
+
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity"
+            android:label="@string/title_activity_select_experiment" >
+        </activity>
     </application>
 
 </manifest>
