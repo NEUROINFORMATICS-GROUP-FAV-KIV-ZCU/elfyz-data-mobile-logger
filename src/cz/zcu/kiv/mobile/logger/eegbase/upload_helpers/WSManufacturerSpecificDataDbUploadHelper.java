@@ -11,7 +11,7 @@ import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.WeightScaleManufacturerSpecificDataTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.UploadHelperException;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public class WSManufacturerSpecificDataDbUploadHelper extends ADbUploadHelper {
@@ -51,7 +51,7 @@ public class WSManufacturerSpecificDataDbUploadHelper extends ADbUploadHelper {
       return c;
     }
     catch (DatabaseException e) {
-      CloseUtil.close(c);
+      CloseUtils.close(c);
       throw new UploadHelperException("Failed to load data from database.", e);
     }
   }

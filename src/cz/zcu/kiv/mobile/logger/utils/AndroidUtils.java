@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 public class AndroidUtils {
   
+  private AndroidUtils() {}
+  
+  
   public static void toast(Context context, String text) {
     Toast.makeText(context, text, Toast.LENGTH_LONG).show();
   }

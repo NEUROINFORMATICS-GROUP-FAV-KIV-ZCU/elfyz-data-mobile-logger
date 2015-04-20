@@ -6,7 +6,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public abstract class AMeasurementListLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> {
@@ -98,7 +98,7 @@ public abstract class AMeasurementListLoader extends AsyncTaskLoader<AsyncTaskRe
 
   private void releaseResources(AsyncTaskResult<Cursor> data) {
     if(data != null) {
-      CloseUtil.close(data.getResult());
+      CloseUtils.close(data.getResult());
     }
     this.data = null;
   }

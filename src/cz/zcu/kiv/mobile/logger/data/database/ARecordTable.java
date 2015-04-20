@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public abstract class ARecordTable<T_Observer extends ARecordTable.IRecordDataObserver> extends ATable<T_Observer> {
@@ -61,7 +61,7 @@ public abstract class ARecordTable<T_Observer extends ARecordTable.IRecordDataOb
       throw new DatabaseException(e);
     }
     finally {
-      CloseUtil.close(c);
+      CloseUtils.close(c);
     }
   }
   

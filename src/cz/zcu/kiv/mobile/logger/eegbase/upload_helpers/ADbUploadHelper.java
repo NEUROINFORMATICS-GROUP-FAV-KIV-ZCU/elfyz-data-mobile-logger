@@ -14,7 +14,7 @@ import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericPa
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeDataList;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.UploadHelperException;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 import android.database.Cursor;
 import android.os.Parcel;
 
@@ -57,7 +57,7 @@ public abstract class ADbUploadHelper implements IExperimentParametersUploadHelp
       return parameters;
     }
     finally{
-      CloseUtil.close(data);
+      CloseUtils.close(data);
     }
   }
   

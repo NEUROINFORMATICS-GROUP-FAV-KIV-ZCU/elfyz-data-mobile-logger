@@ -50,7 +50,7 @@ import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRatePage4;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateVersionAndModel;
 import cz.zcu.kiv.mobile.logger.service.communicators.ACommunicator;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public class HeartRateCommunicator extends ACommunicator implements InsertCommandListener {
@@ -162,7 +162,7 @@ public class HeartRateCommunicator extends ACommunicator implements InsertComman
   }
   
   protected void stopHeartRate() {
-    CloseUtil.close(heartRateReleaseHandle);
+    CloseUtils.close(heartRateReleaseHandle);
     heartRateDevice = null;
     heartRateReleaseHandle = null;
   }

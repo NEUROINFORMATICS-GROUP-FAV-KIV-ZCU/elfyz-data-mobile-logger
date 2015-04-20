@@ -11,7 +11,7 @@ import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.AutoSync;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public class AutoSyncTable extends ATable<AutoSyncTable.AutoSyncDataObserver> {
@@ -124,7 +124,7 @@ public class AutoSyncTable extends ATable<AutoSyncTable.AutoSyncDataObserver> {
       throw handleException(e);
     }
     finally {
-      CloseUtil.close(c);
+      CloseUtils.close(c);
     }
   }
   

@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator;
 import cz.zcu.kiv.mobile.logger.service.communicators.heart_rate.HeartRateCommunicator.HeartRateListener;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public class DeviceCommunicatorService extends Service {
@@ -41,7 +41,7 @@ public class DeviceCommunicatorService extends Service {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    CloseUtil.close(
+    CloseUtils.close(
         heartRateCommunicator
       );
     stopForeground(true);

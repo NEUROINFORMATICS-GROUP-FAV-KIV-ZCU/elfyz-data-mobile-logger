@@ -15,7 +15,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public abstract class AForaDeviceCommunicatorTask<T_Data, T_Listener> extends AsyncTask<Void, Integer, List<T_Data>> {
@@ -96,7 +96,7 @@ public abstract class AForaDeviceCommunicatorTask<T_Data, T_Listener> extends As
       error = e;
     }
     finally {
-      CloseUtil.close(in, out, socket);
+      CloseUtils.close(in, out, socket);
     }
     
     return measurements;

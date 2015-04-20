@@ -8,7 +8,7 @@ import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable.ProfileDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
-import cz.zcu.kiv.mobile.logger.utils.CloseUtil;
+import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 
 public class ProfileLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> { //TODO loader inheritance?
@@ -115,7 +115,7 @@ public class ProfileLoader extends AsyncTaskLoader<AsyncTaskResult<Cursor>> { //
 
   private void releaseResources(AsyncTaskResult<Cursor> data) {
     if(data != null) {
-      CloseUtil.close(data.getResult());
+      CloseUtils.close(data.getResult());
     }
     this.data = null;
   }

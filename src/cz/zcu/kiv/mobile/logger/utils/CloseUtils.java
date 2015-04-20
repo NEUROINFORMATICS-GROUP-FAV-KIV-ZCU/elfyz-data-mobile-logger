@@ -7,11 +7,11 @@ import android.util.Log;
 import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
 
-public class CloseUtil {
-  private static final String TAG = CloseUtil.class.getSimpleName();
+public class CloseUtils {
+  private static final String TAG = CloseUtils.class.getSimpleName();
   
 
-  private CloseUtil() {}
+  private CloseUtils() {}
 
   
   public static void close(Closeable... closeables) {
