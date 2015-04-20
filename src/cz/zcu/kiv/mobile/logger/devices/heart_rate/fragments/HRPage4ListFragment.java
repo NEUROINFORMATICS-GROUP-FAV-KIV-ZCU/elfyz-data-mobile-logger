@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.adapters.HRPage4Adapter;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.loaders.HRPage4Loader;
@@ -31,8 +31,8 @@ public class HRPage4ListFragment extends ADataListFragment {
   }
 
   @Override
-  protected int getTableID() {
-    return Database.TABLE_ID_HR_P4;
+  protected ARecordTable<?> getDatabase() {
+    return Application.getInstance().getDatabase().getHeartRatePage4Table();
   }
 
   @Override

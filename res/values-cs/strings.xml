@@ -162,5 +162,14 @@
     <string name="no_autosync">Nesynchronizováno</string>
     <string name="fail_load_autosync_info">Nepodařilo se načíst info o synchronizaci.</string>
     <string name="success_data_uploaded">Záznamy odeslány</string>
+    <string name="dialog_delete_title">Smazat?</string>
+    <string name="dialog_delete_record_message">Opravdu chcete smazat vybraný záznam?</string>
+    <string name="dialog_delete_selected_records_message">Opravdu chcete smazat vybrané záznamy?</string>
+    <string name="dialog_delete_uploaded_records_message">Opravdu chcete smazat odeslané záznamy?</string>
+    <string name="dialog_delete_all_records_message">Opravdu chcete smazat všechny záznamy?</string>
+    <string name="fail_delete_records">Nepodařilo se smazat záznamy.</string>
+    <string name="action_delete_selected">Smazat vybrané</string>
+    <string name="action_delete_uploaded">Smazat odeslané</string>
+    <string name="action_delete_all">Smazat vše</string>
 
 </resources>

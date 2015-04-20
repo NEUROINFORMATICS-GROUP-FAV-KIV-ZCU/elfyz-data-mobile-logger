@@ -40,6 +40,10 @@ public class WSProductInformationLoader extends AMeasurementListLoader {
         public void onClear() {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getWeightScaleProductInformationTable().addObserver(observer);
     }

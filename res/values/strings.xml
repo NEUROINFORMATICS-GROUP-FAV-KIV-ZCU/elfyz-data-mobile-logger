@@ -173,5 +173,14 @@
     <string name="no_autosync">No synchronization</string>
     <string name="fail_load_autosync_info">Failed to load synchronization info.</string>
     <string name="success_data_uploaded">Records uploaded</string>
+    <string name="dialog_delete_title">Delete?</string>
+    <string name="dialog_delete_record_message">Are you sure to delete selected record?</string>
+    <string name="dialog_delete_selected_records_message">Are you sure to delete selected records?</string>
+    <string name="dialog_delete_uploaded_records_message">Are you sure to delete uploaded records?</string>
+    <string name="dialog_delete_all_records_message">Are you sure to delete all records?</string>
+    <string name="fail_delete_records">Failed to delete records.</string>
+    <string name="action_delete_selected">Delete selected</string>
+    <string name="action_delete_uploaded">Delete uploaded</string>
+    <string name="action_delete_all">Delete all</string>
 
 </resources>

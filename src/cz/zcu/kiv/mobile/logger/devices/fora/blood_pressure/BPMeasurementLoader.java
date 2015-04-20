@@ -9,6 +9,7 @@ import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable.BPDa
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 
 
+//TODO one generic loader for all device measures, observer with one method with args - event ID and optional parameters
 public class BPMeasurementLoader extends AMeasurementListLoader {
   protected BPDataObserver observer;
   
@@ -44,6 +45,10 @@ public class BPMeasurementLoader extends AMeasurementListLoader {
         }
         @Override
         public void onBPMeasurementAdded(long id) {
+          onContentChanged();
+        }
+        @Override
+        public void onRecordsDeleted(long... ids) {
           onContentChanged();
         }
       };

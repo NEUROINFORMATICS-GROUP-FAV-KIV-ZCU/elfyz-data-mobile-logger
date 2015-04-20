@@ -53,19 +53,19 @@ public class Database {
     openHelper = new DatabaseHelper(context);
     
     recordTables = new ArrayList<ARecordTable<?>>(16);
-    recordTables.add(bpmTable = new BloodPressureMeasurementTable(openHelper));
-    recordTables.add(wsTable = new WeightScaleMeasurementTable(openHelper));
-    recordTables.add(hrTable = new HeartRateMeasurementTable(openHelper));
-    recordTables.add(hrP4Table = new HeartRatePage4Table(openHelper));
-    recordTables.add(hrCotTable = new HeartRateCumulativeOperatingTimeTable(openHelper));
-    recordTables.add(hrMasTable = new HeartRateManufacturerAndSerialTable(openHelper));
-    recordTables.add(hrVamTable = new HeartRateVersionAndModelTable(openHelper));
-    recordTables.add(hrCrrTable = new HeartRateCalculatedRrIntervalTable(openHelper));
-    recordTables.add(wsBsTable = new WeightScaleBatteryStatusTable(openHelper));
-    recordTables.add(wsMiTable = new WeightScaleManufacturerIdentificationTable(openHelper));
-    recordTables.add(wsMsTable = new WeightScaleManufacturerSpecificDataTable(openHelper));
-    recordTables.add(wsPiTable = new WeightScaleProductInformationTable(openHelper));
-    recordTables.add(gTable = new GlucoseMeasurementTable(openHelper));
+    recordTables.add(bpmTable = new BloodPressureMeasurementTable(openHelper, TABLE_ID_BP));
+    recordTables.add(wsTable = new WeightScaleMeasurementTable(openHelper, TABLE_ID_WS));
+    recordTables.add(hrTable = new HeartRateMeasurementTable(openHelper, TABLE_ID_HR));
+    recordTables.add(hrP4Table = new HeartRatePage4Table(openHelper, TABLE_ID_HR_P4));
+    recordTables.add(hrCotTable = new HeartRateCumulativeOperatingTimeTable(openHelper, TABLE_ID_HR_COP));
+    recordTables.add(hrMasTable = new HeartRateManufacturerAndSerialTable(openHelper, TABLE_ID_HR_MAN));
+    recordTables.add(hrVamTable = new HeartRateVersionAndModelTable(openHelper, TABLE_ID_HR_VAM));
+    recordTables.add(hrCrrTable = new HeartRateCalculatedRrIntervalTable(openHelper, TABLE_ID_HR_CRRI));
+    recordTables.add(wsBsTable = new WeightScaleBatteryStatusTable(openHelper, TABLE_ID_WS_BAT));
+    recordTables.add(wsMiTable = new WeightScaleManufacturerIdentificationTable(openHelper, TABLE_ID_WS_MID));
+    recordTables.add(wsMsTable = new WeightScaleManufacturerSpecificDataTable(openHelper, TABLE_ID_WS_MS));
+    recordTables.add(wsPiTable = new WeightScaleProductInformationTable(openHelper, TABLE_ID_WS_PI));
+    recordTables.add(gTable = new GlucoseMeasurementTable(openHelper, TABLE_ID_GM));
 
     tables = new ArrayList<ATable<?>>(16);
     tables.add(profileTable = new ProfileTable(openHelper));

@@ -28,11 +28,10 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
-  
-  public BloodPressureMeasurementTable(SQLiteOpenHelper openHelper) {
-    super(openHelper);
+
+  public BloodPressureMeasurementTable(SQLiteOpenHelper openHelper, int tableID) {
+    super(openHelper, tableID);
   }
 
   
@@ -158,7 +157,6 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
       throw new DatabaseException(e);
     }
   }
-
 
   private long insertMeasurement(SQLiteDatabase db, long userID, BloodPressureMeasurement measurement) throws DatabaseException {
     try {

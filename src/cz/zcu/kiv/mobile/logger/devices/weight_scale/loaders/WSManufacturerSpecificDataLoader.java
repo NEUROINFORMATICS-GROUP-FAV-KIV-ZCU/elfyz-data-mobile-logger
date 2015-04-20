@@ -40,6 +40,10 @@ public class WSManufacturerSpecificDataLoader extends AMeasurementListLoader {
         public void onClear() {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getWeightScaleManufacturerSpecificDataTable().addObserver(observer);
     }

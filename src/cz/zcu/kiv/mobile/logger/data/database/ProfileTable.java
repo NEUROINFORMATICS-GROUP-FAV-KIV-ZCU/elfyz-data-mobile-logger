@@ -111,10 +111,8 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
   public void deleteProfile(long profileID) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
-    String[] idArg = new String[]{String.valueOf(profileID)};
-    
     try{
-      db.delete(TABLE_NAME, WHERE_ID, idArg);
+      db.delete(TABLE_NAME, WHERE_ID, new String[]{String.valueOf(profileID)});
       
       for (ProfileDataObserver o : observers) {
         o.onProfileDeleted(profileID);

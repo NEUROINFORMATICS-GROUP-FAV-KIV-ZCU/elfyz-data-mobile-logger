@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters.WSManufacturerIdentificationAdapter;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.loaders.WSManufacturerIdentificationLoader;
@@ -31,8 +31,8 @@ public class WSManufacturerIdentificationListFragment extends ADataListFragment 
   }
 
   @Override
-  protected int getTableID() {
-    return Database.TABLE_ID_WS_MID;
+  protected ARecordTable<?> getDatabase() {
+    return Application.getInstance().getDatabase().getWeightScaleManufacturerIdentificationTable();
   }
 
   @Override

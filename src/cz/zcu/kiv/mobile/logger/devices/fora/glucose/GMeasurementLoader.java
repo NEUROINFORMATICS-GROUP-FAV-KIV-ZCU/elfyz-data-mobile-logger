@@ -46,6 +46,10 @@ public class GMeasurementLoader extends AMeasurementListLoader {
         public void onGlucoseMeasurementAdded(long id) {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getGlucoseMeasurementTable().addObserver(observer);
     }

@@ -63,7 +63,7 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
       
       Application.getInstance().setUserProfile(profile);
       
-//      addData(db, profile.getId());
+      addData(db, profile.getId());
           
 //      System.out.println("\nSTARTING TEST ACTIVITY\n");
 //      startActivity(testIntent);
@@ -83,9 +83,9 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
   private void addData(Database db, long userID) {
       try {
         BloodPressureMeasurementTable t = db.getBloodPressureMeasurementTable();
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 30),  80, 60, 70, 50, false));
+        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 30),  80, 60, 70, 50, true));
         t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 42),  90, 60, 75, 60, false));
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 16, 10),  100, 70, 85, 70, false));
+        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 16, 10),  100, 70, 85, 70, true));
         t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 17, 53),  80, 60, 70, 52, false));
       }
       catch (DatabaseException e) {

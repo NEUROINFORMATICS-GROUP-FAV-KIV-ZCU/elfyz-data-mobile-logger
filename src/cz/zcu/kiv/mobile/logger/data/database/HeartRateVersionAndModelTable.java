@@ -25,11 +25,10 @@ public class HeartRateVersionAndModelTable extends ARecordTable<HeartRateVersion
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
   
-  public HeartRateVersionAndModelTable(SQLiteOpenHelper openHelper) {
-    super(openHelper);
+  public HeartRateVersionAndModelTable(SQLiteOpenHelper openHelper, int tableID) {
+    super(openHelper, tableID);
   }
 
   

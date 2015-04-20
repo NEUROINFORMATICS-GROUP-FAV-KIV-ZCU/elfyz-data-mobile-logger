@@ -2,6 +2,8 @@ package cz.zcu.kiv.mobile.logger.devices;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,16 +11,20 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CursorAdapter;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
 import cz.zcu.kiv.mobile.logger.data.database.AutoSyncTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
@@ -28,6 +34,7 @@ import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity;
 import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity;
 import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
+import cz.zcu.kiv.mobile.logger.utils.DialogUtils;
 
 
 public abstract class ADataListFragment extends ListFragment implements LoaderCallbacks<AsyncTaskResult<Cursor>> {
@@ -49,6 +56,12 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
     loaderID = getLoaderID();
     getLoaderManager().initLoader(loaderID, null, this);
     setHasOptionsMenu(true);
+  }
+  
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    registerForContextMenu(getListView());
   }
   
   @Override
@@ -84,8 +97,64 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
       case R.id.action_auto_sync:
         startActivityForResult(new Intent(getActivity(), SelectExperimentActivity.class), REQUEST_SELECT_EXPERIMENT);
         return true;
+        
+      case R.id.action_delete_selected:
+        DialogUtils.showDeleteDialog(getActivity(), R.string.dialog_delete_selected_records_message,  new OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            removeSelectedRecords();
+            dialog.dismiss();
+          }
+        });
+        return true;
+        
+      case R.id.action_delete_uploaded:
+        DialogUtils.showDeleteDialog(getActivity(), R.string.dialog_delete_uploaded_records_message,  new OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            removeUploadedRecords();
+            dialog.dismiss();
+          }
+        });
+        return true;
+        
+      case R.id.action_delete_all:
+        DialogUtils.showDeleteDialog(getActivity(), R.string.dialog_delete_all_records_message,  new OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            removeAllRecords();
+            dialog.dismiss();
+          }
+        });
+        return true;
 
       default: return super.onOptionsItemSelected(item);
+    }
+  }
+  
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    getActivity().getMenuInflater().inflate(R.menu.data_list_context, menu);
+  }
+  
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    final long recordID = ((AdapterContextMenuInfo) item.getMenuInfo()).id;
+    
+    switch (item.getItemId()) {
+      case R.id.context_delete:
+        DialogUtils.showDeleteDialog(getActivity(), R.string.dialog_delete_record_message,  new OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            removeRecord(recordID);
+            dialog.dismiss();
+          }
+        });
+        return true;
+  
+      default:
+        return super.onContextItemSelected(item);
     }
   }
   
@@ -102,6 +171,50 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
       default:
         super.onActivityResult(requestCode, resultCode, data);
         break;
+    }
+  }
+
+  private void removeRecord(long recordID) {
+    try {
+      getDatabase().deleteRecord(recordID);
+    }
+    catch (DatabaseException e) {
+      Log.e(TAG, "Failed to delete record: id=" + recordID, e);
+      AndroidUtils.toast(getActivity(), R.string.fail_delete_records);
+      return;
+    }
+  }
+
+  private void removeSelectedRecords() {
+    try {
+      getDatabase().deleteRecords(getListView().getCheckedItemIds());
+    }
+    catch (DatabaseException e) {
+      Log.e(TAG, "Failed to delete selected records", e);
+      AndroidUtils.toast(getActivity(), R.string.fail_delete_records);
+      return;
+    }
+  }
+
+  private void removeUploadedRecords() {
+    try {
+      getDatabase().deleteUploadedRecords(userID);
+    }
+    catch (DatabaseException e) {
+      Log.e(TAG, "Failed to delete uploaded records", e);
+      AndroidUtils.toast(getActivity(), R.string.fail_delete_records);
+      return;
+    }
+  }
+
+  private void removeAllRecords() {
+    try {
+      getDatabase().deleteAllRecords(userID);
+    }
+    catch (DatabaseException e) {
+      Log.e(TAG, "Failed to delete all records", e);
+      AndroidUtils.toast(getActivity(), R.string.fail_delete_records);
+      return;
     }
   }
 
@@ -175,10 +288,14 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
   public void onLoaderReset(Loader<AsyncTaskResult<Cursor>> arg0) {
     dataAdapter.swapCursor(null);
   }
+  
+  private int getTableID() {
+    return getDatabase().getTableID();
+  }
 
   
   protected abstract int getLoaderID();
-  protected abstract int getTableID();
+  protected abstract ARecordTable<?> getDatabase();
   protected abstract IExperimentParametersUploadHelper getUploadHelper(long[] selected);
   protected abstract CursorAdapter getDataAdapter(Context context);
 }

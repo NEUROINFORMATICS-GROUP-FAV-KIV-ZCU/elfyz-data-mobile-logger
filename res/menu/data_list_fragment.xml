@@ -5,13 +5,31 @@
         android:orderInCategory="10"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_cloud"
-        android:title="@string/action_upload"/>
+        android:title="@string/action_upload" />
 
     <item
         android:id="@+id/action_auto_sync"
         android:orderInCategory="20"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_import_export"
-        android:title="@string/action_auto_sync"/>
+        android:title="@string/action_auto_sync" />
+
+    <item
+        android:id="@+id/action_delete_selected"
+        android:orderInCategory="30"
+        android:showAsAction="never"
+        android:title="@string/action_delete_selected" />
+
+    <item
+        android:id="@+id/action_delete_uploaded"
+        android:orderInCategory="30"
+        android:showAsAction="never"
+        android:title="@string/action_delete_uploaded" />
+
+    <item
+        android:id="@+id/action_delete_all"
+        android:orderInCategory="30"
+        android:showAsAction="never"
+        android:title="@string/action_delete_all" />
 
 </menu>

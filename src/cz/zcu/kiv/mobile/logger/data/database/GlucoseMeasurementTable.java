@@ -29,11 +29,10 @@ public class GlucoseMeasurementTable extends ARecordTable<GlucoseMeasurementTabl
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_IDS_IN_= COLUMN_ID + " IN ";
   
   
-  public GlucoseMeasurementTable(SQLiteOpenHelper openHelper) {
-    super(openHelper);
+  public GlucoseMeasurementTable(SQLiteOpenHelper openHelper, int tableID) {
+    super(openHelper, tableID);
   }
   
 

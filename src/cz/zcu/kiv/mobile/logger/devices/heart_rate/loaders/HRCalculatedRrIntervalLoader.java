@@ -40,6 +40,10 @@ public class HRCalculatedRrIntervalLoader extends AMeasurementListLoader {
         public void onClear() {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getHeartRateCalculatedRrIntervalTable().addObserver(observer);
     }

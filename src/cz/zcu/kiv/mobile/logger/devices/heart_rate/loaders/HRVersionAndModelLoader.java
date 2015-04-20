@@ -40,6 +40,10 @@ public class HRVersionAndModelLoader extends AMeasurementListLoader {
         public void onClear() {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getHeartRateVersionAndModelTable().addObserver(observer);
     }

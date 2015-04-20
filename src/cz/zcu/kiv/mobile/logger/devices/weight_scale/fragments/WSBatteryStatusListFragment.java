@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.data.database.Database;
+import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters.WSBatteryStatusAdapter;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.loaders.WSBatteryStatusLoader;
@@ -31,8 +31,8 @@ public class WSBatteryStatusListFragment extends ADataListFragment {
   }
 
   @Override
-  protected int getTableID() {
-    return Database.TABLE_ID_WS_BAT;
+  protected ARecordTable<?> getDatabase() {
+    return Application.getInstance().getDatabase().getWeightScaleBatteryStatusTable();
   }
 
   @Override

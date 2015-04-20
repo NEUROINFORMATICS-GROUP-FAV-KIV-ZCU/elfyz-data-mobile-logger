@@ -25,11 +25,10 @@ public class WeightScaleManufacturerIdentificationTable extends ARecordTable<Wei
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-  private static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
   
   
-  public WeightScaleManufacturerIdentificationTable(SQLiteOpenHelper openHelper) {
-    super(openHelper);
+  public WeightScaleManufacturerIdentificationTable(SQLiteOpenHelper openHelper, int tableID) {
+    super(openHelper, tableID);
   }
 
   

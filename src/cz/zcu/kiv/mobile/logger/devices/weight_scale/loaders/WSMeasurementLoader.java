@@ -40,6 +40,10 @@ public class WSMeasurementLoader extends AMeasurementListLoader {
         public void onClear() {
           onContentChanged();
         }
+        @Override
+        public void onRecordsDeleted(long... ids) {
+          onContentChanged();
+        }
       };
       db.getWeightScaleMeasurementTable().addObserver(observer);
     }
