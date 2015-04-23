@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.view.View;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.common.UserActivity;
 import cz.zcu.kiv.mobile.logger.data.types.NamedClass;
@@ -25,6 +26,7 @@ public abstract class ADataListActivity extends UserActivity {
    * The {@link ViewPager} that will host the section contents.
    */
   private ViewPager mViewPager;
+  private View pagerTitle;
 
   
   @Override
@@ -35,13 +37,18 @@ public abstract class ADataListActivity extends UserActivity {
     // Show the Up button in the action bar.
     getActionBar().setDisplayHomeAsUpEnabled(true);
 
+    mViewPager = (ViewPager) findViewById(R.id.pager);
+    pagerTitle = findViewById(R.id.pager_title_strip);
+    
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the app.
     mSectionsPagerAdapter = new DataListsPagerAdapter(getSupportFragmentManager(), userProfile.getId(), getDataPages());
-
     // Set up the ViewPager with the sections adapter.
-    mViewPager = (ViewPager) findViewById(R.id.pager);
     mViewPager.setAdapter(mSectionsPagerAdapter);
+    
+    if(mSectionsPagerAdapter.getCount() == 1) {
+      pagerTitle.setVisibility(View.GONE);
+    }
   }
 
   @Override
