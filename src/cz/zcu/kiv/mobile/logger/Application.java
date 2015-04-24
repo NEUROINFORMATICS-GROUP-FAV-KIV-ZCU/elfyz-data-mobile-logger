@@ -19,8 +19,11 @@ public class Application extends android.app.Application {
     super.onCreate();
     instance = this;
     db = new Database(this);
-  }
 
+    PreferenceManager.setDefaultValues(instance, R.xml.preferences_connection, false);
+    PreferenceManager.setDefaultValues(instance, R.xml.preferences_gen_pars, false);
+  }
+  
   
   public static Application getInstance() {
     return instance;
