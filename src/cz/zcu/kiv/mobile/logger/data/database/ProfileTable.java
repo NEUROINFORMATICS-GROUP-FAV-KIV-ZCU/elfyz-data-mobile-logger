@@ -29,7 +29,8 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
   
   private static final String[] COLUMNS_PROFILES_ALL = new String[]{COLUMN_ID, COLUMN_PROFILE_NAME, COLUMN_EMAIL, COLUMN_NAME, COLUMN_SURNAME, COLUMN_BIRTH_DATE, COLUMN_GENDER, COLUMN_HEIGHT, COLUMN_ACTIVITY_LEVEL, COLUMN_LIFETIME_ATHLETE, COLUMN_EEGBASE_PASSWORD};
   private static final String[] COLUMNS_PROFILE_NAMES = new String[]{COLUMN_ID, COLUMN_PROFILE_NAME};
-    
+
+  private static final String WHERE_EMAIL = COLUMN_EMAIL + " = ? ";
   private static final String ORDER_PROFILES_ALL_ASC = COLUMN_PROFILE_NAME + " ASC";
 
 
@@ -144,18 +145,7 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
       if(c.getCount() == 1){
         c.moveToFirst();
         
-        return new Profile(
-            profileID,
-            getString(c, COLUMN_PROFILE_NAME),
-            getString(c, COLUMN_EMAIL),
-            getString(c, COLUMN_NAME),
-            getString(c, COLUMN_SURNAME),
-            getCalendar(c, COLUMN_BIRTH_DATE),
-            Gender.fromLetter(getString(c, COLUMN_GENDER)),
-            getInt(c, COLUMN_HEIGHT),
-            getInt(c, COLUMN_ACTIVITY_LEVEL),
-            getBoolean(c, COLUMN_LIFETIME_ATHLETE),
-            getString(c, COLUMN_EEGBASE_PASSWORD));
+        return readProfile(c);
       }
       else {
         throw new EntryNotFoundException("Failed to get entry with given ID: ID=" + profileID + ", row count=" + c.getCount());
@@ -166,7 +156,44 @@ public class ProfileTable extends ATable<ProfileTable.ProfileDataObserver> {
     }
   }
 
+
+  public Profile getProfile(String email) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    Cursor c = null;
+    try{
+      c = db.query(TABLE_NAME, COLUMNS_PROFILES_ALL, WHERE_EMAIL, new String[]{email}, null, null, null);
+      
+      if(c.getCount() == 1) {
+        c.moveToFirst();
+        
+        return readProfile(c);
+      }
+      else {
+        throw new EntryNotFoundException("Failed to get entry with given email: email=" + email + ", row count=" + c.getCount());
+      }
+    }
+    catch(Exception e){
+      throw handleException(e);
+    }
+  }
+
   
+  private Profile readProfile(Cursor c) {
+    return new Profile(
+        getLong(c, COLUMN_ID),
+        getString(c, COLUMN_PROFILE_NAME),
+        getString(c, COLUMN_EMAIL),
+        getString(c, COLUMN_NAME),
+        getString(c, COLUMN_SURNAME),
+        getCalendar(c, COLUMN_BIRTH_DATE),
+        Gender.fromLetter(getString(c, COLUMN_GENDER)),
+        getInt(c, COLUMN_HEIGHT),
+        getInt(c, COLUMN_ACTIVITY_LEVEL),
+        getBoolean(c, COLUMN_LIFETIME_ATHLETE),
+        getString(c, COLUMN_EEGBASE_PASSWORD));
+  }
+
   private ContentValues getContentValues(Profile profile) {
     ContentValues values = new ContentValues(10);
       values.put(COLUMN_PROFILE_NAME, profile.getProfileName());
