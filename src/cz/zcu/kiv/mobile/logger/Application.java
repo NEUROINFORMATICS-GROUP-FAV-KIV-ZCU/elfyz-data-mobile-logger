@@ -1,11 +1,16 @@
 package cz.zcu.kiv.mobile.logger;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.service.DeviceCommunicatorService;
+import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
+import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 
 public class Application extends android.app.Application {
@@ -45,6 +50,10 @@ public class Application extends android.app.Application {
   
   public void setUserProfile(Profile userProfile) {
     stopService(new Intent(this, DeviceCommunicatorService.class));
+    
+    unsync(this.userProfile);
+    sync(userProfile);
+    
     this.userProfile = userProfile;
   }
 
@@ -55,5 +64,22 @@ public class Application extends android.app.Application {
   
   public static SharedPreferences getPreferences() {
     return PreferenceManager.getDefaultSharedPreferences(instance);
+  }
+  
+  
+  private void unsync(Profile userProfile) {
+    if(userProfile != null) {
+      Account account = new Account(String.valueOf(userProfile.getId()), AuthenticatorService.ACCOUNT_TYPE);
+      ContentResolver.cancelSync(account, AuthenticatorService.AUTHORITY);
+    }
+  }
+  
+  private void sync(Profile userProfile) {
+    //TODO data syncing setting
+    if(userProfile != null && userProfile.getEegbasePassword() != null) {
+      Account account = new Account(String.valueOf(userProfile.getId()), AuthenticatorService.ACCOUNT_TYPE);
+//      ContentResolver.setSyncAutomatically(account, AuthenticatorService.AUTHORITY, true);
+      ContentResolver.addPeriodicSync(account, AuthenticatorService.AUTHORITY, Bundle.EMPTY, 60L);
+    }
   }
 }

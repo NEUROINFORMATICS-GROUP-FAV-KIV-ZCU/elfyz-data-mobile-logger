@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
         android:name="cz.zcu.kiv.mobile.logger.Application"
@@ -143,6 +144,7 @@
             android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity"
             android:label="@string/title_activity_select_experiment" >
         </activity>
+
         <!-- sync -->
 
         <service android:name="cz.zcu.kiv.mobile.logger.sync.AuthenticatorService" >
@@ -162,7 +164,7 @@
             android:syncable="true" />
 
         <service
-            android:name="com.example.android.datasync.SyncService"
+            android:name="cz.zcu.kiv.mobile.logger.sync.SyncService"
             android:exported="true"
             android:process=":sync" >
             <intent-filter>
