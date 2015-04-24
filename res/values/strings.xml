@@ -182,5 +182,6 @@
     <string name="action_delete_selected">Delete selected</string>
     <string name="action_delete_uploaded">Delete uploaded</string>
     <string name="action_delete_all">Delete all</string>
+    <string name="fail_bt_not_selected_need_log_in">You need to select user profil</string>
 
 </resources>

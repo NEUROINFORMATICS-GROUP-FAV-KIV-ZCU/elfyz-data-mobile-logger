@@ -76,13 +76,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   @Override
   public void onPerformSync(Account account, Bundle extras, String authority,
           ContentProviderClient provider, SyncResult syncResult) {
-    long userID = Long.parseLong(account.name);
+    
     
     Database db = Application.getInstance().getDatabase();
     
     Profile userProfile = null;
     try {
-      db.getProfileTable().getProfile(userID);
+      userProfile = db.getProfileTable().getProfile(Long.parseLong(account.name));
     }
     catch (DatabaseException e) {
       Log.e(TAG, "Failed to load user profile.");
@@ -91,7 +91,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     
     List<AutoSync> autoSyncs;
     try {
-      autoSyncs = db.getAutoSyncTable().getRecords(userID);
+      autoSyncs = db.getAutoSyncTable().getRecords(userProfile.getId());
     }
     catch (DatabaseException e) {
       Log.e(TAG, "Failed to get auto sync records.", e);

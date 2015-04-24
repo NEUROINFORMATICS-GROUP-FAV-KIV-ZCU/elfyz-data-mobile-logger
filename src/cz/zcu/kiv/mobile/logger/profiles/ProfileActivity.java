@@ -239,9 +239,9 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
         dbProfile.updateProfile(profile);
       }
       else {
-        long id = dbProfile.createProfile(profile);
+        dbProfile.createProfile(profile);
         
-        Account newAccount = new Account(String.valueOf(id), AuthenticatorService.ACCOUNT_TYPE);
+        Account newAccount = new Account(String.valueOf(profile.getId()), AuthenticatorService.ACCOUNT_TYPE);
         AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
         accountManager.addAccountExplicitly(newAccount, null, null);
       }

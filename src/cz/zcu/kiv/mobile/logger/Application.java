@@ -14,7 +14,9 @@ public class Application extends android.app.Application {
   private Profile userProfile;
   
   
-  public Application() {
+  @Override
+  public void onCreate() {
+    super.onCreate();
     instance = this;
     db = new Database(this);
   }
@@ -32,6 +34,7 @@ public class Application extends android.app.Application {
     if(userProfile == null) {
       Intent login = new Intent(this, MainActivity.class);
       login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+      AndroidUtils.toast(instance, R.string.fail_bt_not_selected_need_log_in);
       startActivity(login);
     }
     return userProfile;

@@ -139,6 +139,10 @@
                 android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
         </activity>
 
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity"
+            android:label="@string/title_activity_select_experiment" >
+        </activity>
         <!-- sync -->
 
         <service android:name="cz.zcu.kiv.mobile.logger.sync.AuthenticatorService" >
@@ -169,11 +173,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-
-        <activity
-            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity"
-            android:label="@string/title_activity_select_experiment" >
-        </activity>
     </application>
 
 </manifest>
