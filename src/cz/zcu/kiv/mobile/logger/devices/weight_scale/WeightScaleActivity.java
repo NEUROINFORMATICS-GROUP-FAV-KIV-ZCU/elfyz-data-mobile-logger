@@ -57,7 +57,7 @@ import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 public class WeightScaleActivity extends UserActivity implements InsertCommandListener {
   private static final String TAG = WeightScaleActivity.class.getSimpleName();
   
-  private static final String UNIT_KG = " kg";
+  private static final String UNIT_KG = " kg"; //TODO labels to strings, configurable units + conversions...
   private static final String UNIT_KCAL = " kcal";
   private static final String UNIT_PERCENT = " %";
   

@@ -37,7 +37,7 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
 
   private static final int LOADER_PROFILES = 1;
   
-  private ProfileTable dbProfileTable;
+  private ProfileTable db;
   private SimpleCursorAdapter profileAdapter;
 
   
@@ -46,7 +46,7 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     
-    dbProfileTable = Application.getInstance().getDatabase().getProfileTable();
+    db = Application.getInstance().getDatabase().getProfileTable();
     
     profileAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null,
         new String[]{ProfileTable.COLUMN_PROFILE_NAME}, new int[]{android.R.id.text1}, 0);
@@ -64,7 +64,7 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
     
     Profile userProfile;
     try {
-      userProfile = dbProfileTable.getProfile(id);
+      userProfile = db.getProfile(id);
     }
     catch (DatabaseException e) {
       AndroidUtils.toast(this, R.string.profile_load_fail);
@@ -151,7 +151,7 @@ public class MainActivity extends ListActivity implements LoaderCallbacks<AsyncT
   
   private void removeProfile(long profileID) {
     try {
-      dbProfileTable.deleteProfile(profileID);
+      db.deleteProfile(profileID);
     }
     catch (DatabaseException e) {
       Log.e(TAG, "Failed to delete profile: id=" + profileID, e);
