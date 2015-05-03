@@ -4,9 +4,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
-import cz.zcu.kiv.mobile.logger.data.AMeasurementListLoader;
 import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable.BPDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.database.loaders.AMeasurementListLoader;
 
 
 //TODO one generic loader for all device measures, observer with one method with args - event ID and optional parameters

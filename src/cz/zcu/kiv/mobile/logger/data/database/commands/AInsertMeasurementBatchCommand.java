@@ -3,8 +3,8 @@ package cz.zcu.kiv.mobile.logger.data.database.commands;
 import java.util.List;
 
 import android.os.AsyncTask;
-import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 
 
 public abstract class AInsertMeasurementBatchCommand<T_Measurement> extends AsyncTask<Void, Void, AsyncTaskResult<List<Long>>> {

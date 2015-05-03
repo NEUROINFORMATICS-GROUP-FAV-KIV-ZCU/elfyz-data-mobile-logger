@@ -32,7 +32,6 @@ import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateCalculatedRrIntervalCommand;
@@ -41,6 +40,7 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateManufactur
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRatePage4Command;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertHeartRateVersionAndModelCommand;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;

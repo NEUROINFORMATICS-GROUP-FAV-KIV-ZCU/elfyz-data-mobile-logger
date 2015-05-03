@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand.InsertBatchCommandListener;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
@@ -17,6 +16,7 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertGlucoseMeasurementBatchCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertGlucoseMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DuplicateEntryException;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.types.glucose.GlucoseMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.AForaDeviceActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;

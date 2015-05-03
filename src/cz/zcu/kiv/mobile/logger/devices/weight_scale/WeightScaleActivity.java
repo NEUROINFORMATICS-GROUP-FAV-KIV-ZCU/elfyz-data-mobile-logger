@@ -33,7 +33,6 @@ import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.common.UserActivity;
-import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.WeightScaleMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementCommand.InsertCommandListener;
@@ -43,6 +42,7 @@ import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleBatteryS
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleManufacturerIdentificationCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleManufacturerSpecificDataCommand;
 import cz.zcu.kiv.mobile.logger.data.database.commands.InsertWeightScaleProductInformationTableCommand;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleAdvancedMeasurement;

@@ -4,10 +4,10 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import cz.zcu.kiv.mobile.logger.Application;
-import cz.zcu.kiv.mobile.logger.data.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable.ProfileDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 

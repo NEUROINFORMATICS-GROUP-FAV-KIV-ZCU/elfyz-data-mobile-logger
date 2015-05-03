@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.data;
+package cz.zcu.kiv.mobile.logger.data.database.loaders;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
+import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 

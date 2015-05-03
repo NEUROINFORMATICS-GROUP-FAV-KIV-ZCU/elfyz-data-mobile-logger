@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.data;
+package cz.zcu.kiv.mobile.logger.data.types;
 
 
 public class AsyncTaskResult<R> {
