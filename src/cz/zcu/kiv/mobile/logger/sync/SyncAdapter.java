@@ -286,7 +286,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   private void syncHr(Profile userProfile, String experimentID, HeartRateMeasurementTable db) throws DatabaseException, UploadHelperException, CommunicationException, WrongCredentialsException {
     long[] ids = db.getNotUploadedIDs(userProfile.getId(), CHUNK_SIZE);
 
-    String parameterName = Application.getPreferences().getString("pref_gen_par_name_hr_measurement", "HR Measurement");
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_hr", "HR Measurement");
     boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
     
     ExperimentParametersData parameters = new HRMeasurementDbUploadHelper(parameterName, 0.0, ids, append).buildParameters();

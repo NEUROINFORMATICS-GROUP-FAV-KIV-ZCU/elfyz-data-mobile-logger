@@ -37,7 +37,7 @@ public class HRMeasurementListFragment extends ADataListFragment {
 
   @Override
   protected IExperimentParametersUploadHelper getUploadHelper(long[] selected) {
-    String parameterName = Application.getPreferences().getString("pref_gen_par_name_hr_measurement", "HR Measurement");
+    String parameterName = Application.getPreferences().getString("pref_gen_par_name_hr", "HR Measurement");
     boolean append = Application.getPreferences().getBoolean("pref_gen_par_append", true);
     return new HRMeasurementDbUploadHelper(parameterName, 0.0, selected, append);
   }

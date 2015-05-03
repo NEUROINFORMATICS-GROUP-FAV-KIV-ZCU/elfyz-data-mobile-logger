@@ -24,6 +24,11 @@
             android:key="prefs_cat_gen_par_names_hr">
             
             <EditTextPreference
+                android:title="@string/pref_gen_par_name_hr"
+                android:key="pref_gen_par_name_hr"
+                android:defaultValue="HR Measurement" />
+            
+            <EditTextPreference
                 android:title="@string/pref_gen_par_name_hr_crri"
                 android:key="pref_gen_par_name_hr_crri"
                 android:defaultValue="HR Calculated RR Interval" />
@@ -47,16 +52,16 @@
                 android:title="@string/pref_gen_par_name_hr_vam"
                 android:key="pref_gen_par_name_hr_vam"
                 android:defaultValue="HR Version And Model" />
-            
-            <EditTextPreference
-                android:title="@string/pref_gen_par_name_hr_vam"
-                android:key="pref_gen_par_name_hr_vam"
-                android:defaultValue="HR Version And Model" />
         </PreferenceScreen>
         
         <PreferenceScreen
             android:title="@string/pref_gen_par_name_ws"
             android:key="prefs_cat_gen_par_names_ws">
+            
+            <EditTextPreference
+                android:title="@string/pref_gen_par_name_ws_measurement"
+                android:key="pref_gen_par_name_ws_measurement"
+                android:defaultValue="WS Measurement" />
             
             <EditTextPreference
                 android:title="@string/pref_gen_par_name_ws_bs"
@@ -72,11 +77,6 @@
                 android:title="@string/pref_gen_par_name_ws_ms"
                 android:key="pref_gen_par_name_ws_ms"
                 android:defaultValue="WS Manufacturer Specific" />
-            
-            <EditTextPreference
-                android:title="@string/pref_gen_par_name_ws_measurement"
-                android:key="pref_gen_par_name_ws_measurement"
-                android:defaultValue="WS Measurement" />
             
             <EditTextPreference
                 android:title="@string/pref_gen_par_name_ws_pi"
