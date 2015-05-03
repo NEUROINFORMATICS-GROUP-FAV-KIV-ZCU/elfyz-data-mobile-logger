@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import cz.zcu.kiv.mobile.logger.R;
-import cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity;
 import cz.zcu.kiv.mobile.logger.common.UserActivity;
+import cz.zcu.kiv.mobile.logger.devices.picker.bluetooth.BluetoothDevicePickerActivity;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 

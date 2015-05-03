@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.bluetooth.picker;
+package cz.zcu.kiv.mobile.logger.devices.picker.bluetooth;
 
 /*
  * Copyright (C) 2009 The Android Open Source Project

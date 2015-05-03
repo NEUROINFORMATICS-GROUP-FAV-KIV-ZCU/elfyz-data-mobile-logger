@@ -78,7 +78,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity"
+            android:name="cz.zcu.kiv.mobile.logger.devices.picker.bluetooth.BluetoothDevicePickerActivity"
             android:label="@string/title_activity_bluetooth_picker" >
         </activity>
         <activity

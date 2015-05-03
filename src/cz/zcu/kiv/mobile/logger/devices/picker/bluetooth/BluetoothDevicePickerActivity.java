@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.bluetooth.picker;
+package cz.zcu.kiv.mobile.logger.devices.picker.bluetooth;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.ant.picker;
+package cz.zcu.kiv.mobile.logger.devices.picker.ant;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc;
 import com.dsi.ant.plugins.antplus.pccbase.AsyncScanController;

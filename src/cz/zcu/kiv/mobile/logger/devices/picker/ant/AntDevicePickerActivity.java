@@ -1,4 +1,4 @@
-package cz.zcu.kiv.mobile.logger.ant.picker;
+package cz.zcu.kiv.mobile.logger.devices.picker.ant;
 
 import java.util.HashSet;
 import java.util.Set;

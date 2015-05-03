@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -15,13 +17,11 @@ import android.view.Menu;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
 
-import cz.zcu.kiv.mobile.logger.bluetooth.picker.BluetoothDevicePickerActivity;
 import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
 import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.HeartRateCalculatedRrIntervalTable;
 import cz.zcu.kiv.mobile.logger.data.database.HeartRateCumulativeOperatingTimeTable;
-import cz.zcu.kiv.mobile.logger.data.database.HeartRateManufacturerAndSerialTable;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
@@ -31,15 +31,16 @@ import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasureme
 import cz.zcu.kiv.mobile.logger.data.types.glucose.GlucoseMeasurement;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;
-import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureDeviceCommunicatorTask.BloodPressureDeviceListener;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureListActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;
+import cz.zcu.kiv.mobile.logger.devices.picker.bluetooth.BluetoothDevicePickerActivity;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterDataList;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeData;
 import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeDataList;
+import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 //XXX just for developer testing
@@ -59,6 +60,10 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
       }
       catch(EntryNotFoundException e) {
         db.getProfileTable().createProfile(profile = getTestProfile());
+        
+        Account newAccount = new Account(String.valueOf(profile.getId()), AuthenticatorService.ACCOUNT_TYPE);
+        AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+        accountManager.addAccountExplicitly(newAccount, null, null);
       }
       
       Application.getInstance().setUserProfile(profile);
@@ -121,12 +126,12 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
       catch (DatabaseException e) {
         e.printStackTrace();
       }
-      HeartRateManufacturerAndSerialTable t = db.getHeartRateManufacturerAndSerialTable();
+//      HeartRateManufacturerAndSerialTable t = db.getHeartRateManufacturerAndSerialTable();
 //      t.addManufacturerAndSerial(userID, new HeartRateManufacturerAndSerial(333333L, null, 1, 2, false));
 //      t.add
   }
 
-  private Profile getTestProfile() {
+  protected Profile getTestProfile() {
     return new Profile(1L,
         "Honza",
         "krupa@students.zcu.cz",
@@ -135,7 +140,7 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
         Gender.MALE, 185, 3, false, "eegbase");
   }
 
-  private void printProfiles(Database db) {
+  protected void printProfiles(Database db) {
     try {
       Cursor c = db.getProfileTable().getProfileNames();
       int idi = c.getColumnIndex(ProfileTable.COLUMN_ID);
@@ -151,7 +156,7 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
     
   }
 
-  private Parcelable getParameters() {
+  protected Parcelable getParameters() {
     ExperimentParametersData data = new ExperimentParametersData(false,
       new GenericParameterDataList(
         Arrays.asList(
