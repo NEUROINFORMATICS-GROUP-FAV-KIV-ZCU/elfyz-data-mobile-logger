@@ -35,11 +35,11 @@ import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureListAct
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;
 import cz.zcu.kiv.mobile.logger.devices.picker.bluetooth.BluetoothDevicePickerActivity;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterData;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.GenericParameterDataList;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeData;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ParameterAttributeDataList;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ExperimentParametersData;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.GenericParameterData;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.GenericParameterDataList;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ParameterAttributeData;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ParameterAttributeDataList;
 import cz.zcu.kiv.mobile.logger.sync.AuthenticatorService;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 

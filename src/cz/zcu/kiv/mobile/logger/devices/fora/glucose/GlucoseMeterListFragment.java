@@ -10,8 +10,8 @@ import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
 import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.GlucoseMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.GlucoseMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
 
 
 public class GlucoseMeterListFragment extends ADataListFragment {

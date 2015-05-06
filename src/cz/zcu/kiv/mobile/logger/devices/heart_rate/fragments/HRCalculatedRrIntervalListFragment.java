@@ -12,8 +12,8 @@ import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.adapters.HRCalculatedRrIntervalAdapter;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.loaders.HRCalculatedRrIntervalLoader;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRCalculatedRrIntervalDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRCalculatedRrIntervalDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
 
 
 public class HRCalculatedRrIntervalListFragment extends ADataListFragment {

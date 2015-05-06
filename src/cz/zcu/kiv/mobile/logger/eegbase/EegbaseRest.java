@@ -18,13 +18,13 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import cz.zcu.kiv.mobile.logger.Application;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.AddExperimentDataResult;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
-import cz.zcu.kiv.mobile.logger.eegbase.data.get_experiment_list.ExperimentList;
-import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfo;
-import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfoWrapper;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.AddExperimentDataResult;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ExperimentParametersData;
+import cz.zcu.kiv.mobile.logger.eegbase.types.get_experiment_list.ExperimentList;
+import cz.zcu.kiv.mobile.logger.eegbase.types.login.UserInfo;
+import cz.zcu.kiv.mobile.logger.eegbase.types.login.UserInfoWrapper;
 
 
 public class EegbaseRest {

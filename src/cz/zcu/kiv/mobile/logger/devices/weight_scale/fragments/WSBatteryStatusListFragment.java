@@ -12,8 +12,8 @@ import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters.WSBatteryStatusAdapter;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.loaders.WSBatteryStatusLoader;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSBatteryStatusDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSBatteryStatusDbUploadHelper;
 
 
 public class WSBatteryStatusListFragment extends ADataListFragment {

@@ -28,23 +28,23 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.AutoSync;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
 import cz.zcu.kiv.mobile.logger.eegbase.EegbaseRest;
-import cz.zcu.kiv.mobile.logger.eegbase.data.add_experiment_parameters.ExperimentParametersData;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.UploadHelperException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.BloodPressureMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.GlucoseMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRCalculatedRrIntervalDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRCumulativeOperatingTimeDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRManufacturerAndSerialDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRPage4DbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRVersionAndModelDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSBatteryStatusDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSManufacturerIdentificationDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSManufacturerSpecificDataDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSProductInformationDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ExperimentParametersData;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.BloodPressureMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.GlucoseMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRCalculatedRrIntervalDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRCumulativeOperatingTimeDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRManufacturerAndSerialDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRPage4DbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRVersionAndModelDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSBatteryStatusDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSManufacturerIdentificationDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSManufacturerSpecificDataDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSProductInformationDbUploadHelper;
 
 
 /**

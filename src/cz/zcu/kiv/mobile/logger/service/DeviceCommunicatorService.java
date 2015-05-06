@@ -66,7 +66,7 @@ public class DeviceCommunicatorService extends Service {
     PendingIntent pendingManagementIntent = PendingIntent.getActivity(service, 0, managementIntent, 0);
     
     Notification notice = new NotificationCompat.Builder(service)
-        .setContentTitle("Mobile Logger")
+        .setContentTitle("Mobile Logger") //TODO string?
         .setOngoing(true)
         .setTicker(getString(R.string.service_now_running))
         .setSmallIcon(R.drawable.ic_launcher)

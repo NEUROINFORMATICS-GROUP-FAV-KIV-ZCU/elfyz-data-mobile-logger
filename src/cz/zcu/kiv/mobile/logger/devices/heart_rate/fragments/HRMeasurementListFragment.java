@@ -12,8 +12,8 @@ import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.adapters.HRMeasurementAdapter;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.loaders.HRMeasurementLoader;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.HRMeasurementDbUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.HRMeasurementDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
 
 
 public class HRMeasurementListFragment extends ADataListFragment {

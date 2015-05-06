@@ -20,9 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
-import cz.zcu.kiv.mobile.logger.eegbase.data.login.UserInfo;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.CommunicationException;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.WrongCredentialsException;
+import cz.zcu.kiv.mobile.logger.eegbase.types.login.UserInfo;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 
 

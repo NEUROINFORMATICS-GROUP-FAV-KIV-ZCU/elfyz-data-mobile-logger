@@ -29,10 +29,10 @@ import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.data.types.AutoSync;
-import cz.zcu.kiv.mobile.logger.eegbase.data.get_experiment_list.Experiment;
-import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity;
-import cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.types.get_experiment_list.Experiment;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par.SelectExperimentActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par.UploadGenericParametersActivity;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
 import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.DialogUtils;
 

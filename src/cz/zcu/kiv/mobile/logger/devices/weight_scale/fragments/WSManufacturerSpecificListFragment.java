@@ -12,8 +12,8 @@ import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
 import cz.zcu.kiv.mobile.logger.devices.ADataListFragment;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters.WSManufacturerSpecificDataAdapter;
 import cz.zcu.kiv.mobile.logger.devices.weight_scale.loaders.WSManufacturerSpecificDataLoader;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.IExperimentParametersUploadHelper;
-import cz.zcu.kiv.mobile.logger.eegbase.upload_helpers.WSManufacturerSpecificDataDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.IExperimentParametersUploadHelper;
+import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSManufacturerSpecificDataDbUploadHelper;
 
 
 public class WSManufacturerSpecificListFragment extends ADataListFragment {

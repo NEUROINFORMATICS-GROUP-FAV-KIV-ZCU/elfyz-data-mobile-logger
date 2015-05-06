@@ -120,7 +120,7 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.UploadGenericParametersActivity"
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par.UploadGenericParametersActivity"
             android:label="@string/title_activity_upload_data" >
         </activity>
         <activity
@@ -141,7 +141,7 @@
         </activity>
 
         <activity
-            android:name="cz.zcu.kiv.mobile.logger.eegbase.gen_par_upload.SelectExperimentActivity"
+            android:name="cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par.SelectExperimentActivity"
             android:label="@string/title_activity_select_experiment" >
         </activity>
 
