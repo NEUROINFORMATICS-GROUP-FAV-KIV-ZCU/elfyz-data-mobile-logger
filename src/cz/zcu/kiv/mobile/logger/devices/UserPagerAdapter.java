@@ -12,13 +12,13 @@ import cz.zcu.kiv.mobile.logger.data.types.NamedClass;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one
  * of the sections/tabs/pages.
  */
-public class DataListsPagerAdapter extends FragmentPagerAdapter {
+public class UserPagerAdapter extends FragmentPagerAdapter {
 
   private NamedClass[] fragmentClasses;
   private long userID;
 
   
-  public DataListsPagerAdapter(FragmentManager fm, long userID, NamedClass[] fragmentClasses) {
+  public UserPagerAdapter(FragmentManager fm, long userID, NamedClass[] fragmentClasses) {
     super(fm);
     this.userID = userID;
     this.fragmentClasses = fragmentClasses;

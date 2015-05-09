@@ -10,7 +10,7 @@ import cz.zcu.kiv.mobile.logger.common.UserActivity;
 import cz.zcu.kiv.mobile.logger.data.types.NamedClass;
 
 
-public abstract class ADataListActivity extends UserActivity {
+public abstract class APagerActivity extends UserActivity {
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -20,7 +20,7 @@ public abstract class ADataListActivity extends UserActivity {
    * it may be best to switch to a
    * {@link android.support.v4.app.FragmentStatePagerAdapter}.
    */
-  private DataListsPagerAdapter mSectionsPagerAdapter;
+  private UserPagerAdapter mSectionsPagerAdapter;
 
   /**
    * The {@link ViewPager} that will host the section contents.
@@ -42,7 +42,7 @@ public abstract class ADataListActivity extends UserActivity {
     
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the app.
-    mSectionsPagerAdapter = new DataListsPagerAdapter(getSupportFragmentManager(), userProfile.getId(), getDataPages());
+    mSectionsPagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), userProfile.getId(), getDataPages());
     // Set up the ViewPager with the sections adapter.
     mViewPager.setAdapter(mSectionsPagerAdapter);
     

@@ -1,7 +1,7 @@
 package cz.zcu.kiv.mobile.logger.devices.heart_rate;
 
 import cz.zcu.kiv.mobile.logger.data.types.NamedClass;
-import cz.zcu.kiv.mobile.logger.devices.ADataListActivity;
+import cz.zcu.kiv.mobile.logger.devices.APagerActivity;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.fragments.HRCalculatedRrIntervalListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.fragments.HRCumulativeOperatingTimeListFragment;
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.fragments.HRManufacturerAndSerialListFragment;
@@ -10,7 +10,7 @@ import cz.zcu.kiv.mobile.logger.devices.heart_rate.fragments.HRPage4ListFragment
 import cz.zcu.kiv.mobile.logger.devices.heart_rate.fragments.HRVersionAndModelListFragment;
 
 
-public class HeartRateDataListActivity extends ADataListActivity {
+public class HeartRateDataListActivity extends APagerActivity {
 
   @Override
   protected NamedClass[] getDataPages() {

@@ -228,6 +228,7 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
         AutoSync newAutosync = new AutoSync(getTableID(), experiment.getExperimentId(), experiment.getExperimentId() + " " + experiment.getScenarioName());
         db.addAutoSync(userID, newAutosync);
         setAutosyncInfo(newAutosync);
+        //TODO spustit synchronizaci, pokud je vyplá? jinak by se muselo změnit profil
       }
     }
     catch (DatabaseException e) {
