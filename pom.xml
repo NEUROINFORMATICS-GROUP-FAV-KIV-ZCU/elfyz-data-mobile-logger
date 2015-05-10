@@ -122,6 +122,11 @@
       <artifactId>annotations</artifactId>
       <version>4.1.1.4</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.PhilJay</groupId>
+      <artifactId>MPAndroidChart</artifactId>
+      <version>v2.1.0</version>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -135,6 +140,9 @@
       <name>SpringSource Repository</name>
       <url>http://repo.springsource.org/release</url>
     </repository>
-
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
 </project>
