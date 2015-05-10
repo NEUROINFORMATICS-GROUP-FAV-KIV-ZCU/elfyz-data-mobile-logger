@@ -13,7 +13,7 @@
     <version.com.google.android.android>4.1.1.4</version.com.google.android.android>
     <version.org.springframework.android.spring-android-rest-template>1.0.1.RELEASE</version.org.springframework.android.spring-android-rest-template>
     <version.org.simpleframework.simple-xml>2.7.1</version.org.simpleframework.simple-xml>
-    <version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>3.9.0-rc.1</version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>
+    <version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>3.9.0-rc.2</version.com.jayway.maven.plugins.android.generation2.android-maven-plugin>
 	<version.org.apache.maven.plugins.maven-compiler-plugin>3.2</version.org.apache.maven.plugins.maven-compiler-plugin>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,6 +36,7 @@
             <platform>${android-platform}</platform>
           </sdk>
           <undeployBeforeDeploy>true</undeployBeforeDeploy>
+          <includeLibsJarsFromAar>true</includeLibsJarsFromAar>
         </configuration>
         <extensions>true</extensions>
       </plugin>

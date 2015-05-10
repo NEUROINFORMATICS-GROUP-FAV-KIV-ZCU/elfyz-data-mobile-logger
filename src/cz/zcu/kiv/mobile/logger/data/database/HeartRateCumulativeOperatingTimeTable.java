@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;
 
@@ -127,7 +126,7 @@ public class HeartRateCumulativeOperatingTimeTable extends ARecordTable<HeartRat
     
   
     
-  public interface HRCumulativeOperatingTimeObserver extends IRecordDataObserver {
+  public interface HRCumulativeOperatingTimeObserver extends ARecordTable.IRecordDataObserver {
     void onHRCumulativeOperatingTimeDataAdded(long id);
     void onHRCumulativeOperatingTimeDataUpdated(long[] ids);
   }

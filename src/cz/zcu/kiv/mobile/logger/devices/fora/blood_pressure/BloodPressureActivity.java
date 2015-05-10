@@ -107,7 +107,7 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
       if(result.size() == 1)
         new InsertBloodPressureMeasurementCommand(userProfile.getId(), latest, this).execute();
       else
-        new InsertBloodPressureMeasurementBatchCommand(userProfile.getId(), result, true, this);
+        new InsertBloodPressureMeasurementBatchCommand(userProfile.getId(), result, true, this).execute();
     }
   }
 

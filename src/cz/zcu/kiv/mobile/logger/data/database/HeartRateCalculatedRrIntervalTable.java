@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import android.util.Log;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
@@ -164,7 +163,7 @@ public class HeartRateCalculatedRrIntervalTable extends ARecordTable<HeartRateCa
   
   
 
-  public interface HRCalculatedRrIntervalObserver extends IRecordDataObserver {
+  public interface HRCalculatedRrIntervalObserver extends ARecordTable.IRecordDataObserver {
     void onHRCalculatedRrIntervalDataAdded(long id);
     void onHRCalculatedRrIntervalDataUpdated(long[] ids);
   }

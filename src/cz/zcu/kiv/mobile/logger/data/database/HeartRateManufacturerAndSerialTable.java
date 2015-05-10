@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateManufacturerAndSerial;
 
@@ -130,7 +129,7 @@ public class HeartRateManufacturerAndSerialTable extends ARecordTable<HeartRateM
   
   
 
-  public interface HRManufacturerAndSerialObserver extends IRecordDataObserver {
+  public interface HRManufacturerAndSerialObserver extends ARecordTable.IRecordDataObserver {
     void onHRManufacturerAndSerialDataAdded(long id);
     void onHRManufacturerAndSerialDataUpdated(long[] ids);
   }

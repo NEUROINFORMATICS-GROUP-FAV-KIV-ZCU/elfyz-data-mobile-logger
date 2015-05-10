@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.DataState;
 
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateMeasurement;
 
@@ -167,7 +166,7 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
 
 
 
-  public interface HRDataObserver extends IRecordDataObserver {
+  public interface HRDataObserver extends ARecordTable.IRecordDataObserver {
     void onHRMeasurementAdded(long id);
     void onHRMeasurementsUpdated(long[] ids);
   }

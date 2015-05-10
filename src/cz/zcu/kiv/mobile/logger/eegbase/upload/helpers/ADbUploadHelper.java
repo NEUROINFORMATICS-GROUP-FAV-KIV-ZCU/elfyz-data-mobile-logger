@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import android.database.Cursor;
+import android.os.Parcel;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.eegbase.exceptions.UploadHelperException;
@@ -15,8 +17,6 @@ import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.GenericP
 import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ParameterAttributeData;
 import cz.zcu.kiv.mobile.logger.eegbase.types.add_experiment_parameters.ParameterAttributeDataList;
 import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
-import android.database.Cursor;
-import android.os.Parcel;
 
 
 public abstract class ADbUploadHelper implements IExperimentParametersUploadHelper {

@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleProductInformation;
 
@@ -133,7 +132,7 @@ public class WeightScaleProductInformationTable extends ARecordTable<WeightScale
 
   
   
-  public interface WSProductInformationObserver extends IRecordDataObserver {
+  public interface WSProductInformationObserver extends ARecordTable.IRecordDataObserver {
     void onWSProductInformationDataAdded(long id);
     void onWSProductInformationDataUpdated(long[] ids);
   }

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import cz.zcu.kiv.mobile.logger.data.database.ARecordTable.IRecordDataObserver;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleAdvancedMeasurement;
 import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBasicMeasurement;
@@ -163,7 +162,7 @@ public class WeightScaleMeasurementTable extends ARecordTable<WeightScaleMeasure
   
   
 
-  public interface WSDataObserver extends IRecordDataObserver {
+  public interface WSDataObserver extends ARecordTable.IRecordDataObserver {
     void onWSMeasurementAdded(long id);
     void onWSMeasurementsUpdated(long[] ids);
   }

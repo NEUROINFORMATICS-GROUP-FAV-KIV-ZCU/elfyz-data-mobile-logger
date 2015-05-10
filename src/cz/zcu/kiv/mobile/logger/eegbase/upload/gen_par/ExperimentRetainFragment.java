@@ -2,10 +2,9 @@ package cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par;
 
 import java.util.List;
 
-import cz.zcu.kiv.mobile.logger.eegbase.types.get_experiment_list.Experiment;
-
 import android.app.Fragment;
 import android.os.Bundle;
+import cz.zcu.kiv.mobile.logger.eegbase.types.get_experiment_list.Experiment;
 
 
 public class ExperimentRetainFragment extends Fragment {
