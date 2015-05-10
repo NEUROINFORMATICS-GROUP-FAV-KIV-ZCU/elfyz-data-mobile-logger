@@ -1,6 +1,7 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -28,6 +29,8 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
+
+  protected static final String WHERE_USER_ID_AND_DATES = COLUMN_USER_ID + " = ? AND " + COLUMN_TIME + " >= ? AND " + COLUMN_TIME + " <= ? ";
   
 
   public BloodPressureMeasurementTable(SQLiteOpenHelper openHelper, int tableID) {
@@ -118,11 +121,30 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
   }
 
   public Cursor getMeasurements(long profileID) throws DatabaseException {
+    return getMeasurements(profileID, false);
+  }
+
+  public Cursor getMeasurements(long profileID, boolean ascending) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
     try {
       String[] selectionArgs = new String[]{ String.valueOf(profileID) };
-      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_DESC);
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ascending ? ORDER_MEASUREMENTS_ASC : ORDER_MEASUREMENTS_DESC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public Cursor getMeasurements(long profileID, boolean ascending, Date dateFrom, Date dateTo) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      String[] selectionArgs = new String[]{
+          String.valueOf(profileID),
+          String.valueOf(dateFrom.getTime()),
+          String.valueOf(dateTo.getTime())};
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID_AND_DATES, selectionArgs, null, null, ascending ? ORDER_MEASUREMENTS_ASC : ORDER_MEASUREMENTS_DESC);
     }
     catch(Exception e) {
       throw new DatabaseException(e);

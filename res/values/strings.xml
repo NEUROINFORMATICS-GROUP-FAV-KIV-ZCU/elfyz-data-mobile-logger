@@ -183,5 +183,23 @@
     <string name="action_delete_uploaded">Delete uploaded</string>
     <string name="action_delete_all">Delete all</string>
     <string name="fail_bt_not_selected_need_log_in">You need to select user profil</string>
+    <string name="title_activity_blood_pressure_analysis">BloodPressureAnalysisActivity</string>
+    <string name="action_statistics">Statistics</string>
+    <string name="no_data">No data available.</string>
+    <string name="bp_level_high">High</string>
+    <string name="bp_level_prehigh">Pre-high</string>
+    <string name="bp_level_optimal">Optimal</string>
+    <string name="bp_level_low">Low</string>
+    <string name="bp_legend_systolic">Systolic</string>
+    <string name="bp_legend_diastolic">Diastolic</string>
+    <string name="bp_legend_heart_rate">Heart rate</string>
+    <string name="bp_legend_mean">Mean</string>
+    <string name="stats_trend">Trend</string>
+    <string name="stats_average">Average</string>
+    <string name="stats_count">Record count</string>
+    <string name="stats_max">Max pressure</string>
+    <string name="stats_max_time">Max date</string>
+    <string name="stats_min">Min pressure</string>
+    <string name="stats_min_time">Min date</string>
 
 </resources>

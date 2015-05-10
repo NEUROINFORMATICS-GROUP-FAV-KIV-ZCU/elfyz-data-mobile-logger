@@ -14,9 +14,9 @@
         android:title="@string/action_load_all_records"/>
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_statistics"
         android:orderInCategory="30"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_statistics"/>
 
 </menu>

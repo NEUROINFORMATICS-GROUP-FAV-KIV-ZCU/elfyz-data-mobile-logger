@@ -6,11 +6,10 @@ import java.util.Calendar;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +37,7 @@ import cz.zcu.kiv.mobile.logger.utils.AndroidUtils;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 
 
-public class ProfileActivity extends Activity implements OnDateSetListener {
+public class ProfileActivity extends FragmentActivity implements OnDateSetListener {
   private static final String TAG = ProfileActivity.class.getSimpleName();
   
   public static final String EXTRA_PROFILE_ID = "extra.profile.id";
@@ -104,7 +103,7 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
           return;
         }
         catch (DatabaseException e) {
-          AndroidUtils.toast(this, "Failed to load profile from database.");
+          AndroidUtils.toast(this, "Failed to load profile from database.");  //TODO text
           Log.e(TAG, "Failed to load profile from DB: profileID=" + profileID);
           finish();
           return;
@@ -269,13 +268,14 @@ public class ProfileActivity extends Activity implements OnDateSetListener {
   }
   
   public void onSelectBirthDate(View view) {
-    DialogFragment dialog = new DatePickerFragment();
+    DatePickerFragment dialog = new DatePickerFragment();
     if(selectedDate != null) {
       Bundle args = new Bundle(1);
       args.putLong(DatePickerFragment.ARG_INITIAL_DATE, selectedDate.getTimeInMillis());
       dialog.setArguments(args);
     }
-    dialog.show(getFragmentManager(), "datePicker");
+    dialog.setListener(this);
+    dialog.show(getSupportFragmentManager(), "datePicker");
   }
 
   @Override

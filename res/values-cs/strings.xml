@@ -172,5 +172,22 @@
     <string name="action_delete_uploaded">Smazat odeslané</string>
     <string name="action_delete_all">Smazat vše</string>
     <string name="fail_bt_not_selected_need_log_in">Musíte vybrat uživatelský profil</string>
+    <string name="action_statistics">Statistiky</string>
+    <string name="no_data">Žádná data.</string>
+    <string name="bp_level_high">Vysoký</string>
+    <string name="bp_level_prehigh">Zvýšený</string>
+    <string name="bp_level_optimal">Optimální</string>
+    <string name="bp_level_low">Nízký</string>
+    <string name="bp_legend_systolic">Systolický</string>
+    <string name="bp_legend_diastolic">Diastolický</string>
+    <string name="bp_legend_heart_rate">Srdeční tep</string>
+    <string name="bp_legend_mean">Střední</string>
+    <string name="stats_trend">Trend</string>
+    <string name="stats_average">Průměr</string>
+    <string name="stats_count">Počet záznamů</string>
+    <string name="stats_max">Tlak max</string>
+    <string name="stats_max_time">Datum pro max</string>
+    <string name="stats_min">Tlak min</string>
+    <string name="stats_min_time">Datum pro min</string>
 
 </resources>

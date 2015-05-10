@@ -139,7 +139,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
         </activity>
-
         <activity
             android:name="cz.zcu.kiv.mobile.logger.eegbase.upload.gen_par.SelectExperimentActivity"
             android:label="@string/title_activity_select_experiment" >
@@ -175,6 +174,15 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureAnalysisActivity"
+            android:label="@string/title_activity_blood_pressure_analysis"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity" />
+        </activity>
     </application>
 
 </manifest>

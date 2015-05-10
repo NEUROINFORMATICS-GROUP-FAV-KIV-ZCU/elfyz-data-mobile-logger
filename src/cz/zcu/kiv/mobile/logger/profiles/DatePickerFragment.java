@@ -5,8 +5,8 @@ import java.util.Calendar;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import cz.zcu.kiv.mobile.logger.utils.DateUtils;
 
@@ -16,15 +16,20 @@ public class DatePickerFragment extends DialogFragment {
   
   public static final String ARG_INITIAL_DATE = "arg.initial.date";
 
+  private OnDateSetListener listener;
+  
+  
+  public void setListener(OnDateSetListener listener) {
+    this.listener = listener;
+  }
+  
   
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    if(getActivity().getClass().isAssignableFrom(OnDateSetListener.class)) {
-      Log.i(TAG, "Parent activity has to implement OnDateSetListener.");
+    if(listener == null) {
+      Log.e(TAG, "Listener should be set.");
       dismiss();
     }
-    
-    OnDateSetListener listener = (OnDateSetListener) getActivity();
     
     Bundle args = getArguments();
     

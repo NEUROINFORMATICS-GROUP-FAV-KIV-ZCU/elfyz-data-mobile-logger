@@ -1,6 +1,7 @@
 package cz.zcu.kiv.mobile.logger.utils;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class DateUtils {
@@ -25,5 +26,12 @@ public class DateUtils {
     Calendar cal = Calendar.getInstance();
     cal.setTimeInMillis(milis);
     return cal;
+  }
+
+  public static Date addDays(Date day, int addDays) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeInMillis(day.getTime());
+    cal.add(Calendar.DAY_OF_MONTH, addDays);
+    return cal.getTime();
   }
 }
