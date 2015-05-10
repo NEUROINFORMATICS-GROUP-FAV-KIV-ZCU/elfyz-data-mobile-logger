@@ -79,15 +79,14 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_analysis_bp, container, false);
+    View rootView = inflater.inflate(getLayoutResourceID(), container, false);
     bDateFrom = (Button) rootView.findViewById(R.id.b_date_from);
     bDateTo = (Button) rootView.findViewById(R.id.b_date_to);
     bRefresh = (ImageButton) rootView.findViewById(R.id.b_refresh);
     initButtons();
-    initChart();
     return rootView;
   }
-  
+
   private void initButtons() {
     bDateFrom.setOnClickListener(new OnClickListener() {
       @Override
@@ -191,8 +190,8 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
     return loader;
   }
   
-  protected abstract void analyze(Cursor cursor) throws Exception;
   protected abstract int getLoaderID();
-  protected abstract void initChart();
+  protected abstract int getLayoutResourceID();
   protected abstract AAnalysisLoader getAnalysisLoader(Context context, long userID);
+  protected abstract void analyze(Cursor cursor) throws Exception;
 }
