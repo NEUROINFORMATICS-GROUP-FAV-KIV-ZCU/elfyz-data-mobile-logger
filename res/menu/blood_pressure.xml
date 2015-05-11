@@ -1,22 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+     <item
+         android:id="@+id/action_select_bt"
+         android:orderInCategory="10"
+         android:showAsAction="always"
+         android:icon="@drawable/ic_action_bluetooth"
+         android:title="@string/action_select_bt"/>
 
-    <item
-        android:id="@+id/action_select_bt"
-        android:orderInCategory="10"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_action_bluetooth"
-        android:title="@string/action_select_bt"/>
+     <item
+         android:id="@+id/action_load_all_records"
+         android:orderInCategory="20"
+         android:showAsAction="never"
+         android:title="@string/action_load_all_records"/>
 
-    <item
-        android:id="@+id/action_load_all_records"
-        android:orderInCategory="20"
-        android:showAsAction="never"
-        android:title="@string/action_load_all_records"/>
-
-    <item
-        android:id="@+id/action_statistics"
-        android:orderInCategory="30"
-        android:showAsAction="never"
-        android:title="@string/action_statistics"/>
+     <item
+         android:id="@+id/action_statistics"
+         android:orderInCategory="30"
+         android:showAsAction="never"
+         android:title="@string/action_statistics"/>
 
 </menu>

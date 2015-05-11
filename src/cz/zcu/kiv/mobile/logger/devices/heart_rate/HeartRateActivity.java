@@ -7,6 +7,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -97,6 +99,24 @@ public class HeartRateActivity extends UserActivity implements ServiceConnection
     listen = savedInstanceState.getBoolean(STATE_LISTEN);
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.heart_rate, menu);
+    return true;
+  }
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_statistics:
+        startActivity(new Intent(this, HeartRateDataAnalysisActivity.class));
+        return true;
+  
+      default: return super.onOptionsItemSelected(item);
+    }
+  }
+  
   @Override
   public void onServiceConnected(ComponentName name, IBinder binder) {
     service = (DeviceCommunicatorBinder) binder;

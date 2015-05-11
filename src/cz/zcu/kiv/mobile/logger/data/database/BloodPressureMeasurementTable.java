@@ -19,7 +19,6 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
 
   private static final String TABLE_NAME = "blood_pressure_measurement";
 
-  public static final String COLUMN_TIME = "time";
   public static final String COLUMN_SYSTOLIC = "systolic";
   public static final String COLUMN_DIASTOLIC = "diastolic";
   public static final String COLUMN_MEAN_PRESSURE = "mean";
@@ -29,8 +28,6 @@ public class BloodPressureMeasurementTable extends ARecordTable<BloodPressureMea
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
-
-  protected static final String WHERE_USER_ID_AND_DATES = COLUMN_USER_ID + " = ? AND " + COLUMN_TIME + " >= ? AND " + COLUMN_TIME + " <= ? ";
   
 
   public BloodPressureMeasurementTable(SQLiteOpenHelper openHelper, int tableID) {

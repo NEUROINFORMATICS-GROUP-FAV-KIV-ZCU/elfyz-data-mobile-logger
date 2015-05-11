@@ -1,5 +1,7 @@
 package cz.zcu.kiv.mobile.logger.data.database;
 
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -18,7 +20,6 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
 
   private static final String TABLE_NAME = "hr_measurement";
 
-  public static final String COLUMN_TIME = "time";
   public static final String COLUMN_HEART_RATE = "heart_rate";
   public static final String COLUMN_BEAT_COUNT = "beat_count";
   public static final String COLUMN_BEAT_TIME = "beat_time";
@@ -33,6 +34,8 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
 
   private static final String ORDER_MEASUREMENTS_DESC = COLUMN_TIME + " DESC";
   private static final String ORDER_MEASUREMENTS_ASC = COLUMN_TIME + " ASC";
+  
+  protected static final String WHERE_USER_DATES_STATE = COLUMN_USER_ID + " = ? AND " + COLUMN_DATA_STATE + " = " + DATA_STATE_LIVE_DATA + " AND " + COLUMN_TIME + " >= ? AND " + COLUMN_TIME + " <= ? ";
 
   
   public HeartRateMeasurementTable(SQLiteOpenHelper openHelper, int tableID) {
@@ -96,11 +99,30 @@ public class HeartRateMeasurementTable extends ARecordTable<HeartRateMeasurement
   }
 
   public Cursor getMeasurements(long profileID) throws DatabaseException {
+    return getMeasurements(profileID, false);
+  }
+
+  public Cursor getMeasurements(long profileID, boolean ascending) throws DatabaseException {
     SQLiteDatabase db = getDatabase();
     
     try {
       String[] selectionArgs = new String[]{ String.valueOf(profileID) };
-      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ORDER_MEASUREMENTS_DESC);
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_ID, selectionArgs, null, null, ascending ? ORDER_MEASUREMENTS_ASC : ORDER_MEASUREMENTS_DESC);
+    }
+    catch(Exception e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public Cursor getMeasurements(long profileID, boolean ascending, Date dateFrom, Date dateTo) throws DatabaseException {
+    SQLiteDatabase db = getDatabase();
+    
+    try {
+      String[] selectionArgs = new String[]{
+          String.valueOf(profileID),
+          String.valueOf(dateFrom.getTime()),
+          String.valueOf(dateTo.getTime())};
+      return db.query(TABLE_NAME, COLUMNS_MEASUREMENT_ALL, WHERE_USER_DATES_STATE, selectionArgs, null, null, ascending ? ORDER_MEASUREMENTS_ASC : ORDER_MEASUREMENTS_DESC);
     }
     catch(Exception e) {
       throw new DatabaseException(e);

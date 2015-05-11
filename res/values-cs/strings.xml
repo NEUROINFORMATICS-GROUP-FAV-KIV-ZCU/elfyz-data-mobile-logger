@@ -189,5 +189,12 @@
     <string name="stats_max_time">Datum pro max</string>
     <string name="stats_min">Tlak min</string>
     <string name="stats_min_time">Datum pro min</string>
+    <string name="gm_level_high">Vysoká</string>
+    <string name="gm_level_optimal">Optimální</string>
+    <string name="gm_legend_glucose">Glukóza</string>
+    <string name="title_activity_heart_rate_data_analysis">HeartRateDataAnalysisActivity</string>
+    <string name="hr_legend_heart_rate">Srdeční tep</string>
+    <string name="title_activity_weight_scale_data_analysis">WeightScaleDataAnalysisActivity</string>
+    <string name="ws_legend_weight">Váha</string>
 
 </resources>

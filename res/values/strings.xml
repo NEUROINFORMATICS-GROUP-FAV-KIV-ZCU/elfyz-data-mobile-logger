@@ -201,5 +201,13 @@
     <string name="stats_max_time">Max date</string>
     <string name="stats_min">Min pressure</string>
     <string name="stats_min_time">Min date</string>
+    <string name="title_activity_glucose_meter_analysis">GlucoseMeterAnalysisActivity</string>
+    <string name="gm_level_high">High</string>
+    <string name="gm_level_optimal">Optimal</string>
+    <string name="gm_legend_glucose">Glucose</string>
+    <string name="title_activity_heart_rate_data_analysis">HeartRateDataAnalysisActivity</string>
+    <string name="hr_legend_heart_rate">Heart rate</string>
+    <string name="title_activity_weight_scale_data_analysis">WeightScaleDataAnalysisActivity</string>
+    <string name="ws_legend_weight">Weight</string>
 
 </resources>

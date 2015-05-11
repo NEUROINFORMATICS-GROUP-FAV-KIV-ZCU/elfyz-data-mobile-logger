@@ -68,7 +68,7 @@ public class BloodPressureAnalysisFragment extends AAnalysisFragment {
   }
   
   private void initChart() {
-    chart.setNoDataTextDescription(Application.getStringResource(R.string.no_data));
+    chart.setNoDataText(Application.getStringResource(R.string.no_data));
     chart.setDragEnabled(true);
     chart.setDrawGridBackground(true);
     

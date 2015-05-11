@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
@@ -52,6 +53,17 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.glucose_meter, menu);
     return true;
+  }
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_statistics:
+        startActivity(new Intent(this, GlucoseMeterAnalysisActivity.class));
+        return true;
+  
+      default: return super.onOptionsItemSelected(item);
+    }
   }
   
   @Override

@@ -9,11 +9,13 @@ import cz.zcu.kiv.mobile.logger.utils.CloseUtils;
 
 public abstract class ARecordTable<T_Observer extends ARecordTable.IRecordDataObserver> extends ATable<T_Observer> {
   public static final String COLUMN_USER_ID = "user_id";
+  public static final String COLUMN_TIME = "time";
   public static final String COLUMN_UPLOADED = "uploaded";
   
   protected static final String WHERE_USER_ID = COLUMN_USER_ID + " = ? ";
   protected static final String WHERE_UPLOADED = COLUMN_USER_ID + " = ? AND " + COLUMN_UPLOADED + " = ?";
   protected static final String WHERE_IDS_IN_ = COLUMN_ID + " IN ";
+  protected static final String WHERE_USER_ID_AND_DATES = COLUMN_USER_ID + " = ? AND " + COLUMN_TIME + " >= ? AND " + COLUMN_TIME + " <= ? ";
   
   private int tableID;
   

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -107,6 +108,17 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
     return true;
   }
   
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_statistics:
+        startActivity(new Intent(this, WeightScaleDataAnalysisActivity.class));
+        return true;
+  
+      default: return super.onOptionsItemSelected(item);
+    }
+  }
+  
   public void showAllRecords(View view) {
     startActivity(new Intent(this, WeightScaleDataListActivity.class));
   }
@@ -116,7 +128,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
       @Override
       public void onBasicMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final WeightScaleRequestStatus status, final BigDecimal bodyWeight) {
-        WeightScaleBasicMeasurement data = new WeightScaleBasicMeasurement(estTimestamp, eventFlags, status, bodyWeight, false);
+        WeightScaleBasicMeasurement data = new WeightScaleBasicMeasurement(System.currentTimeMillis(), eventFlags, status, bodyWeight, false);
         
         runOnUiThread(new Runnable() {
           @Override
@@ -147,7 +159,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
       @Override
       public void onAdvancedMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
           final WeightScaleRequestStatus status, final AdvancedMeasurement measurement) { //TODO custom enums with mapping...?
-        WeightScaleAdvancedMeasurement data = new WeightScaleAdvancedMeasurement(estTimestamp, eventFlags, status,
+        WeightScaleAdvancedMeasurement data = new WeightScaleAdvancedMeasurement(System.currentTimeMillis(), eventFlags, status,
             measurement.activeMetabolicRate, measurement.basalMetabolicRate, measurement.bodyFatPercentage, measurement.bodyWeight,
             measurement.boneMass, measurement.hydrationPercentage, measurement.muscleMass, false);
         
@@ -191,7 +203,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
           BigDecimal batteryVoltage, BatteryStatus batteryStatus, int cumulativeOperatingTimeResolution,
           int numberOfBatteries, int batteryIdentifier) {
         
-        WeightScaleBatteryStatus data = new WeightScaleBatteryStatus(estTimestamp, eventFlags, cumulativeOperatingTime,
+        WeightScaleBatteryStatus data = new WeightScaleBatteryStatus(System.currentTimeMillis(), eventFlags, cumulativeOperatingTime,
             batteryVoltage, batteryStatus, cumulativeOperatingTimeResolution, numberOfBatteries, batteryIdentifier, false);
         new InsertWeightScaleBatteryStatusCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
@@ -202,7 +214,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
       public void onNewManufacturerIdentification(long estTimestamp, EnumSet<EventFlag> eventFlags, int hardwareRevision,
           int manufacturerID, int modelNumber) {
 
-        WeightScaleManufacturerIdentification data = new WeightScaleManufacturerIdentification(estTimestamp, eventFlags,
+        WeightScaleManufacturerIdentification data = new WeightScaleManufacturerIdentification(System.currentTimeMillis(), eventFlags,
             hardwareRevision, manufacturerID, modelNumber, false);
         new InsertWeightScaleManufacturerIdentificationCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
@@ -211,7 +223,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
     weightScaleDevice.subscribeManufacturerSpecificDataEvent(new IManufacturerSpecificDataReceiver() {
       @Override
       public void onNewManufacturerSpecificData(long estTimestamp, EnumSet<EventFlag> eventFlags, byte[] rawDataBytes) {
-        WeightScaleManufacturerSpecificData data = new WeightScaleManufacturerSpecificData(estTimestamp, eventFlags, rawDataBytes, false);
+        WeightScaleManufacturerSpecificData data = new WeightScaleManufacturerSpecificData(System.currentTimeMillis(), eventFlags, rawDataBytes, false);
         new InsertWeightScaleManufacturerSpecificDataCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }
     });
@@ -220,7 +232,7 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
       @Override
       public void onNewProductInformation(long estTimestamp, EnumSet<EventFlag> eventFlags, int mainSoftwareRevision,
           int supplementalSoftwareRevision, long serialNumber) {
-        WeightScaleProductInformation data = new WeightScaleProductInformation(estTimestamp, eventFlags,
+        WeightScaleProductInformation data = new WeightScaleProductInformation(System.currentTimeMillis(), eventFlags,
             mainSoftwareRevision, supplementalSoftwareRevision, serialNumber, false);
         new InsertWeightScaleProductInformationTableCommand(userProfile.getId(), data, WeightScaleActivity.this).execute();
       }

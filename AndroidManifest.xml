@@ -183,6 +183,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity" />
         </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterAnalysisActivity"
+            android:label="@string/title_activity_glucose_meter_analysis"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity" />
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateDataAnalysisActivity"
+            android:label="@string/title_activity_heart_rate_data_analysis"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" />
+        </activity>
+        <activity
+            android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleDataAnalysisActivity"
+            android:label="@string/title_activity_weight_scale_data_analysis"
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
+        </activity>
     </application>
 
 </manifest>
