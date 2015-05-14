@@ -101,9 +101,8 @@
     <string name="label_blood_sample_temperature">Sample temperature (°C):</string>
     <string name="label_code">Code:</string>
     <string name="label_type">Type:</string>
-    <string name="title_activity_glucose_list">GlucoseListActivity</string>
+    <string name="title_activity_glucose_list">Glucose Data</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_profile_creation_type">ProfileCreationTypeActivity</string>
     <string name="action_connect_eegbase">Connect to EEGbase account</string>
     <string name="fail_login_credentials">Wrong credentials</string>
     <string name="fail_communication">Failed to communicate with server</string>
@@ -118,14 +117,14 @@
     <string name="no_device_selected">No device selected</string>
     <string name="weight_scale_measure_ok">Measure OK</string>
     <string name="service_now_running">Logger service is now running&#8230;</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
     <string name="action_upload">Upload to EEGbase</string>
-    <string name="title_activity_upload_data">UploadDataActivity</string>
+    <string name="title_activity_upload_data">Data upload</string>
     <string name="uploaded">Uploaded</string>
-    <string name="title_activity_heart_rate_data_list">HeartRateDataListActivity</string>
+    <string name="title_activity_heart_rate_data_list">Heart Rate Data</string>
     <string name="start_listening">Listen</string>
     <string name="stop_listening">Stop</string>
-    <string name="title_activity_weight_scale_data_list">WeightScaleDataListActivity</string>
+    <string name="title_activity_weight_scale_data_list">Weight Scale Data</string>
     <string name="prefs_connection_title">Connection</string>
     <string name="prefs_connection_summary">Connection preferences</string>
     <string name="prefs_gen_pars_title">General parameters</string>
@@ -162,7 +161,7 @@
     <string name="action_auto_sync">Automatic data upload</string>
     <string name="btn_refresh">Refresh</string>
     <string name="btn_upload">Upload</string>
-    <string name="title_activity_select_experiment">SelectExperimentActivity</string>
+    <string name="title_activity_select_experiment">Select Experiment</string>
     <string name="btn_select">Select</string>
     <string name="btn_select_experiment">Select experiment</string>
     <string name="title_data_info">Data info</string>
@@ -183,7 +182,7 @@
     <string name="action_delete_uploaded">Delete uploaded</string>
     <string name="action_delete_all">Delete all</string>
     <string name="fail_bt_not_selected_need_log_in">You need to select user profil</string>
-    <string name="title_activity_blood_pressure_analysis">BloodPressureAnalysisActivity</string>
+    <string name="title_activity_blood_pressure_analysis">Analysis - Blood Pressure</string>
     <string name="action_statistics">Statistics</string>
     <string name="no_data">No data available.</string>
     <string name="bp_level_high">High</string>
@@ -201,13 +200,13 @@
     <string name="stats_max_time">Max date</string>
     <string name="stats_min">Min pressure</string>
     <string name="stats_min_time">Min date</string>
-    <string name="title_activity_glucose_meter_analysis">GlucoseMeterAnalysisActivity</string>
+    <string name="title_activity_glucose_meter_analysis">Analysis - Glucose Meter</string>
     <string name="gm_level_high">High</string>
     <string name="gm_level_optimal">Optimal</string>
     <string name="gm_legend_glucose">Glucose</string>
-    <string name="title_activity_heart_rate_data_analysis">HeartRateDataAnalysisActivity</string>
+    <string name="title_activity_heart_rate_data_analysis">Analysis - Heart Rate</string>
     <string name="hr_legend_heart_rate">Heart rate</string>
-    <string name="title_activity_weight_scale_data_analysis">WeightScaleDataAnalysisActivity</string>
+    <string name="title_activity_weight_scale_data_analysis">Analysis - Weight Scale</string>
     <string name="ws_legend_weight">Weight</string>
 
 </resources>

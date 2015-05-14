@@ -192,9 +192,19 @@
     <string name="gm_level_high">Vysoká</string>
     <string name="gm_level_optimal">Optimální</string>
     <string name="gm_legend_glucose">Glukóza</string>
-    <string name="title_activity_heart_rate_data_analysis">HeartRateDataAnalysisActivity</string>
+    <string name="title_activity_heart_rate_data_analysis">Analýza - Srdeční tep</string>
     <string name="hr_legend_heart_rate">Srdeční tep</string>
-    <string name="title_activity_weight_scale_data_analysis">WeightScaleDataAnalysisActivity</string>
+    <string name="title_activity_weight_scale_data_analysis">Analýza - Váha</string>
     <string name="ws_legend_weight">Váha</string>
+    <string name="title_activity_glucose_meter_analysis">Analýza - Glukoměr</string>
+    <string name="title_activity_blood_pressure_analysis">Analýza - Krevní tlak</string>
+    <string name="title_experiment_info">Info o experimentu</string>
+    <string name="title_activity_select_experiment">Výběr experimentu</string>
+    <string name="title_activity_weight_scale_data_list">Data - Váha</string>
+    <string name="title_activity_heart_rate_data_list">Data - Srdeční tep</string>
+    <string name="title_activity_upload_data">Upload dat</string>
+    <string name="title_activity_settings">Nastavení</string>
+    <string name="title_activity_glucose_list">Data - Glukoměr</string>
+    <string name="title_activity_glucose_meter">Glukoměr</string>
 
 </resources>
