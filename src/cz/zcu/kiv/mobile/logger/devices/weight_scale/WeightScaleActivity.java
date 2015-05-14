@@ -124,6 +124,11 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
   }
   
   public void doBasicMeasurement(View view){//TODO disable if device not available
+    if(weightScaleDevice == null) {
+      AndroidUtils.toast(this, R.string.no_device_selected);
+      return;
+    }
+    
     boolean success = weightScaleDevice.requestBasicMeasurement(new IBasicMeasurementFinishedReceiver() {
       @Override
       public void onBasicMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
@@ -155,6 +160,11 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
   }
   
   public void doAdvancedMeasurement(View view){
+    if(weightScaleDevice == null) {
+      AndroidUtils.toast(this, R.string.no_device_selected);
+      return;
+    }
+    
     boolean success = weightScaleDevice.requestAdvancedMeasurement(new IAdvancedMeasurementFinishedReceiver() {
       @Override
       public void onAdvancedMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags,
