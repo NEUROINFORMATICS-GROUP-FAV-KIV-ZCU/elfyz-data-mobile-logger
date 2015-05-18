@@ -16,22 +16,17 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 
-import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc.RrFlag;
+import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.WeightScaleRequestStatus;
 
-import cz.zcu.kiv.mobile.logger.data.database.BloodPressureMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.Database;
-import cz.zcu.kiv.mobile.logger.data.database.GlucoseMeasurementTable;
-import cz.zcu.kiv.mobile.logger.data.database.HeartRateCalculatedRrIntervalTable;
-import cz.zcu.kiv.mobile.logger.data.database.HeartRateCumulativeOperatingTimeTable;
 import cz.zcu.kiv.mobile.logger.data.database.ProfileTable;
+import cz.zcu.kiv.mobile.logger.data.database.WeightScaleMeasurementTable;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.DatabaseException;
 import cz.zcu.kiv.mobile.logger.data.database.exceptions.EntryNotFoundException;
 import cz.zcu.kiv.mobile.logger.data.types.Gender;
 import cz.zcu.kiv.mobile.logger.data.types.Profile;
-import cz.zcu.kiv.mobile.logger.data.types.blood_pressure.BloodPressureMeasurement;
 import cz.zcu.kiv.mobile.logger.data.types.glucose.GlucoseMeasurement;
-import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCalculatedRrInterval;
-import cz.zcu.kiv.mobile.logger.data.types.heart_rate.HeartRateCumulativeOperatingTime;
+import cz.zcu.kiv.mobile.logger.data.types.weight_scale.WeightScaleBasicMeasurement;
 import cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureListActivity;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask;
 import cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterDeviceCommunicatorTask.GlucoseMeterDeviceListener;
@@ -87,58 +82,71 @@ public class TestActivity extends Activity implements GlucoseMeterDeviceListener
   }
 
   private void addData(Database db, long userID) {
-      try {
-        BloodPressureMeasurementTable t = db.getBloodPressureMeasurementTable();
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 30),  80, 60, 70, 50, true));
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 42),  90, 60, 75, 60, false));
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 16, 10),  100, 70, 85, 70, true));
-        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 17, 53),  80, 60, 70, 52, false));
-        
-        Random r = new Random();
-        for (int i = 0; i < 20; i++) {
-          int mean = 100 + r.nextInt(100);
-          int sys = (int) (mean * 0.85);
-          int dia = (int) (mean * 0.55);
-          int rate = mean + 20 + r.nextInt(40);
-          t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 2, i+1, 7, 30),  sys, dia, mean, rate, false));
-        }
-      }
-      catch (DatabaseException e) {
-        e.printStackTrace();
-      }
-      try {
-        GlucoseMeasurementTable t = db.getGlucoseMeasurementTable();
-        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 147, 6, 0, 0, false));
-        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 140, 5, 0, 0, false));
-        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 155, 7, 0, 0, false));
-        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 130, 2, 0, 0, false));
-      }
-      catch (DatabaseException e) {
-        e.printStackTrace();
-      }
-      try {
-        HeartRateCalculatedRrIntervalTable t = db.getHeartRateCalculatedRrIntervalTable();
-        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111111L, null, new BigDecimal(1.1), RrFlag.HEART_RATE_ZERO_DETECTED, false));
-        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111200L, null, new BigDecimal(1.0), RrFlag.DATA_SOURCE_PAGE_4, false));
-        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111500L, null, new BigDecimal(1.2), RrFlag.DATA_SOURCE_CACHED, false));
-        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111650L, null, new BigDecimal(0.9), RrFlag.UNRECOGNIZED, false));
-      }
-      catch (DatabaseException e) {
-        e.printStackTrace();
-      }
-      try {
-        HeartRateCumulativeOperatingTimeTable t = db.getHeartRateCumulativeOperatingTimeTable();
-        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222222L, null, 10, false));
-        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222300L, null, 15, false));
-        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222430L, null, 20, false));
-        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222600L, null, 25, false));
-      }
-      catch (DatabaseException e) {
-        e.printStackTrace();
-      }
+//      try {
+//        BloodPressureMeasurementTable t = db.getBloodPressureMeasurementTable();
+//        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 30),  80, 60, 70, 50, true));
+//        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 15, 42),  90, 60, 75, 60, false));
+//        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 16, 10),  100, 70, 85, 70, true));
+//        t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 1, 2, 17, 53),  80, 60, 70, 52, false));
+//        
+//        Random r = new Random();
+//        for (int i = 0; i < 20; i++) {
+//          int mean = 100 + r.nextInt(100);
+//          int sys = (int) (mean * 0.85);
+//          int dia = (int) (mean * 0.55);
+//          int rate = mean + 20 + r.nextInt(40);
+//          t.addMeasurement(userID, new BloodPressureMeasurement(new GregorianCalendar(2015, 2, i+1, 7, 30),  sys, dia, mean, rate, false));
+//        }
+//      }
+//      catch (DatabaseException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        GlucoseMeasurementTable t = db.getGlucoseMeasurementTable();
+//        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 147, 6, 0, 0, false));
+//        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 140, 5, 0, 0, false));
+//        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 155, 7, 0, 0, false));
+//        t.addMeasurement(userID, new GlucoseMeasurement(new GregorianCalendar(2015, 1, 3, 8, 11), 130, 2, 0, 0, false));
+//      }
+//      catch (DatabaseException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        HeartRateCalculatedRrIntervalTable t = db.getHeartRateCalculatedRrIntervalTable();
+//        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111111L, null, new BigDecimal(1.1), RrFlag.HEART_RATE_ZERO_DETECTED, false));
+//        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111200L, null, new BigDecimal(1.0), RrFlag.DATA_SOURCE_PAGE_4, false));
+//        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111500L, null, new BigDecimal(1.2), RrFlag.DATA_SOURCE_CACHED, false));
+//        t.addCalculatedRrIntervalData(userID, new HeartRateCalculatedRrInterval(111650L, null, new BigDecimal(0.9), RrFlag.UNRECOGNIZED, false));
+//      }
+//      catch (DatabaseException e) {
+//        e.printStackTrace();
+//      }
+//      try {
+//        HeartRateCumulativeOperatingTimeTable t = db.getHeartRateCumulativeOperatingTimeTable();
+//        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222222L, null, 10, false));
+//        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222300L, null, 15, false));
+//        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222430L, null, 20, false));
+//        t.addCumulativeOperatingTime(userID, new HeartRateCumulativeOperatingTime(222600L, null, 25, false));
+//      }
+//      catch (DatabaseException e) {
+//        e.printStackTrace();
+//      }
 //      HeartRateManufacturerAndSerialTable t = db.getHeartRateManufacturerAndSerialTable();
 //      t.addManufacturerAndSerial(userID, new HeartRateManufacturerAndSerial(333333L, null, 1, 2, false));
 //      t.add
+
+    try {
+      WeightScaleMeasurementTable t = db.getWeightScaleMeasurementTable();
+      
+      Random r = new Random();
+      for (int i = 0; i < 20; i++) {
+        double var = 2.0 + r.nextDouble();
+        t.addBasicMeasurement(userID, new WeightScaleBasicMeasurement(new GregorianCalendar(2015, 2, i+1, 7, 30).getTimeInMillis(), null, WeightScaleRequestStatus.SUCCESS, new BigDecimal(71.0 + var), false));
+      }
+    }
+    catch (DatabaseException e) {
+      e.printStackTrace();
+    }
   }
 
   protected Profile getTestProfile() {

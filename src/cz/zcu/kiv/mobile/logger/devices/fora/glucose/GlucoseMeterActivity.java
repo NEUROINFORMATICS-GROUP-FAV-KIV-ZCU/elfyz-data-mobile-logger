@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand;
@@ -61,6 +60,10 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
       case R.id.action_statistics:
         startActivity(new Intent(this, GlucoseMeterAnalysisActivity.class));
         return true;
+        
+      case R.id.action_show_data:
+        startActivity(new Intent(this, GlucoseMeterListActivity.class));
+        return true;
   
       default: return super.onOptionsItemSelected(item);
     }
@@ -76,10 +79,6 @@ public class GlucoseMeterActivity extends AForaDeviceActivity implements Glucose
     }
   }
 
-
-  public void showAllRecords(View button){
-    startActivity(new Intent(this, GlucoseMeterListActivity.class));
-  }
 
   private void showValues(String time, String glucose, String temperature, String code, String type){
     tvTime.setText(time);

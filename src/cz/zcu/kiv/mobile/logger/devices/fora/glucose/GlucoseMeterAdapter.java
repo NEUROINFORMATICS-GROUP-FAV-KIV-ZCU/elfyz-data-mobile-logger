@@ -43,10 +43,10 @@ public class GlucoseMeterAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
 
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvGlucose.setText(String.valueOf(cursor.getInt(iGlucose)));
-    holder.tvTemperature.setText(String.valueOf(cursor.getInt(iTemperature)));
-    holder.tvCode.setText(String.valueOf(cursor.getInt(iCode)));
-    holder.tvType.setText(String.valueOf(cursor.getInt(iType)));
+    holder.tvGlucose.setText(String.valueOf(cursor.getInt(iGlucose)) + " mg/dl");
+    holder.tvTemperature.setText(String.valueOf(cursor.getInt(iTemperature)) + " °C");
+    holder.tvCode.setText("C " + String.valueOf(cursor.getInt(iCode)));
+    holder.tvType.setText("T " + String.valueOf(cursor.getInt(iType)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

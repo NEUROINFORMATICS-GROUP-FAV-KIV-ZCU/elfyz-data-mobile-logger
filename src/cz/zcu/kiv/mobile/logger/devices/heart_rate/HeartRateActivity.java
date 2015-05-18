@@ -113,6 +113,10 @@ public class HeartRateActivity extends UserActivity implements ServiceConnection
         startActivity(new Intent(this, HeartRateDataAnalysisActivity.class));
         return true;
   
+      case R.id.action_show_data:
+        startActivity(new Intent(this, HeartRateDataListActivity.class));
+        return true;
+        
       default: return super.onOptionsItemSelected(item);
     }
   }
@@ -181,10 +185,6 @@ public class HeartRateActivity extends UserActivity implements ServiceConnection
     }
   }
   
-  public void showAllRecords(View view) {
-    startActivity(new Intent(this, HeartRateDataListActivity.class));
-  }
-  
   protected void setStatus(final String status, boolean ensureUiThread) {
     if(ensureUiThread) {
       runOnUiThread(new Runnable() {
@@ -221,7 +221,7 @@ public class HeartRateActivity extends UserActivity implements ServiceConnection
 
   @Override
   public void onDeviceStateChange(DeviceState state) {
-    // TODO Auto-generated method stub
+    // TODO useful for us?
   }
 
   @Override
@@ -235,7 +235,7 @@ public class HeartRateActivity extends UserActivity implements ServiceConnection
       public void run() {
         tvHeartRate.setText(
             (measurement.getDataState().equals(DataState.LIVE_DATA))
-            ? String.valueOf(measurement.getComputedHeartRate())
+                ? String.valueOf(measurement.getComputedHeartRate())
                 : getString(R.string.value_n_a)
             );
         tvDataStatus.setText(measurement.getDataState().toString());

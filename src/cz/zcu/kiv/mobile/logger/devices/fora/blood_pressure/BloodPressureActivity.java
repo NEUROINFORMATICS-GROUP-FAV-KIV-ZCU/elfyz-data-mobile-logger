@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.database.commands.AInsertMeasurementBatchCommand;
@@ -61,6 +60,10 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
       case R.id.action_statistics:
         startActivity(new Intent(this, BloodPressureAnalysisActivity.class));
         return true;
+        
+      case R.id.action_show_data:
+        startActivity(new Intent(this, BloodPressureListActivity.class));
+        return true;
   
       default: return super.onOptionsItemSelected(item);
     }
@@ -74,10 +77,6 @@ public class BloodPressureActivity extends AForaDeviceActivity implements BloodP
     else {
       new BloodPressureDeviceCommunicatorTask(btDevice, this, justLatest).execute();
     }
-  }
-
-  public void showAllRecords(View button){
-    startActivity(new Intent(this, BloodPressureListActivity.class));
   }
 
   private void showValues(String time, String systolic, String diastolic, String mean, String heartRate){

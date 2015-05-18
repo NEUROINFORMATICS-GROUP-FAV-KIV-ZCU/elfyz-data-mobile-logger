@@ -115,12 +115,12 @@ public class WeightScaleActivity extends UserActivity implements InsertCommandLi
         startActivity(new Intent(this, WeightScaleDataAnalysisActivity.class));
         return true;
   
+      case R.id.action_show_data:
+        startActivity(new Intent(this, WeightScaleDataListActivity.class));
+        return true;
+        
       default: return super.onOptionsItemSelected(item);
     }
-  }
-  
-  public void showAllRecords(View view) {
-    startActivity(new Intent(this, WeightScaleDataListActivity.class));
   }
   
   public void doBasicMeasurement(View view){//TODO disable if device not available

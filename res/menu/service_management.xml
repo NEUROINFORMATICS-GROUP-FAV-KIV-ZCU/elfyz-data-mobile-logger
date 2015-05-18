@@ -7,10 +7,4 @@
         android:icon="@drawable/ic_menu_turn_off"
         android:title="@string/action_turn_off"/>
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
 </menu>
