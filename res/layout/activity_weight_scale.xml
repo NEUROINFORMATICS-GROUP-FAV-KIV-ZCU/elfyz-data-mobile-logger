@@ -30,20 +30,33 @@
         android:layout_weight="1">
         
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-		    <TextView
-		        android:id="@+id/tv_body_weight"
-		        android:layout_width="match_parent"
-		        android:layout_height="0dip"
-		        android:layout_weight="1"
-		        android:textSize="@dimen/value_size_large"
-		        android:gravity="center_vertical|center_horizontal"
-		        android:textStyle="bold"
-		        android:textIsSelectable="false"
-		        android:text="@string/value_n_a" />
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+        
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1">
+  
+  		    <TextView
+  		        android:id="@+id/tv_body_weight"
+  		        android:layout_width="wrap_content"
+  		        android:layout_height="wrap_content"
+  		        android:textSize="@dimen/value_size_large"
+  		        android:gravity="center"
+                android:layout_centerInParent="true"
+  		        android:textStyle="bold"
+  		        android:textIsSelectable="false"
+  		        android:text="@string/value_n_a" />
+            
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="kg"
+                  android:layout_below="@id/tv_body_weight"
+                  android:gravity="center_horizontal" />
+           </RelativeLayout>
             
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -190,43 +203,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 
-                <View 
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                
                 <Button 
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/weight_scale_basic_measurement"
                     android:onClick="doBasicMeasurement"/>
                 
-                <View 
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                
                 <Button 
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/weight_scale_advanced_measurement"
                     android:onClick="doAdvancedMeasurement"/>
-                
-                <View 
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                
-                <Button 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/show_all_records"
-                    android:onClick="showAllRecords"/>
-                
-                <View 
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
