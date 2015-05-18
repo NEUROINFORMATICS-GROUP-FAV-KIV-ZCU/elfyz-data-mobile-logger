@@ -18,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.database.loaders.AAnalysisLoader;
 import cz.zcu.kiv.mobile.logger.data.types.AsyncTaskResult;
@@ -51,7 +50,6 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
 
   protected Button bDateFrom;
   protected Button bDateTo;
-  protected ImageButton bRefresh;
   
   
   @Override
@@ -82,7 +80,6 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
     View rootView = inflater.inflate(getLayoutResourceID(), container, false);
     bDateFrom = (Button) rootView.findViewById(R.id.b_date_from);
     bDateTo = (Button) rootView.findViewById(R.id.b_date_to);
-    bRefresh = (ImageButton) rootView.findViewById(R.id.b_refresh);
     initButtons();
     return rootView;
   }
@@ -100,13 +97,8 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
         selectDateTo();
       }
     });
-    bRefresh.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        refreshAnalysis();
-      }
-    });
     refreshButtons();
+    refreshAnalysis();
   }
 
   @Override
@@ -146,6 +138,7 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
       public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         dateFrom = DateUtils.getDate(year, monthOfYear, dayOfMonth).getTime();
         refreshButtons();
+        refreshAnalysis();
       }
     });
     dialog.show(getFragmentManager(), "datePicker");
@@ -163,6 +156,7 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
       public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         dateTo = DateUtils.getDate(year, monthOfYear, dayOfMonth).getTime();
         refreshButtons();
+        refreshAnalysis();
       }
     });
     dialog.show(getFragmentManager(), "datePicker");
@@ -173,7 +167,7 @@ public abstract class AAnalysisFragment extends Fragment implements LoaderCallba
     bDateTo.setText(dateFormat.format(dateTo));
   }
   
-  public void refreshAnalysis() {
+  private void refreshAnalysis() {
     if(loader != null) {
       loader.triggerLoad(dateFrom, dateTo);
     }

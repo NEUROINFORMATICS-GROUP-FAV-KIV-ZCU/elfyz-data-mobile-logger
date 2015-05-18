@@ -191,7 +191,7 @@ public class BloodPressureAnalysisFragment extends AAnalysisFragment {
     }
 
     if(count > 1) {
-      tvTrend.setText(trend > 0 ? "▲" : trend < 0 ? "▼" : "-");
+      tvTrend.setText(trend > 0 ? "▲" : trend < 0 ? "▼" : "-"); //TODO to strings
     }
     if(count > 0) {
       tvAverage.setText(String.valueOf(sum / count));

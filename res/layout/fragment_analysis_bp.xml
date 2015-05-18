@@ -1,184 +1,185 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:fillViewport="true">
+  android:orientation="vertical">
+  
+  <com.github.mikephil.charting.charts.LineChart
+      android:id="@+id/chart"
+      android:minHeight="200dp"
+      android:layout_weight="1"
+      android:layout_width="match_parent"
+      android:layout_height="0dp" />
 
-  <LinearLayout
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:minHeight="200dp"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+    android:fillViewport="true">
     
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
-        
-        <Button
-            android:id="@+id/b_date_from"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        
-        <Button
-            android:id="@+id/b_date_to"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        
-        <ImageButton
-            android:id="@+id/b_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_refresh"
-            android:contentDescription="Refresh" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+      
+      <LinearLayout
+          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:orientation="horizontal">
+          
+          <Button
+              android:id="@+id/b_date_from"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1" />
+          
+          <Button
+              android:id="@+id/b_date_to"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1" />
+      </LinearLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_trend" />
+          
+          <TextView
+              android:id="@+id/tv_stats_trend"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_average" />
+          
+          <TextView
+              android:id="@+id/tv_stats_average"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_count" />
+          
+          <TextView
+              android:id="@+id/tv_stats_count"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_max" />
+          
+          <TextView
+              android:id="@+id/tv_stats_max"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_max_time" />
+          
+          <TextView
+              android:id="@+id/tv_stats_max_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_min" />
+          
+          <TextView
+              android:id="@+id/tv_stats_min"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
+              
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:paddingTop="3dp" >
+  
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:text="@string/stats_min_time" />
+          
+          <TextView
+              android:id="@+id/tv_stats_min_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:text="@string/value_n_a" />
+      </RelativeLayout>
     </LinearLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_trend" />
-        
-        <TextView
-            android:id="@+id/tv_stats_trend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_average" />
-        
-        <TextView
-            android:id="@+id/tv_stats_average"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_count" />
-        
-        <TextView
-            android:id="@+id/tv_stats_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_max" />
-        
-        <TextView
-            android:id="@+id/tv_stats_max"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_max_time" />
-        
-        <TextView
-            android:id="@+id/tv_stats_max_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_min" />
-        
-        <TextView
-            android:id="@+id/tv_stats_min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/stats_min_time" />
-        
-        <TextView
-            android:id="@+id/tv_stats_min_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/value_n_a" />
-    </RelativeLayout>
-  </LinearLayout>
-</ScrollView>
+  </ScrollView>
+</LinearLayout>
