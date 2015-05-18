@@ -170,7 +170,8 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureAnalysisActivity"
             android:label="@string/title_activity_blood_pressure_analysis"
-            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity" >
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.fora.blood_pressure.BloodPressureActivity" />
@@ -178,7 +179,8 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterAnalysisActivity"
             android:label="@string/title_activity_glucose_meter_analysis"
-            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity" >
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.fora.glucose.GlucoseMeterActivity" />
@@ -186,7 +188,8 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateDataAnalysisActivity"
             android:label="@string/title_activity_heart_rate_data_analysis"
-            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" >
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.heart_rate.HeartRateActivity" />
@@ -194,7 +197,8 @@
         <activity
             android:name="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleDataAnalysisActivity"
             android:label="@string/title_activity_weight_scale_data_analysis"
-            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" >
+            android:parentActivityName="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.zcu.kiv.mobile.logger.devices.weight_scale.WeightScaleActivity" />
