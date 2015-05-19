@@ -15,7 +15,7 @@
     <string name="empty_list_main">This app version offers communication with no device.</string>
     <string name="title_activity_blood_pressure">Blood pressure</string>
     <string name="load_from_device">Read</string>
-    <string name="show_all_records">Show all</string>
+    <string name="show_all_records">Show stored records</string>
     <string name="title_activity_blood_pressure_list">Blood pressure - record list</string>
     <string name="empty_list_measurements">No records available</string>
     <string name="char_average">Ø</string>
