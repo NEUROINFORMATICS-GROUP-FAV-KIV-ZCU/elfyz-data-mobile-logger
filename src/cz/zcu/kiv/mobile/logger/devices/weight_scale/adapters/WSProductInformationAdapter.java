@@ -42,9 +42,9 @@ public class WSProductInformationAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvVersionMain.setText(String.valueOf(cursor.getInt(iVersionMain)));
-    holder.tvVersionSupp.setText(String.valueOf(cursor.getInt(iVersionSupp)));
-    holder.tvSerialNr.setText(String.valueOf(cursor.getInt(iSerialNr)));
+    holder.tvVersionMain.setText("vMain " + String.valueOf(cursor.getInt(iVersionMain)));
+    holder.tvVersionSupp.setText("vSupp " + String.valueOf(cursor.getInt(iVersionSupp)));
+    holder.tvSerialNr.setText("SerNr " + String.valueOf(cursor.getInt(iSerialNr)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

@@ -42,9 +42,9 @@ public class WSManufacturerIdentificationAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvHwRev.setText(String.valueOf(cursor.getInt(iHwRev)));
-    holder.tvManufacturerId.setText(String.valueOf(cursor.getInt(iManufacturerId)));
-    holder.tvModelNumber.setText(String.valueOf(cursor.getInt(iModelNumber)));
+    holder.tvHwRev.setText("HWrev " + String.valueOf(cursor.getInt(iHwRev)));
+    holder.tvManufacturerId.setText("ManID " + String.valueOf(cursor.getInt(iManufacturerId)));
+    holder.tvModelNumber.setText("Model " + String.valueOf(cursor.getInt(iModelNumber)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

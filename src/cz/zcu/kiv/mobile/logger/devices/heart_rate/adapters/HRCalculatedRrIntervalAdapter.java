@@ -42,7 +42,7 @@ public class HRCalculatedRrIntervalAdapter extends CursorAdapter {
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
     holder.tvRrFlag.setText(HeartRateCalculatedRrIntervalTable.mapRrFlag(cursor.getInt(iRrFlag)).toString());
-    holder.tvRrInterval.setText(String.valueOf(cursor.getInt(iRrInterval)));
+    holder.tvRrInterval.setText(String.valueOf(cursor.getInt(iRrInterval)) + " ms");
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

@@ -1,6 +1,7 @@
 package cz.zcu.kiv.mobile.logger.devices.weight_scale.adapters;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import android.content.Context;
@@ -18,6 +19,8 @@ import cz.zcu.kiv.mobile.logger.data.database.WeightScaleMeasurementTable;
 
 
 public class WSMeasurementAdapter extends CursorAdapter {
+  private static final DecimalFormat DF = new DecimalFormat("#.00");
+  
   protected LayoutInflater inflater;
   protected DateFormat timeFormat;
 
@@ -47,20 +50,20 @@ public class WSMeasurementAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvBodyWeight.setText(getStringValue(cursor, iBodyWeight));
-    holder.tvMuscleMass.setText(getStringValue(cursor, iMuscleMass));
-    holder.tvBoneMass.setText(getStringValue(cursor, iBoneMass));
-    holder.tvFatPercentage.setText(getStringValue(cursor, iFatPercentage));
-    holder.tvHydrationPercentage.setText(getStringValue(cursor, iHydrationPercentage));
-    holder.tvActiveMetRate.setText(getStringValue(cursor, iActiveMetRate));
-    holder.tvBasalMetRate.setText(getStringValue(cursor, iBasalMetRate));
+    holder.tvBodyWeight.setText("Wei " + getStringValue(cursor, iBodyWeight));
+    holder.tvMuscleMass.setText("Mus " + getStringValue(cursor, iMuscleMass));
+    holder.tvBoneMass.setText("Bone " + getStringValue(cursor, iBoneMass));
+    holder.tvFatPercentage.setText("Fat " + getStringValue(cursor, iFatPercentage));
+    holder.tvHydrationPercentage.setText("Hyd " + getStringValue(cursor, iHydrationPercentage));
+    holder.tvActiveMetRate.setText("AMR " + getStringValue(cursor, iActiveMetRate));
+    holder.tvBasalMetRate.setText("BMR " + getStringValue(cursor, iBasalMetRate));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 
   private CharSequence getStringValue(Cursor cursor, int index) {
     return cursor.isNull(index)
         ? Application.getStringResource(R.string.value_n_a)
-        : String.valueOf(cursor.getDouble(index));
+        : DF.format(cursor.getDouble(index));
   }
 
 

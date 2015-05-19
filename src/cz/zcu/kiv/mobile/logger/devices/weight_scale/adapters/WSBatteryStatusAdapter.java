@@ -45,12 +45,12 @@ public class WSBatteryStatusAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvCumulOpTime.setText(String.valueOf(cursor.getLong(iCumulOpTime)));
-    holder.tvCumulOpTimeRes.setText(String.valueOf(cursor.getInt(iCumulOpTimeRes)));
-    holder.tvBatteryVoltage.setText(String.valueOf(cursor.getDouble(iBatteryVoltage)));
-    holder.tvBatteryStatus.setText(String.valueOf(WeightScaleBatteryStatusTable.mapBatteryStatus(cursor.getInt(iBatteryStatus))));
-    holder.tvBatteryCount.setText(String.valueOf(cursor.getInt(iBatteryCount)));
-    holder.tvBatteryId.setText(String.valueOf(cursor.getInt(iBatteryId)));
+    holder.tvCumulOpTime.setText("COT " + String.valueOf(cursor.getLong(iCumulOpTime)));
+    holder.tvCumulOpTimeRes.setText("COTres " + String.valueOf(cursor.getInt(iCumulOpTimeRes)));
+    holder.tvBatteryVoltage.setText("bVolt " + String.valueOf(cursor.getDouble(iBatteryVoltage)));
+    holder.tvBatteryStatus.setText("bStat " + String.valueOf(WeightScaleBatteryStatusTable.mapBatteryStatus(cursor.getInt(iBatteryStatus))));
+    holder.tvBatteryCount.setText("bCount " + String.valueOf(cursor.getInt(iBatteryCount)));
+    holder.tvBatteryId.setText("bID " + String.valueOf(cursor.getInt(iBatteryId)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

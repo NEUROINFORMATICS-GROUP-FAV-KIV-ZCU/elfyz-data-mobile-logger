@@ -45,8 +45,8 @@ public class HRMeasurementAdapter extends CursorAdapter {
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
     holder.tvDataState.setText(HeartRateMeasurementTable.mapDataState(cursor.getInt(iDataState)).toString());
     holder.tvHeartRate.setText(String.valueOf(cursor.getInt(iHeartRate)));
-    holder.tvBeatCount.setText(String.valueOf(cursor.getInt(iBeatCount)));
-    holder.tvBeatTime.setText(String.valueOf(cursor.getInt(iBeatTime)));
+    holder.tvBeatCount.setText("BC " + String.valueOf(cursor.getInt(iBeatCount)));
+    holder.tvBeatTime.setText("BT " + String.valueOf(cursor.getInt(iBeatTime)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

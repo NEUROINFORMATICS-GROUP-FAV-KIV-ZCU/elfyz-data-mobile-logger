@@ -17,6 +17,8 @@ import cz.zcu.kiv.mobile.logger.data.database.WeightScaleManufacturerSpecificDat
 
 
 public class WSManufacturerSpecificDataAdapter extends CursorAdapter {
+  private static final int PREVIEW_LENGTH = 4;
+  
   protected LayoutInflater inflater;
   protected DateFormat timeFormat;
 
@@ -43,7 +45,7 @@ public class WSManufacturerSpecificDataAdapter extends CursorAdapter {
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
     holder.tvManufSpecific.setText(String.valueOf(getPreview(data)));
-    holder.tvDataLength.setText(String.valueOf(data.length));
+    holder.tvDataLength.setText("Len " + String.valueOf(data.length));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 
@@ -54,8 +56,8 @@ public class WSManufacturerSpecificDataAdapter extends CursorAdapter {
 
     ViewHolder holder = new ViewHolder();
     holder.tvTime =          (TextView) view.findViewById(R.id.tv_time);
-    holder.tvManufSpecific = (TextView) view.findViewById(R.id.tv_cumul_op_time);
-    holder.tvDataLength =    (TextView) view.findViewById(R.id.tv_cumul_op_time_res);
+    holder.tvManufSpecific = (TextView) view.findViewById(R.id.tv_man_spec_byte);
+    holder.tvDataLength =    (TextView) view.findViewById(R.id.tv_data_length);
     holder.ivUploaded =      (ImageView) view.findViewById(R.id.iv_uploaded_icon);
     view.setTag(holder);
 
@@ -79,13 +81,13 @@ public class WSManufacturerSpecificDataAdapter extends CursorAdapter {
 
   private String getPreview(byte[] data) {
     StringBuilder sb = new StringBuilder();
-    int length = data.length > 8 ? 8 : data.length;
+    int length = data.length > PREVIEW_LENGTH ? PREVIEW_LENGTH : data.length;
     
     for (int i = 0; i < length; i++) {
       sb.append(String.format("%02X ", data[i]));
     }
     
-    if(data.length > 8)
+    if(data.length > PREVIEW_LENGTH)
       sb.append("...");
     
     return sb.toString();

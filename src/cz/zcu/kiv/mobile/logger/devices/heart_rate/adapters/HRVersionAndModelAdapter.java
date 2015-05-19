@@ -42,9 +42,9 @@ public class HRVersionAndModelAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvHW.setText(String.valueOf(cursor.getInt(iHW)));
-    holder.tvSW.setText(String.valueOf(cursor.getInt(iSW)));
-    holder.tvModelNr.setText(String.valueOf(cursor.getInt(iModelNr)));
+    holder.tvHW.setText("HW " + String.valueOf(cursor.getInt(iHW)));
+    holder.tvSW.setText("SW " + String.valueOf(cursor.getInt(iSW)));
+    holder.tvModelNr.setText("Model " + String.valueOf(cursor.getInt(iModelNr)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 

@@ -41,8 +41,8 @@ public class HRManufacturerAndSerialAdapter extends CursorAdapter {
     ViewHolder holder = (ViewHolder) view.getTag();
     
     holder.tvTime.setText(timeFormat.format(cursor.getLong(iTime)));
-    holder.tvManufacturerID.setText(String.valueOf(cursor.getInt(iManufacturerID)));
-    holder.tvSerialNr.setText(String.valueOf(cursor.getInt(iSerialNr)));
+    holder.tvManufacturerID.setText("ManID " + String.valueOf(cursor.getInt(iManufacturerID)));
+    holder.tvSerialNr.setText("SerNr " + String.valueOf(cursor.getInt(iSerialNr)));
     holder.ivUploaded.setVisibility(cursor.getInt(iUploaded) == ATable.VALUE_TRUE ? View.VISIBLE : View.INVISIBLE);
   }
 
