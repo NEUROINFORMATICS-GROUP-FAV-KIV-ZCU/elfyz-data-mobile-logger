@@ -1,10 +1,20 @@
 # elfyz-data-mobile-logger
 
-This is a (so far) simple application for reading data from several health sensors (via Bluetooth or ANT+), storing them in local database and synchronizing with remote EEGbase portal.
+This is (so far) a simple application for reading data from several health sensors (via Bluetooth or ANT+), storing them in local SQLite database and uploading them to remote EEGbase portal.
+
+Supported sensors:
+* BT blood pressure monitor - [FORA P30 Plus FC](https://www.evito.cz/eshop/product/62)
+* BT glucose meter - [FORA Diamond Mini FC](https://www.evito.cz/eshop/product/31)
+* ANT+ weight scale - e.g. [eVito SL](https://www.evito.cz/eshop/product/3)
+* ANT+ heart rate monitor - e.g. [Garmin Premium heart rate strap](https://www.evito.cz/eshop/product/7)
+
+## Developing in Eclipse ADK
+
+Eclipse IDE doesn't support android libraries very well. To correctly attach MPAndroidChart library (used for charts in data analysis) follow the 4th usage option described on [library page](https://github.com/PhilJay/MPAndroidChart). That is clone the repository and add it as a library to this project via Project -> Properties -> Android -> Libraries -> Add.
 
 ## Running on real device
 
-There are several services needed to be installed so make sure you have these:
+There are several services needed to be installed so make sure you have all of these:
 
 * [ANT Radio Service](https://play.google.com/store/apps/details?id=com.dsi.ant.service.socket)
 * [ANT+ Plugins Service](https://play.google.com/store/apps/details?id=com.dsi.ant.plugins.antplus)
@@ -18,7 +28,7 @@ You can also download service's APKs from ANT SDKs from [here](http://www.thisis
 ## Running on Android emulator
 
 1. Run Virtual Device in Android emulator.
-2. Install all three services mentioned above.
+2. Install all three services mentioned above (via ADB).
 3. Download [ANT Android Emulator Bridge Tool](http://www.thisisant.com/developer/resources/downloads/)
 4. Install ANT Emulator Config APK packaged with the bridge toool.
 5. Connect ANT USB Stick to your computer.
