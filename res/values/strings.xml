@@ -208,5 +208,6 @@
     <string name="hr_legend_heart_rate">Heart rate</string>
     <string name="title_activity_weight_scale_data_analysis">Analysis - Weight Scale</string>
     <string name="ws_legend_weight">Weight</string>
+    <string name="action_de_select_all">(de)select all</string>
 
 </resources>

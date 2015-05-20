@@ -15,6 +15,12 @@
         android:title="@string/action_auto_sync" />
 
     <item
+        android:id="@+id/action_de_select_all"
+        android:orderInCategory="25"
+        android:showAsAction="never"
+        android:title="@string/action_de_select_all" />
+
+    <item
         android:id="@+id/action_delete_selected"
         android:orderInCategory="30"
         android:showAsAction="never"

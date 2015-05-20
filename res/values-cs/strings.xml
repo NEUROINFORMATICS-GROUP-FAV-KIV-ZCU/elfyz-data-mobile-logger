@@ -206,5 +206,6 @@
     <string name="title_activity_settings">Nastavení</string>
     <string name="title_activity_glucose_list">Data - Glukoměr</string>
     <string name="title_activity_glucose_meter">Glukoměr</string>
+    <string name="action_de_select_all">(od)označit vše</string>
 
 </resources>

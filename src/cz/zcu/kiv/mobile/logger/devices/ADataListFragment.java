@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import cz.zcu.kiv.mobile.logger.Application;
 import cz.zcu.kiv.mobile.logger.R;
 import cz.zcu.kiv.mobile.logger.data.database.ARecordTable;
@@ -108,6 +109,10 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
         });
         return true;
         
+      case R.id.action_de_select_all:
+        switchSelection();
+        return true;
+        
       case R.id.action_delete_uploaded:
         DialogUtils.showDeleteDialog(getActivity(), R.string.dialog_delete_uploaded_records_message,  new OnClickListener() {
           @Override
@@ -132,6 +137,15 @@ public abstract class ADataListFragment extends ListFragment implements LoaderCa
     }
   }
   
+  private void switchSelection() {
+    ListView list = getListView();
+    boolean check = list.getCheckedItemCount() == 0;
+    
+    for(int i = 0; i < dataAdapter.getCount(); i++) {
+      list.setItemChecked(i, check);
+    }
+  }
+
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     super.onCreateContextMenu(menu, v, menuInfo);
