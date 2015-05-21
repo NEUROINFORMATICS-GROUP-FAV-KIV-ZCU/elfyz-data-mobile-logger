@@ -79,7 +79,7 @@ public class Application extends android.app.Application {
     if(userProfile != null && userProfile.getEegbasePassword() != null) {
       Account account = new Account(String.valueOf(userProfile.getId()), AuthenticatorService.ACCOUNT_TYPE);
 //      ContentResolver.setSyncAutomatically(account, AuthenticatorService.AUTHORITY, true);
-      ContentResolver.addPeriodicSync(account, AuthenticatorService.AUTHORITY, Bundle.EMPTY, 60L);
+      ContentResolver.addPeriodicSync(account, AuthenticatorService.AUTHORITY, Bundle.EMPTY, 60*15L);
     }
   }
 }

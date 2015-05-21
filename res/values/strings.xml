@@ -209,5 +209,7 @@
     <string name="title_activity_weight_scale_data_analysis">Analysis - Weight Scale</string>
     <string name="ws_legend_weight">Weight</string>
     <string name="action_de_select_all">(de)select all</string>
+    <string name="connection_wifi_only">Allow mobile connection</string>
+    <string name="for_synchronization">for synchronization</string>
 
 </resources>

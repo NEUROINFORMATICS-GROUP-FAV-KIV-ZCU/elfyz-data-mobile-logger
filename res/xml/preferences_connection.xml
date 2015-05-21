@@ -4,4 +4,9 @@
       android:key="eegbase_url"
       android:title="EEGbase portal REST URL"
       android:defaultValue="http://eeg2.kiv.zcu.cz:8080/rest"/>
+  <CheckBoxPreference
+      android:key="connection_allow_mobile"
+      android:title="@string/connection_allow_mobile"
+      android:summary="@string/for_synchronization"
+      android:defaultValue="false" />
 </PreferenceScreen>

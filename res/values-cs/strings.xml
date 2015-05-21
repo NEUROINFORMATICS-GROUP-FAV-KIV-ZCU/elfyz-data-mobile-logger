@@ -207,5 +207,6 @@
     <string name="title_activity_glucose_list">Data - Glukoměr</string>
     <string name="title_activity_glucose_meter">Glukoměr</string>
     <string name="action_de_select_all">(od)označit vše</string>
-
+    <string name="connection_allow_mobile">Povolit mobilní připojení</string>
+    <string name="for_synchronization">pro synchronizaci</string>
 </resources>

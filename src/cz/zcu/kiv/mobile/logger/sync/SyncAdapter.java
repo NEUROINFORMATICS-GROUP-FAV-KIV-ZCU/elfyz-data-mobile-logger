@@ -45,6 +45,7 @@ import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSManufacturerIdentificat
 import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSManufacturerSpecificDataDbUploadHelper;
 import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSMeasurementDbUploadHelper;
 import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSProductInformationDbUploadHelper;
+import cz.zcu.kiv.mobile.logger.utils.NetworkUtils;
 
 
 /**
@@ -54,7 +55,7 @@ import cz.zcu.kiv.mobile.logger.eegbase.upload.helpers.WSProductInformationDbUpl
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
   private static final String TAG = AbstractThreadedSyncAdapter.class.getSimpleName();
   
-  private static final int CHUNK_SIZE = 100;  //TODO from preferences
+  private static final int CHUNK_SIZE = 500;  //TODO from preferences
   
 
   /**
@@ -77,6 +78,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   public void onPerformSync(Account account, Bundle extras, String authority,
           ContentProviderClient provider, SyncResult syncResult) {
     
+    if(!NetworkUtils.isAvailable(true)) {
+      Log.i(TAG, "Aborting sync, network not available.");
+      return;
+    }
     
     Database db = Application.getInstance().getDatabase();
     
